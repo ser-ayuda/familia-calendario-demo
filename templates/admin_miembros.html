@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% block title %}Administración de miembros{% endblock %}
+{% block extra_head %}
+  <style>
+    :root { --gap: 10px; --border:#e5e7eb; --radius:10px; }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 14px; }
+    .panel { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    table { width:100%; border-collapse:collapse; font-size:1.08em; }
+    th, td { padding:8px 6px; }
+    th { background:#f1f5f9; color:#334155; text-align:left; }
+    .btn { border:none; border-radius:8px; padding:8px 10px; background:#0ea5e9; color:#fff; cursor:pointer; }
+    .btn.warn { background:#ef4444; }
+    .actions { display:flex; gap:8px; }
+    label { display:flex; flex-direction:column; font-size:12px; color:#334155; gap:4px; }
+    input { padding:6px 8px; border:1px solid var(--border); border-radius:8px; font-size:14px; }
+  </style>
+{% endblock %}
+{% block content %}
+  {% if avisos %}
+    <div id="avisos-admin" style="background:#fef9c3;border:1px solid #fde047;padding:14px 18px;border-radius:10px;margin-bottom:18px;">
+      <b style="color:#b45309;">Avisos administrativos:</b>
+      <ul style="margin:8px 0 0 0;padding:0;list-style:none;">
+        {% for aviso in avisos %}
+          <li style="margin-bottom:6px;">
+            <span style="color:{% if aviso.nivel == 'CRITICAL' %}#dc2626{% elif aviso.nivel == 'ERROR' %}#ef4444{% elif aviso.nivel == 'WARNING' %}#eab308{% else %}#334155{% endif %};font-weight:600;">[{{ aviso.nivel }}]</span>
+            {{ aviso.mensaje|linebreaksbr }}
+            <button onclick="marcarAvisoVisto({{ aviso.id }})" style="margin-left:10px;padding:2px 8px;font-size:0.95em;border-radius:6px;border:none;background:#22c55e;color:#fff;cursor:pointer;">Marcar como visto</button>
+            <span style="font-size:0.9em;color:#64748b;">({{ aviso.creado_en|date:'d/m/Y H:i' }})</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <script>
+      function marcarAvisoVisto(id) {
+        fetch('/avisos/marcar_visto/' + id + '/', {method:'POST',headers:{'X-CSRFToken':getCSRF()}})
+          .then(r => { if(r.ok) location.reload(); });
+      }
+      function getCSRF(){
+        const m = document.cookie.match(/csrftoken=([^;]+)/); return m ? m[1] : '';
+      }
+    </script>
+  {% endif %}
+  <div class="wrap">
+    <h1 style="margin:10px 0 18px 0;font-size:2em;font-weight:800;color:#0ea5e9;">Administración de miembros</h1>
+    <div id="msg" style="position:fixed;top:32px;left:50%;transform:translateX(-50%);z-index:3000;min-width:260px;max-width:95vw;text-align:center;pointer-events:none;"></div>
+    <div class="panel" style="margin-bottom:18px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Icono</th>
+            <th>Nombre</th>
+            <th>Color</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="miembros-tbody">
+          <!-- Miembros se llenan por JS -->
+        </tbody>
+      </table>
+    </div>
+    <form id="form-nuevo-miembro" style="display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end;margin-bottom:24px;">
+      <label style="flex:2;min-width:160px;">Nombre
+        <input id="m-nombre" required />
+      </label>
+      <label style="min-width:90px;">Icono
+        <select id="m-icono" style="min-width:60px;max-width:120px;">
+          <option value="">Elige un icono...</option>
+          <option value="😀">😀 Sonriente</option>
+          <option value="👩">👩 Mujer</option>
+          <option value="👨">👨 Hombre</option>
+          <option value="🧒">🧒 Niño/a</option>
+          <option value="👵">👵 Abuela</option>
+          <option value="👴">👴 Abuelo</option>
+          <option value="🐶">🐶 Perro</option>
+          <option value="🐱">🐱 Gato</option>
+          <option value="🦸">🦸 Héroe</option>
+          <option value="🧑‍🎓">🧑‍🎓 Estudiante</option>
+          <option value="🧑‍🍳">🧑‍🍳 Cocinero/a</option>
+          <option value="🧑‍🔧">🧑‍🔧 Técnico/a</option>
+          <option value="👧">👧 Niña</option>
+          <option value="👦">👦 Niño</option>
+          <option value="👩‍🦰">👩‍🦰 Niña pelirroja</option>
+          <option value="👧🏻">👧🏻 Niña piel clara</option>
+          <option value="👧🏽">👧🏽 Niña piel media</option>
+          <option value="👧🏿">👧🏿 Niña piel oscura</option>
+          <option value="custom">Otro (escribir)</option>
+        </select>
+        <input id="m-icono-custom" maxlength="2" placeholder="😀" style="display:none;margin-top:4px;" />
+      </label>
+      <label style="min-width:90px;">Color
+        <input id="m-color" type="color" value="#888888" />
+      </label>
+      <div class="actions">
+        <button class="btn" id="b-miembro-crear" type="button">Crear miembro</button>
+      </div>
+    </form>
+    <!-- Modal edición miembro -->
+    <div id="modal-editar-miembro" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:1000;align-items:center;justify-content:center;">
+      <div style="background:#fff;padding:24px 18px 18px 18px;border-radius:14px;min-width:320px;max-width:95vw;box-shadow:0 8px 32px #0003;position:relative;">
+        <button onclick="cerrarModalEditarMiembro()" style="position:absolute;top:8px;right:12px;background:none;border:none;font-size:1.5em;color:#888;cursor:pointer;">&times;</button>
+        <h3 style="margin-top:0">Editar miembro</h3>
+        <form id="form-editar-miembro" onsubmit="guardarEdicionMiembro(event)">
+          <label>Nombre
+            <input id="em-nombre" required />
+          </label>
+          <label>Icono
+            <select id="em-icono" style="min-width:60px;max-width:120px;">
+              <option value="">Elige un icono...</option>
+              <option value="😀">😀 Sonriente</option>
+              <option value="👩">👩 Mujer</option>
+              <option value="👨">👨 Hombre</option>
+              <option value="🧒">🧒 Niño/a</option>
+              <option value="👵">👵 Abuela</option>
+              <option value="👴">👴 Abuelo</option>
+              <option value="🐶">🐶 Perro</option>
+              <option value="🐱">🐱 Gato</option>
+              <option value="🦸">🦸 Héroe</option>
+              <option value="🧑‍🎓">🧑‍🎓 Estudiante</option>
+              <option value="🧑‍🍳">🧑‍🍳 Cocinero/a</option>
+              <option value="🧑‍🔧">🧑‍🔧 Técnico/a</option>
+              <option value="👧">👧 Niña</option>
+              <option value="👦">👦 Niño</option>
+              <option value="👩‍🦰">👩‍🦰 Niña pelirroja</option>
+              <option value="👧🏻">👧🏻 Niña piel clara</option>
+              <option value="👧🏽">👧🏽 Niña piel media</option>
+              <option value="👧🏿">👧🏿 Niña piel oscura</option>
+              <option value="custom">Otro (escribir)</option>
+            </select>
+            <input id="em-icono-custom" maxlength="2" placeholder="😀" style="display:none;margin-top:4px;" />
+          </label>
+          <label>Color
+            <input id="em-color" type="color" value="#888888" />
+          </label>
+          <div style="margin-top:12px;display:flex;gap:10px;">
+            <button class="btn" type="submit">Guardar</button>
+            <button class="btn warn" type="button" onclick="cerrarModalEditarMiembro()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    function getCSRF(){
+      const m = document.cookie.match(/csrftoken=([^;]+)/);
+      return m ? m[1] : '';
+    }
+    function showMsg(msg, ok=true){
+      const d = document.getElementById('msg');
+      const icon = ok
+        ? '<span style="font-size:1.6em;vertical-align:middle;margin-right:10px;">✅</span>'
+        : '<span style="font-size:1.6em;vertical-align:middle;margin-right:10px;">❌</span>';
+      d.innerHTML = `<div style="display:inline-block;padding:18px 36px;font-size:1.25em;border-radius:16px;box-shadow:0 6px 32px #0004;background:${ok ? '#10b981' : '#ef4444'};color:#fff;border:2.5px solid ${ok ? '#059669' : '#b91c1c'};font-weight:700;letter-spacing:0.5px;opacity:0;transform:scale(0.95);transition:all 0.25s;">${icon}${msg}</div>`;
+      d.style.display = 'block';
+      setTimeout(()=>{
+        const inner = d.firstChild;
+        if(inner) { inner.style.opacity = '1'; inner.style.transform = 'scale(1)'; }
+      }, 10);
+      setTimeout(()=>{
+        d.innerHTML='';
+        d.style.display='none';
+      }, 2600);
+    }
+    let miembroEditandoId = null;
+    function cargarMiembros(){
+      fetch('/api/miembros/')
+        .then(r=>r.json())
+        .then(data=>{
+          const tbody = document.getElementById('miembros-tbody');
+          tbody.innerHTML = '';
+          if(data.length === 0){
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#64748b;padding:18px;">No hay miembros registrados.</td></tr>';
+            return;
+          }
+          data.forEach(m=>{
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td style="font-size:1.5em;">${m.icono ? m.icono : '<span style=\'color:#64748b;\'>-</span>'}</td>
+              <td>${m.nombre}</td>
+              <td><span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:${m.color_hex};border:1.5px solid #e5e7eb;"></span> <span style="font-size:0.98em;color:#64748b;">${m.color_hex}</span></td>
+              <td>
+                <button class="btn" style="background:#facc15;color:#333;padding:4px 10px;font-size:1em;" title="Editar" onclick="editarMiembro(${m.id})">✏️</button>
+                <button class="btn warn" style="padding:4px 10px;font-size:1em;" title="Borrar" onclick="borrarMiembro(${m.id})">🗑️</button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        });
+    }
+    function crearMiembro() {
+      let icono = document.getElementById('m-icono').value;
+      if(icono === 'custom') {
+        icono = document.getElementById('m-icono-custom').value;
+      }
+      const body = {
+        nombre: document.getElementById('m-nombre').value,
+        icono: icono,
+        color_hex: document.getElementById('m-color').value,
+      };
+      fetch('/api/miembros/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRF() },
+        body: JSON.stringify(body)
+      }).then(async r => {
+        if(r.ok){
+          showMsg('Miembro creado correctamente');
+          cargarMiembros();
+          document.getElementById('form-nuevo-miembro').reset();
+        } else {
+          const txt = await r.text();
+          showMsg('Error al crear miembro: ' + txt, false);
+        }
+      });
+    }
+    function editarMiembro(id) {
+      fetch(`/api/miembros/${id}/`).then(r=>r.json()).then(m=>{
+        miembroEditandoId = id;
+        document.getElementById('em-nombre').value = m.nombre;
+        // Si el icono está en la lista, selecciona, si no, pone custom
+        const iconoSel = document.getElementById('em-icono');
+        let found = false;
+        for(let opt of iconoSel.options){
+          if(opt.value === m.icono){ iconoSel.value = m.icono; found = true; break; }
+        }
+        if(!found && m.icono){
+          iconoSel.value = 'custom';
+          document.getElementById('em-icono-custom').style.display = '';
+          document.getElementById('em-icono-custom').value = m.icono;
+        } else {
+          document.getElementById('em-icono-custom').style.display = 'none';
+          document.getElementById('em-icono-custom').value = '';
+        }
+        document.getElementById('em-color').value = m.color_hex || '#888888';
+        document.getElementById('modal-editar-miembro').style.display = 'flex';
+      });
+    }
+    function cerrarModalEditarMiembro() {
+      document.getElementById('modal-editar-miembro').style.display = 'none';
+      miembroEditandoId = null;
+    }
+    function guardarEdicionMiembro(e) {
+      e.preventDefault();
+      if (!miembroEditandoId) return;
+      let icono = document.getElementById('em-icono').value;
+      if(icono === 'custom') {
+        icono = document.getElementById('em-icono-custom').value;
+      }
+      const body = {
+        nombre: document.getElementById('em-nombre').value,
+        icono: icono,
+        color_hex: document.getElementById('em-color').value,
+      };
+      fetch(`/api/miembros/${miembroEditandoId}/`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRF() },
+        body: JSON.stringify(body)
+      }).then(async r => {
+        if(r.ok){
+          showMsg('Miembro actualizado');
+          cerrarModalEditarMiembro();
+          cargarMiembros();
+        } else {
+          const txt = await r.text();
+          showMsg('Error al actualizar miembro: ' + txt, false);
+        }
+      });
+    }
+    function borrarMiembro(id) {
+      if(!confirm('¿Seguro que quieres borrar este miembro?')) return;
+      fetch(`/api/miembros/${id}/`, { method:'DELETE', headers:{ 'X-CSRFToken': getCSRF() } })
+        .then(r=>{
+          if(r.status===204){ showMsg('Miembro eliminado'); cargarMiembros(); }
+          else showMsg('Error al eliminar miembro', false);
+        });
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      // Mostrar input custom si elige "Otro (escribir)"
+      document.getElementById('m-icono').addEventListener('change', function(){
+        document.getElementById('m-icono-custom').style.display = this.value === 'custom' ? '' : 'none';
+      });
+      document.getElementById('em-icono').addEventListener('change', function(){
+        document.getElementById('em-icono-custom').style.display = this.value === 'custom' ? '' : 'none';
+      });
+      document.getElementById('b-miembro-crear').addEventListener('click', crearMiembro);
+      document.getElementById('form-editar-miembro').addEventListener('submit', guardarEdicionMiembro);
+      cargarMiembros();
+    });
+  </script>
+{% endblock %}

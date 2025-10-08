@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+  <main style="max-width:700px;margin:32px auto 0 auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px #0ea5e91a;padding:32px 28px 24px 28px;">
+      <h1 style="font-size:2.2em;color:#0ea5e9;margin-bottom:10px;">Bienvenido, {{ request.user.username }}</h1>
+      <p style="font-size:1.18em;color:#334155;margin-bottom:18px;line-height:1.5;">
+        <strong>Calendario Familiar</strong> es una aplicación web moderna y visual para organizar, repartir y aprobar tareas familiares.<br>
+        <span style="color:#0ea5e9;">Características principales:</span>
+        <ul style="margin:10px 0 18px 18px;font-size:1.08em;color:#475569;">
+          <li>Vista diaria, semanal y mensual del calendario.</li>
+          <li>Arrastra y suelta tareas para reprogramarlas fácilmente.</li>
+          <li>Cada miembro tiene color e icono únicos.</li>
+          <li>Roles diferenciados: administrador y miembros.</li>
+          <li>Puntos y progreso por miembro, semana y mes.</li>
+          <li>Acceso desde PC y móvil, interfaz responsiva.</li>
+        </ul>
+        Accede al <a href="/calendario/?vista=semanal" style="color:#0ea5e9;font-weight:bold;">calendario</a> para ver, marcar o mover tus tareas.
+      </p>
+      <div style="background:#f8fafc;padding:18px 16px;border-radius:12px;margin-bottom:18px;">
+        <h2 style="font-size:1.15em;color:#0ea5e9;margin:0 0 8px 0;">Leyenda de estados de tareas</h2>
+        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+          <span><span style="font-size:1.3em;vertical-align:middle;margin-right:4px;">⏳</span> <span style="color:#f59e42;font-weight:bold;">Pendiente</span></span>
+          <span><span style="font-size:1.3em;vertical-align:middle;margin-right:4px;">✓</span> <span style="color:#22c55e;font-weight:bold;">Realizada</span></span>
+          <span><span style="font-size:1.3em;vertical-align:middle;margin-right:4px;">🏅</span> <span style="color:#0ea5e9;font-weight:bold;">Aprobada</span></span>
+        </div>
+      </div>
+      {% if semana_total_usuario is not None and mes_total_usuario is not None %}
+      <div style="background:#fef9c3;padding:16px 16px 10px 16px;border-radius:12px;margin-bottom:18px;color:#b45309;font-size:1.08em;box-shadow:0 2px 8px #facc1533;">
+        <div style="margin-bottom:4px;"><strong>{{ semana_rango }}</strong>: llevas <span style="color:#f59e42;font-weight:bold;">{{ semana_total_usuario|floatformat:2 }} €</span> esta semana.</div>
+        <div><strong>{{ mes_nombre }}</strong>: llevas <span style="color:#f59e42;font-weight:bold;">{{ mes_total_usuario|floatformat:2 }} €</span> este mes.</div>
+      </div>
+      {% endif %}
+      <div style="background:#f1f5f9;padding:18px 16px;border-radius:12px;margin-bottom:18px;">
+        <h2 style="font-size:1.15em;color:#0ea5e9;margin:0 0 8px 0;">Estadísticas por miembro</h2>
+        <table style="width:100%;border-spacing:0 8px;font-size:1.08em;background:transparent;">
+          <thead>
+            <tr style="background:transparent;color:#64748b;font-size:0.98em;">
+              <th style="padding:6px 2px;text-align:left;font-weight:500;">Miembro</th>
+              <th style="padding:6px 2px;text-align:center;font-weight:500;">Pend. semana</th>
+              <th style="padding:6px 2px;text-align:center;font-weight:500;">Pts. semana</th>
+              <th style="padding:6px 2px;text-align:center;font-weight:500;">€ semana</th>
+              <th style="padding:6px 2px;text-align:center;font-weight:500;">Pend. mes</th>
+              <th style="padding:6px 2px;text-align:center;font-weight:500;">Pts. mes</th>
+              <th style="padding:6px 2px;text-align:center;font-weight:500;">€ mes</th>
+              <th style="padding:6px 2px;text-align:center;font-weight:500;">Pts. {{ year }}</th>
+              <th style="padding:6px 2px;text-align:center;font-weight:500;">€ {{ year }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in miembros_stats %}
+              {% if request.user.miembro and s.id == request.user.miembro.id %}
+                <tr style="background:#fffbe6;box-shadow:0 2px 8px #facc1533;border-radius:8px;">
+                  <td style="padding:10px 6px;font-weight:600;color:#b45309;border-radius:8px 0 0 8px;">
+                    <span style="display:inline-block;width:16px;height:16px;background:{{ s.color_hex }};border-radius:50%;vertical-align:middle;margin-right:7px;border:2px solid #facc15;"></span>
+                    {% if s.icono %}<span style="font-size:1.25em;vertical-align:middle;margin-right:4px;">{{ s.icono }}</span>{% endif %}
+                    {{ s.nombre }} <span style="font-size:0.95em;color:#f59e42;">(Tú)</span>
+                  </td>
+                  <td style="padding:10px 6px;text-align:center;font-weight:600;">{{ s.semana_pendientes }}</td>
+                  <td style="padding:10px 6px;text-align:center;font-weight:600;">{{ s.semana }}</td>
+                  <td style="padding:10px 6px;text-align:center;font-weight:600;">{{ s.semana_premio|floatformat:2 }}</td>
+                  <td style="padding:10px 6px;text-align:center;font-weight:600;">{{ s.mes_pendientes }}</td>
+                  <td style="padding:10px 6px;text-align:center;font-weight:600;">{{ s.mes }}</td>
+                  <td style="padding:10px 6px;text-align:center;font-weight:600;">{{ s.mes_premio|floatformat:2 }}</td>
+                  <td style="padding:10px 6px;text-align:center;font-weight:600;">{{ s.anio }}</td>
+                  <td style="padding:10px 6px;text-align:center;font-weight:600;border-radius:0 8px 8px 0;">{{ s.anio_premio|floatformat:2 }}</td>
+                </tr>
+              {% else %}
+                <tr style="background:#fff;border-radius:8px;">
+                  <td style="padding:10px 6px;border-radius:8px 0 0 8px;">
+                    <span style="display:inline-block;width:14px;height:14px;background:{{ s.color_hex }};border-radius:50%;vertical-align:middle;margin-right:6px"></span>
+                    {% if s.icono %}<span style="font-size:1.1em;vertical-align:middle;margin-right:4px;">{{ s.icono }}</span>{% endif %}
+                    {{ s.nombre }}
+                  </td>
+                  <td style="padding:10px 6px;text-align:center;">{{ s.semana_pendientes }}</td>
+                  <td style="padding:10px 6px;text-align:center;">{{ s.semana }}</td>
+                  <td style="padding:10px 6px;text-align:center;">{{ s.semana_premio|floatformat:2 }}</td>
+                  <td style="padding:10px 6px;text-align:center;">{{ s.mes_pendientes }}</td>
+                  <td style="padding:10px 6px;text-align:center;">{{ s.mes }}</td>
+                  <td style="padding:10px 6px;text-align:center;">{{ s.mes_premio|floatformat:2 }}</td>
+                  <td style="padding:10px 6px;text-align:center;">{{ s.anio }}</td>
+                  <td style="padding:10px 6px;text-align:center;border-radius:0 8px 8px 0;">{{ s.anio_premio|floatformat:2 }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div style="text-align:center;color:#64748b;font-size:1.05em;margin-top:18px;">
+        <em>¡Haz de la organización familiar algo visual, sencillo y motivador!</em>
+      </div>
+    </main>
+{% endblock %}
+
+
+

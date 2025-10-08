@@ -1,0 +1,260 @@
+Dry-run import report - 10/08/2025 13:23:50
+Source: C:\Users\j\familia_calendario
+
+Folders that would be copied:
+C:\Users\j\familia_calendario\templates
+C:\Users\j\familia_calendario\static
+C:\Users\j\familia_calendario\tareas
+C:\Users\j\familia_calendario\templates\admin_retos.html:1: <h3 style="margin-top:30px;color:#0ea5e9;">Todos los retos</h3>
+C:\Users\j\familia_calendario\templates\admin_retos.html:20: {% for reto in retos_todos %}
+C:\Users\j\familia_calendario\templates\admin_retos.html:22: <td>{% if reto.icono %}<span style="font-size:1.5em;">{{ reto.icono }}</span>{% endif %}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:23: <td>{{ reto.nombre }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:24: <td>{{ reto.retador }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:25: <td>{{ reto.retado|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:26: <td>{{ reto.inicio|date:'d/m/Y' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:27: <td>{{ reto.fin|date:'d/m/Y' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:28: <td>{{ reto.premio }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:29: <td>{{ reto.get_tipo_display }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:30: <td>{{ reto.marcas_objetivo|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:31: <td>{{ reto.penalizacion|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:33: {% if reto.estado == 'pendiente' %}<span style="color:#eab308;">Pendiente</span>{% endif %}
+C:\Users\j\familia_calendario\templates\admin_retos.html:34: {% if reto.estado == 'aprobado' %}<span style="color:#22c55e;">Aprobado</span>{% endif %}
+C:\Users\j\familia_calendario\templates\admin_retos.html:35: {% if reto.estado == 'rechazado' %}<span style="color:#ef4444;">Rechazado</span>{% endif %}
+C:\Users\j\familia_calendario\templates\admin_retos.html:38: {% if reto.estado == 'pendiente' %}
+C:\Users\j\familia_calendario\templates\admin_retos.html:39: <a href="{% url 'aprobar_reto' reto.id %}" class="btn" style="background:#22c55e;color:#fff;margin-right:4px;">Aprobar</a>
+C:\Users\j\familia_calendario\templates\admin_retos.html:40: <a href="{% url 'rechazar_reto' reto.id %}" class="btn" style="background:#ef4444;color:#fff;">Rechazar</a>
+C:\Users\j\familia_calendario\templates\admin_retos.html:42: <a href="/admin/tareas/reto/{{ reto.id }}/change/" class="btn">Editar</a>
+C:\Users\j\familia_calendario\templates\admin_retos.html:46: <tr><td colspan="12" style="text-align:center;color:#888;">No hay retos registrados.</td></tr>
+C:\Users\j\familia_calendario\templates\admin_retos.html:76: <h1 style="margin:22px 0 16px 0; font-size:2.2em; color:#0ea5e9; text-align:center;">Gestión de Retos</h1>
+C:\Users\j\familia_calendario\templates\admin_retos.html:77: <a href="/admin/tareas/reto/add/" class="btn sec" style="margin-bottom:18px;">Crear nuevo reto</a>
+C:\Users\j\familia_calendario\templates\admin_retos.html:97: {% for reto in retos_pendientes %}
+C:\Users\j\familia_calendario\templates\admin_retos.html:99: <td>{% if reto.icono %}<span style="font-size:1.5em;">{{ reto.icono }}</span>{% endif %}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:100: <td>{{ reto.nombre }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:101: <td>{{ reto.retador }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:102: <td>{{ reto.retado|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:103: <td>{{ reto.inicio|date:'d/m/Y' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:104: <td>{{ reto.fin|date:'d/m/Y' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:105: <td>{{ reto.premio }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:106: <td>{{ reto.get_tipo_display }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:107: <td>{{ reto.marcas_objetivo|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:108: <td>{{ reto.penalizacion|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:110: <a href="{% url 'aprobar_reto' reto.id %}" class="btn" style="background:#22c55e;color:#fff;margin-right:4px;">Aprobar</a>
+C:\Users\j\familia_calendario\templates\admin_retos.html:111: <a href="{% url 'rechazar_reto' reto.id %}" class="btn" style="background:#ef4444;color:#fff;">Rechazar</a>
+C:\Users\j\familia_calendario\templates\admin_retos.html:112: <a href="/admin/tareas/reto/{{ reto.id }}/change/" class="btn">Editar</a>
+C:\Users\j\familia_calendario\templates\admin_retos.html:116: <tr><td colspan="11" style="text-align:center;color:#888;">No hay retos pendientes.</td></tr>
+C:\Users\j\familia_calendario\templates\admin_retos.html:139: {% for reto in retos_aprobados %}
+C:\Users\j\familia_calendario\templates\admin_retos.html:141: <td>{% if reto.icono %}<span style="font-size:1.5em;">{{ reto.icono }}</span>{% endif %}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:142: <td>{{ reto.nombre }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:143: <td>{{ reto.retador }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:144: <td>{{ reto.retado|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:145: <td>{{ reto.inicio|date:'d/m/Y' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:146: <td>{{ reto.fin|date:'d/m/Y' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:147: <td>{{ reto.premio }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:148: <td>{{ reto.get_tipo_display }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:149: <td>{{ reto.marcas_objetivo|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:150: <td>{{ reto.penalizacion|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:151: <td><a href="/admin/tareas/reto/{{ reto.id }}/change/" class="btn">Editar</a></td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:154: <tr><td colspan="11" style="text-align:center;color:#888;">No hay retos aprobados.</td></tr>
+C:\Users\j\familia_calendario\templates\admin_retos.html:177: {% for reto in retos_rechazados %}
+C:\Users\j\familia_calendario\templates\admin_retos.html:179: <td>{% if reto.icono %}<span style="font-size:1.5em;">{{ reto.icono }}</span>{% endif %}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:180: <td>{{ reto.nombre }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:181: <td>{{ reto.retador }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:182: <td>{{ reto.retado|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:183: <td>{{ reto.inicio|date:'d/m/Y' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:184: <td>{{ reto.fin|date:'d/m/Y' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:185: <td>{{ reto.premio }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:186: <td>{{ reto.get_tipo_display }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:187: <td>{{ reto.marcas_objetivo|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:188: <td>{{ reto.penalizacion|default:'-' }}</td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:189: <td><a href="/admin/tareas/reto/{{ reto.id }}/change/" class="btn">Editar</a></td>
+C:\Users\j\familia_calendario\templates\admin_retos.html:192: <tr><td colspan="11" style="text-align:center;color:#888;">No hay retos rechazados.</td></tr>
+C:\Users\j\familia_calendario\templates\base.html:49: <a href="/retos-publicos/" style="color:#0ea5e9;font-weight:bold;font-size:1.1em;">Retos</a>
+C:\Users\j\familia_calendario\templates\privacidad.html:16: <li>Sincronización de eventos, tareas y retos entre miembros.</li>
+C:\Users\j\familia_calendario\templates\proponer_reto.html:3: <h2>Proponer un reto</h2>
+C:\Users\j\familia_calendario\templates\proponer_reto.html:84: <a href="{% url 'retos_lista' %}" class="btn btn-secondary" style="margin-left:8px;">Volver a retos</a>
+C:\Users\j\familia_calendario\templates\retos_lista.html:6: <h1 style="font-size:2em;color:#0ea5e9;margin:0;">Retos públicos</h1>
+C:\Users\j\familia_calendario\templates\retos_lista.html:25: Solo mis retos
+C:\Users\j\familia_calendario\templates\retos_lista.html:29: <a href="{% url 'proponer_reto' %}" class="btn btn-primary btn-proponer-reto">Proponer un reto</a>
+C:\Users\j\familia_calendario\templates\retos_lista.html:32: .btn-proponer-reto {
+C:\Users\j\familia_calendario\templates\retos_lista.html:46: .btn-proponer-reto:hover, .btn-proponer-reto:focus {
+C:\Users\j\familia_calendario\templates\retos_lista.html:90: .tabla-retos {
+C:\Users\j\familia_calendario\templates\retos_lista.html:101: .tabla-retos th, .tabla-retos td {
+C:\Users\j\familia_calendario\templates\retos_lista.html:114: .tabla-retos th {
+C:\Users\j\familia_calendario\templates\retos_lista.html:122: .tabla-retos tr:nth-child(even) td {
+C:\Users\j\familia_calendario\templates\retos_lista.html:125: .tabla-retos td strong {
+C:\Users\j\familia_calendario\templates\retos_lista.html:132: .tabla-retos tr:last-child td { border-bottom: none; }
+C:\Users\j\familia_calendario\templates\retos_lista.html:133: .tabla-retos td {
+C:\Users\j\familia_calendario\templates\retos_lista.html:143: .tabla-retos td span[style*="color:#0ea5e9"] {
+C:\Users\j\familia_calendario\templates\retos_lista.html:146: .tabla-retos td .estado-label {
+C:\Users\j\familia_calendario\templates\retos_lista.html:154: .tabla-retos td .estado-label.conseguido {
+C:\Users\j\familia_calendario\templates\retos_lista.html:159: .tabla-retos td span.vacio {
+C:\Users\j\familia_calendario\templates\retos_lista.html:162: .tabla-retos td span.euro {
+C:\Users\j\familia_calendario\templates\retos_lista.html:167: .tabla-retos td .usuario {
+C:\Users\j\familia_calendario\templates\retos_lista.html:172: .tabla-retos td .usuario.vacio {
+C:\Users\j\familia_calendario\templates\retos_lista.html:176: .tabla-retos td .fecha-conseguido {
+C:\Users\j\familia_calendario\templates\retos_lista.html:200: {% for reto in retos %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:202: <td style="padding:3px 2px;text-align:center;">{% if reto.icono %}{{ reto.icono }}{% else %}-{% endif %}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:203: <td style="padding:3px 2px;max-width:110px;white-space:pre-line;">{{ reto.nombre }}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:204: <td style="padding:3px 2px;max-width:120px;white-space:pre-line;">{{ reto.descripcion }}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:209: <input type="hidden" name="reto_id" value="{{ reto.id }}">
+C:\Users\j\familia_calendario\templates\retos_lista.html:211: <option value="pendiente" {% if reto.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+C:\Users\j\familia_calendario\templates\retos_lista.html:212: <option value="aprobado" {% if reto.estado == 'aprobado' %}selected{% endif %}>Aprobado</option>
+C:\Users\j\familia_calendario\templates\retos_lista.html:213: <option value="conseguido" {% if reto.estado == 'conseguido' %}selected{% endif %}>Conseguido</option>
+C:\Users\j\familia_calendario\templates\retos_lista.html:214: <option value="rechazado" {% if reto.estado == 'rechazado' %}selected{% endif %}>Rechazado</option>
+C:\Users\j\familia_calendario\templates\retos_lista.html:218: {% if reto.estado == 'pendiente' %}<span style="background:#fef08a;color:#b45309;padding:2px 8px;border-radius:8px;font-size:0.97em;">Pendiente</span>{% endif %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:219: {% if reto.estado == 'aprobado' %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:222: {% if reto.estado == 'rechazado' %}<span style="background:#fecaca;color:#991b1b;padding:2px 8px;border-radius:8px;font-size:0.97em;">Rechazado</span>{% endif %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:223: {% if reto.estado == 'conseguido' %}<span style="background:#a7f3d0;color:#047857;padding:2px 8px;border-radius:8px;font-size:0.97em;">Conseguido</span>{% endif %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:226: {% if reto.estado == 'pendiente' %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:228: {% if request.user.is_authenticated and reto.retado and reto.retado.usuario_id == request.user.id %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:231: <input type="hidden" name="conseguir_id" value="{{ reto.id }}">
+C:\Users\j\familia_calendario\templates\retos_lista.html:236: {% if reto.estado == 'aprobado' %}<span style="background:#bbf7d0;color:#166534;padding:2px 8px;border-radius:8px;font-size:0.97em;font-weight:bold;">Aprobado <span style="font-size:1.15em;vertical-align:-2px;">🏅</span></span>{% endif %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:237: {% if reto.estado == 'rechazado' %}<span style="background:#fecaca;color:#991b1b;padding:2px 8px;border-radius:8px;font-size:0.97em;">Rechazado</span>{% endif %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:238: {% if reto.estado == 'conseguido' %}<span style="background:#a7f3d0;color:#047857;padding:2px 8px;border-radius:8px;font-size:0.97em;">Conseguido</span>{% endif %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:241: <td style="padding:3px 2px;text-align:center;">{% if reto.inicio %}{{ reto.inicio|date:'d/m/Y' }}{% else %}-{% endif %}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:242: <td style="padding:3px 2px;text-align:center;">{% if reto.fin %}{{ reto.fin|date:'d/m/Y' }}{% else %}-{% endif %}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:243: <td style="padding:3px 2px;text-align:center;">{{ reto.tipo }}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:244: <td style="padding:3px 2px;text-align:center;">{% if reto.retado %}{{ reto.retado }}{% else %}-{% endif %}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:245: <td style="padding:3px 2px;">{{ reto.marcas_objetivo }}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:246: <td style="padding:3px 2px;text-align:right;">{{ reto.premio|floatformat:2 }}</td>
+C:\Users\j\familia_calendario\templates\retos_lista.html:247: {% if propios %}<td style="padding:3px 2px;text-align:center;">{% if reto.es_privado %}<span style="color:#b91c1c;font-weight:600;">Privado</span>{% else %}-{% endif %}</td>{% endif %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:249: <button type="button" onclick="mostrarDetallesReto({{ reto.id }})" style="padding:2px 8px;font-size:0.95em;border-radius:6px;background:#0ea5e9;color:#fff;border:none;cursor:pointer;">Detalles</button>
+C:\Users\j\familia_calendario\templates\retos_lista.html:250: <script type="application/json" id="detalles-reto-{{ reto.id }}">
+C:\Users\j\familia_calendario\templates\retos_lista.html:252: "id": "{{ reto.id }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:253: "icono": "{{ reto.icono|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:254: "nombre": "{{ reto.nombre|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:255: "descripcion": "{{ reto.descripcion|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:256: "estado": "{{ reto.estado|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:257: "fecha_conseguido": "{{ reto.fecha_conseguido|date:'d/m/Y' }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:258: "inicio": "{{ reto.inicio|date:'d/m/Y' }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:259: "fin": "{{ reto.fin|date:'d/m/Y' }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:260: "tipo": "{{ reto.tipo|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:261: "retador": "{{ reto.retador|default_if_none:'-'|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:262: "retado": "{{ reto.retado|default_if_none:'-'|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:263: "marcas_objetivo": "{{ reto.marcas_objetivo|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:264: "es_auto_reto": "{{ reto.es_auto_reto|yesno:'Sí,No' }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:265: "penalizacion": "{{ reto.penalizacion|floatformat:2 }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:266: "categoria": "{{ reto.categoria|default_if_none:'-'|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:267: "tag": "{{ reto.tag|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:268: "puntuacion": "{{ reto.puntuacion }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:269: "premio": "{{ reto.premio|floatformat:2 }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:270: "tiempo_estimado": "{{ reto.tiempo_estimado }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:271: "creado_por": "{{ reto.creado_por|default_if_none:'-'|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:272: "recurrencia_tipo": "{{ reto.recurrencia_tipo|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:273: "recurrencia_dias": "{{ reto.recurrencia_dias|escapejs }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:274: "recurrencia_dia_mes": "{{ reto.recurrencia_dia_mes|default_if_none:'-' }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:275: "recurrencia_mes": "{{ reto.recurrencia_mes|default_if_none:'-' }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:276: "recurrencia_fecha_inicio": "{{ reto.recurrencia_fecha_inicio|date:'d/m/Y' }}",
+C:\Users\j\familia_calendario\templates\retos_lista.html:277: "recurrencia_fecha_fin": "{{ reto.recurrencia_fecha_fin|date:'d/m/Y' }}"
+C:\Users\j\familia_calendario\templates\retos_lista.html:280: <div id="modal-detalles-{{ reto.id }}" class="modal-detalles" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.25);z-index:9999;align-items:center;justify-content:center;">
+C:\Users\j\familia_calendario\templates\retos_lista.html:282: <h2 style="color:#0ea5e9;font-size:1.2em;margin-top:0;">Detalles del reto</h2>
+C:\Users\j\familia_calendario\templates\retos_lista.html:283: <table id="contenido-detalles-{{ reto.id }}" style="font-size:0.98em;min-width:220px;border-collapse:collapse;width:100%;margin-bottom:8px;">
+C:\Users\j\familia_calendario\templates\retos_lista.html:290: <button onclick="document.getElementById('modal-detalles-{{ reto.id }}').style.display='none'" style="margin-top:12px;padding:4px 18px;background:#0ea5e9;color:#fff;border:none;border-radius:6px;cursor:pointer;">Cerrar</button>
+C:\Users\j\familia_calendario\templates\retos_lista.html:296: <tr><td colspan="8" style="text-align:center;color:#64748b;padding:18px;">No hay retos.</td></tr>
+C:\Users\j\familia_calendario\templates\retos_lista.html:301: <span style="font-size:1.08em;font-weight:bold;">Total de retos: {{ retos.paginator.count }}</span>
+C:\Users\j\familia_calendario\templates\retos_lista.html:302: <a href="?estado={{ estado }}&page=1" class="btn{% if not retos.has_previous %} disabled{% endif %}" {% if not retos.has_previous %}tabindex="-1" aria-disabled="true" style="pointer-events:none;opacity:0.5;"{% endif %}>&#171; Inicio</a>
+C:\Users\j\familia_calendario\templates\retos_lista.html:303: {% if retos.has_previous %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:304: <a href="?estado={{ estado }}&page={{ retos.previous_page_number }}" class="btn">&laquo; Anterior</a>
+C:\Users\j\familia_calendario\templates\retos_lista.html:308: <span style="font-size:1.08em;font-weight:bold;">Página {{ retos.number }} de {{ retos.paginator.num_pages }}</span>
+C:\Users\j\familia_calendario\templates\retos_lista.html:309: {% if retos.has_next %}
+C:\Users\j\familia_calendario\templates\retos_lista.html:310: <a href="?estado={{ estado }}&page={{ retos.next_page_number }}" class="btn">Siguiente &raquo;</a>
+C:\Users\j\familia_calendario\templates\retos_lista.html:314: <a href="?estado={{ estado }}&page={{ retos.paginator.num_pages }}" class="btn{% if not retos.has_next %} disabled{% endif %}" {% if not retos.has_next %}tabindex="-1" aria-disabled="true" style="pointer-events:none;opacity:0.5;"{% endif %}>Final &#187;</a>
+C:\Users\j\familia_calendario\templates\retos_lista.html:319: var script = document.getElementById('detalles-reto-' + id);
+C:\Users\j\familia_calendario\tareas\management\commands\fix_penalizaciones.py:3: from tareas.models import Reto
+C:\Users\j\familia_calendario\tareas\management\commands\fix_penalizaciones.py:6: help = 'Corrige penalizaciones no numéricas en los retos.'
+C:\Users\j\familia_calendario\tareas\management\commands\fix_penalizaciones.py:9: self.stdout.write('Corrigiendo penalizaciones no numéricas en los retos...')
+C:\Users\j\familia_calendario\tareas\management\commands\fix_penalizaciones.py:11: for reto in Reto.objects.all():
+C:\Users\j\familia_calendario\tareas\management\commands\fix_penalizaciones.py:13: float(reto.penalizacion)
+C:\Users\j\familia_calendario\tareas\management\commands\fix_penalizaciones.py:15: reto.penalizacion = Decimal('0.00')
+C:\Users\j\familia_calendario\tareas\management\commands\fix_penalizaciones.py:16: reto.save()
+C:\Users\j\familia_calendario\tareas\migrations\0009_reto.py:15: name='Reto',
+C:\Users\j\familia_calendario\tareas\migrations\0009_reto.py:26: ('es_auto_reto', models.BooleanField(default=False, help_text='¿Es un reto a sí mismo?')),
+C:\Users\j\familia_calendario\tareas\migrations\0009_reto.py:27: ('penalizacion', models.CharField(blank=True, help_text='Qué debe pagar o hacer si pierde o no cumple el reto', max_length=200)),
+C:\Users\j\familia_calendario\tareas\migrations\0010_reto_estado.py:14: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:21: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:25: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:27: field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='retos', to='tareas.categoria'),
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:30: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:35: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:40: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:45: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:50: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:55: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:60: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:65: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:70: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:75: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:80: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:85: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:90: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:95: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:100: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:102: field=models.DecimalField(decimal_places=2, default=0, help_text='Penalización en euros si no se cumple el reto', max_digits=6),
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:105: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:110: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0011_remove_categoria_icono_remove_reto_estado_and_more.py:115: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0012_reto_estado.py:14: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0013_reto_conseguido.py:12: model_name="reto",
+C:\Users\j\familia_calendario\tareas\migrations\0013_reto_conseguido.py:17: model_name="reto",
+C:\Users\j\familia_calendario\tareas\migrations\0013_reto_es_privado.py:12: model_name="reto",
+C:\Users\j\familia_calendario\tareas\migrations\0013_reto_es_privado.py:14: field=models.BooleanField(default=False, help_text="Si está activo, el reto solo será visible para el retador y el retado."),
+C:\Users\j\familia_calendario\tareas\migrations\0016_alter_reto_retado.py:15: model_name='reto',
+C:\Users\j\familia_calendario\tareas\migrations\0017_miembro_puntos_miembro_saldo.py:16: field=models.PositiveIntegerField(default=0, help_text='Puntos acumulados por retos'),
+C:\Users\j\familia_calendario\tareas\migrations\0017_miembro_puntos_miembro_saldo.py:21: field=models.DecimalField(decimal_places=2, default=0.0, help_text='Saldo acumulado en euros por retos', max_digits=8),
+C:\Users\j\familia_calendario\tareas\tests\test_iam.py:3: from tareas.models import Tarea, Reto, Miembro, Categoria
+C:\Users\j\familia_calendario\tareas\tests\test_iam.py:23: modelos = [Tarea, Reto, Miembro, Categoria]
+C:\Users\j\familia_calendario\tareas\tests\test_iam.py:32: modelos = [Tarea, Reto, Miembro, Categoria]
+C:\Users\j\familia_calendario\tareas\admin.py:2: from .models import Reto, Miembro, Tarea, Categoria, Evento
+C:\Users\j\familia_calendario\tareas\admin.py:4: @admin.register(Reto)
+C:\Users\j\familia_calendario\tareas\models.py:21: # Modelo para Retos
+C:\Users\j\familia_calendario\tareas\models.py:22: class Reto(models.Model):
+C:\Users\j\familia_calendario\tareas\models.py:38: es_privado = models.BooleanField(default=False, help_text="Si está activo, el reto solo será visible para el retador y el retado.")
+C:\Users\j\familia_calendario\tareas\models.py:40: penalizacion = models.DecimalField(max_digits=6, decimal_places=2, default=Decimal('0.00'), help_text="Penalización en euros si no se cumple el reto")
+C:\Users\j\familia_calendario\tareas\models.py:63: categoria = models.ForeignKey('Categoria', null=True, blank=True, on_delete=models.SET_NULL, related_name='retos')
+C:\Users\j\familia_calendario\tareas\models.py:93: saldo = models.DecimalField(max_digits=8, decimal_places=2, default=0.00, help_text="Saldo acumulado en euros por retos")
+C:\Users\j\familia_calendario\tareas\models.py:94: puntos = models.PositiveIntegerField(default=0, help_text="Puntos acumulados por retos")
+C:\Users\j\familia_calendario\tareas\urls.py:28: path('retos/', admin_retos, name='admin_retos'),
+C:\Users\j\familia_calendario\tareas\urls.py:29: path('retos/aprobar/<int:reto_id>/', aprobar_reto, name='aprobar_reto'),
+C:\Users\j\familia_calendario\tareas\urls.py:30: path('retos/rechazar/<int:reto_id>/', rechazar_reto, name='rechazar_reto'),
+C:\Users\j\familia_calendario\tareas\urls.py:31: path('retos-publicos/', retos_lista, name='retos_lista'),
+C:\Users\j\familia_calendario\tareas\urls.py:32: path('proponer-reto/', proponer_reto, name='proponer_reto'),
+C:\Users\j\familia_calendario\tareas\views.py:38: from .models import Reto, Evento, Miembro, Categoria, Aviso
+C:\Users\j\familia_calendario\tareas\views.py:78: model = Reto
+C:\Users\j\familia_calendario\tareas\views.py:105: retos_qs = Reto.objects.select_related('retador', 'retado').order_by('-inicio')
+C:\Users\j\familia_calendario\tareas\views.py:107: retos_qs = Reto.objects.filter(estado=estado).select_related('retador', 'retado').order_by('-inicio')
+C:\Users\j\familia_calendario\tareas\views.py:129: retos = paginator.page(page_number_int)
+C:\Users\j\familia_calendario\tareas\views.py:132: retos = paginator.page(paginator.num_pages)
+C:\Users\j\familia_calendario\tareas\views.py:134: retos = paginator.page(1)
+C:\Users\j\familia_calendario\tareas\views.py:142: reto = Reto.objects.get(id=reto_id)
+C:\Users\j\familia_calendario\tareas\views.py:143: puede = request.user.is_staff or (hasattr(request.user, 'miembro') and reto.retado and reto.retado.usuario_id == request.user.id)
+C:\Users\j\familia_calendario\tareas\views.py:144: if puede and reto.estado in ["pendiente", "aprobado"]:
+C:\Users\j\familia_calendario\tareas\views.py:145: reto.estado = "conseguido"
+C:\Users\j\familia_calendario\tareas\views.py:146: reto.fecha_conseguido = timezone.localdate()
+C:\Users\j\familia_calendario\tareas\views.py:147: reto.save(update_fields=["estado", "fecha_conseguido"])
+C:\Users\j\familia_calendario\tareas\views.py:148: messages.success(request, f"¡Reto '{reto.nombre}' marcado como conseguido!")
+C:\Users\j\familia_calendario\tareas\views.py:151: messages.error(request, "No tienes permiso para marcar este reto como conseguido o el estado no es válido.")
+C:\Users\j\familia_calendario\tareas\views.py:158: reto = Reto.objects.get(id=reto_id)
+C:\Users\j\familia_calendario\tareas\views.py:160: reto.estado = nuevo_estado
+C:\Users\j\familia_calendario\tareas\views.py:162: reto.fecha_conseguido = timezone.localdate()
+C:\Users\j\familia_calendario\tareas\views.py:163: reto.save(update_fields=["estado", "fecha_conseguido"])
+C:\Users\j\familia_calendario\tareas\views.py:164: messages.success(request, f"Estado de reto '{reto.nombre}' actualizado a {nuevo_estado}.")
+C:\Users\j\familia_calendario\tareas\views.py:170: return render(request, "retos_lista.html", {"retos": retos, "estado": estado, "propios": propios, "miembros": miembros, "miembro_id": miembro_id})
+C:\Users\j\familia_calendario\tareas\views.py:172: # Vista para proponer un reto
+C:\Users\j\familia_calendario\tareas\views.py:190: reto = form.save(commit=False)
+C:\Users\j\familia_calendario\tareas\views.py:191: reto.retador = request.user.miembro
+C:\Users\j\familia_calendario\tareas\views.py:192: reto.estado = "pendiente"
+C:\Users\j\familia_calendario\tareas\views.py:193: reto.save()
+C:\Users\j\familia_calendario\tareas\views.py:195: messages.success(request, "¡Reto propuesto correctamente! Quedará pendiente de validación.")
+C:\Users\j\familia_calendario\tareas\views.py:220: retos_todos = Reto.objects.select_related('retador', 'retado').order_by('-inicio')
+C:\Users\j\familia_calendario\tareas\views.py:226: # Ejemplo: messages.info(request, "Vista de administración de retos cargada correctamente.")
+C:\Users\j\familia_calendario\tareas\views.py:235: # Vista para aprobar un reto
+C:\Users\j\familia_calendario\tareas\views.py:239: reto = Reto.objects.get(id=reto_id)
+C:\Users\j\familia_calendario\tareas\views.py:240: reto.estado = "aprobado"
+C:\Users\j\familia_calendario\tareas\views.py:241: reto.save()
+C:\Users\j\familia_calendario\tareas\views.py:243: miembro = reto.retado
+C:\Users\j\familia_calendario\tareas\views.py:245: miembro.saldo += reto.premio
+C:\Users\j\familia_calendario\tareas\views.py:246: miembro.puntos += reto.puntuacion
+C:\Users\j\familia_calendario\tareas\views.py:250: # Vista para rechazar un reto
+C:\Users\j\familia_calendario\tareas\views.py:254: reto = Reto.objects.get(id=reto_id)
+C:\Users\j\familia_calendario\tareas\views.py:255: reto.estado = "rechazado"
+C:\Users\j\familia_calendario\tareas\views.py:256: reto.save()

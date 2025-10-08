@@ -1,0 +1,20 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# Virtualenv
+.venv/
+
+# SQLite DB
+db.sqlite3
+
+# Backup import trees and portfolio backups
+backup_import_*/
+backup_for_portfolio*
+backup_for_portfolio.zip
+
+# Editor / OS files
+.vscode/
+*.swp
+Thumbs.db
+.DS_Store

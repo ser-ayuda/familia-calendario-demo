@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: familia-calendario-demo
+    env: python
+    region: oregon
+    branch: main
+    buildCommand: >
+      pip install -r requirements.txt && \
+      python manage.py migrate --noinput && \
+      python manage.py collectstatic --noinput
+    startCommand: >
+      bash -lc "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn hogar.wsgi:application --bind 0.0.0.0:$PORT --workers 3"
+    envVars:
+      - key: SECRET_KEY
+        value: "REPLACE_ME"
+        sync: false
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"
+    autoDeploy: true
+
+  - type: postgres
+    name: familia-calendario-db
+    plan: free

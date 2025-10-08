@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Calendario Familiar{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="manifest" href="/static/manifest.json">
+  <meta name="theme-color" content="#0ea5e9">
+  <style>
+    body { background: #f8fafc; margin: 0; font-family: 'Segoe UI', 'Arial', sans-serif; }
+  main { max-width: 1200px; margin: 32px auto 0 auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px #0ea5e91a; padding: 32px 28px 24px 28px; font-size: 0.97em; }
+    nav { background: #fff; box-shadow: 0 2px 8px #0ea5e91a; padding: 14px 18px 10px 18px; display: flex; align-items: center; gap: 18px; }
+    a { color: #0ea5e9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  {% if messages %}
+    <div style="max-width:900px;margin:24px auto 0 auto;">
+      {% for message in messages %}
+        <div style="
+          padding:0.9em 1.2em;
+          border-radius:0.7em;
+          margin-bottom:1em;
+          font-weight:500;
+          box-shadow:0 2px 8px #0ea5e933;
+          color:
+            {% if message.tags == 'success' %}#166534
+            {% elif message.tags == 'error' %}#b91c1c
+            {% elif message.tags == 'warning' %}#92400e
+            {% else %}#0c4a6e{% endif %};
+          background:
+            {% if message.tags == 'success' %}#dcfce7
+            {% elif message.tags == 'error' %}#fef2f2
+            {% elif message.tags == 'warning' %}#fef9c3
+            {% else %}#e0f2fe{% endif %};
+        ">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <nav style="background:#fff;box-shadow:0 2px 8px #0ea5e91a;padding:14px 18px 10px 18px;display:flex;align-items:center;gap:18px;">
+    <a href="/" style="color:#0ea5e9;font-weight:bold;font-size:1.1em;">Inicio</a>
+    <a href="/calendario/?vista=semanal" style="color:#0ea5e9;font-weight:bold;font-size:1.1em;">Calendario</a>
+  <a href="/tareas/" style="color:#0ea5e9;font-weight:bold;font-size:1.1em;">Lista de tareas</a>
+<!-- RETO_REMOVED:   <a href="/-publicos/" style="color:#0ea5e9;font-weight:bold;font-size:1.1em;"></a>
+ -->
+    {% if request.user.is_staff %}
+  | <a href="/gestion/" style="color:#0ea5e9;">Administración de tareas</a>
+  | <a href="/miembros/" style="color:#0ea5e9;">Administración de miembros</a>
+  | <a href="/eventos/" style="color:#0ea5e9;">Administración de eventos</a>
+    {% endif %}
+    <span style="flex:1"></span>
+    {% if request.user.is_authenticated %}
+      {% if request.user.miembro %}
+        <span style="color:#0ea5e9;font-weight:500;font-size:1.05em;margin-right:10px;">Hola: {{ request.user.miembro.nombre }}</span>
+      {% endif %}
+      <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background:none;border:none;color:#0ea5e9;cursor:pointer;font-size:1.05em;">Salir</button>
+      </form>
+    {% else %}
+      {# Do not show a separate "Entrar" link when we're already on the login page to avoid duplication #}
+      {% if request.resolver_match.url_name != 'login' %}
+        <a href="{% url 'login' %}?next={{ request.path }}" style="color:#0ea5e9;font-weight:500;font-size:1.05em;">Entrar</a>
+      {% endif %}
+    {% endif %}
+  </nav>
+  {% block nav %}{% endblock %}
+  {% block content %}{% endblock %}
+  <footer style="text-align:center;margin:30px 0 10px 0;font-size:0.97em;color:#888;">
+    <a href="/privacidad/" style="color:#0ea5e9;">Política de Privacidad</a>
+  </footer>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/service-worker.js');
+    }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
+

@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% block title %}Administración de tareas{% endblock %}
+{% block content %}
+  {% if avisos %}
+    <div id="avisos-admin" style="background:#fef9c3;border:1px solid #fde047;padding:14px 18px;border-radius:10px;margin-bottom:18px;">
+      <b style="color:#b45309;">Avisos administrativos:</b>
+      <ul style="margin:8px 0 0 0;padding:0;list-style:none;">
+        {% for aviso in avisos %}
+          <li style="margin-bottom:6px;">
+            <span style="color:{% if aviso.nivel == 'CRITICAL' %}#dc2626{% elif aviso.nivel == 'ERROR' %}#ef4444{% elif aviso.nivel == 'WARNING' %}#eab308{% else %}#334155{% endif %};font-weight:600;">[{{ aviso.nivel }}]</span>
+            {{ aviso.mensaje|linebreaksbr }}
+            <button onclick="marcarAvisoVisto({{ aviso.id }})" style="margin-left:10px;padding:2px 8px;font-size:0.95em;border-radius:6px;border:none;background:#22c55e;color:#fff;cursor:pointer;">Marcar como visto</button>
+            <span style="font-size:0.9em;color:#64748b;">({{ aviso.creado_en|date:'d/m/Y H:i' }})</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <script>
+      function marcarAvisoVisto(id) {
+        fetch('/avisos/marcar_visto/' + id + '/', {method:'POST',headers:{'X-CSRFToken':getCSRF()}})
+          .then(r => { if(r.ok) location.reload(); });
+      }
+      function getCSRF(){
+        const m = document.cookie.match(/csrftoken=([^;]+)/); return m ? m[1] : '';
+      }
+    </script>
+  {% endif %}
+<div class="wrap">
+  <h1 style="margin:10px 0 18px 0;font-size:2em;font-weight:800;color:#0ea5e9;">Administración de tareas</h1>
+  <div style="font-size:1.18em;font-weight:600;color:#334155;margin-bottom:8px;">
+    Lista de tareas generales
+  </div>
+  <div style="margin-bottom:18px;padding:12px 0 8px 0;border-bottom:2px solid #e0e7ef;">
+    <form method="get" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;justify-content:center;margin-bottom:8px;">
+      <label style="margin-bottom:0;">Nombre
+        <input type="text" name="texto" value="{{ request.GET.texto|default:'' }}" style="min-width:90px;">
+      </label>
+      <label style="margin-bottom:0;">Categoría
+        <select name="categoria" style="min-width:90px;">
+          <option value="">Todas</option>
+          {% for c in categorias %}
+            <option value="{{ c.id }}" {% if request.GET.categoria == c.id|stringformat:'s' %}selected{% endif %}>{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label style="margin-bottom:0;">Tag
+        <input type="text" name="tag" value="{{ request.GET.tag|default:'' }}" style="min-width:90px;">
+      </label>
+      <button type="submit" class="btn" style="padding:5px 12px;background:#0ea5e9;color:#fff;border:none;border-radius:8px;">Buscar</button>
+    </form>
+  </div>
+  <div class="panel" style="margin-bottom:18px;background:#fff;border-radius:18px;box-shadow:0 4px 24px #0ea5e91a;padding:24px 18px;">
+    <table style="width:100%;border-collapse:collapse;font-size:1.08em;">
+      <thead>
+        <tr style="background:#f1f5f9;color:#334155;">
+          <th style="padding:10px 6px;text-align:left;">Icono</th>
+          <th style="padding:10px 6px;text-align:left;">Nombre</th>
+          <th style="padding:10px 6px;text-align:left;">Puntos</th>
+          <th style="padding:10px 6px;text-align:left;">Premio (€)</th>
+          <th style="padding:10px 6px;text-align:left;">Tiempo estimado</th>
+          <th style="padding:10px 6px;text-align:left;">Descripción</th>
+          <th style="padding:10px 6px;text-align:left;">Tag</th>
+          <th style="padding:10px 6px;text-align:left;">Categoría</th>
+        </tr>
+      </thead>
+      <tbody>
+  {% for t in tareas_paginated %}
+        <tr style="border-bottom:1px solid #e2e8f0;">
+          <td style="padding:8px 6px;font-size:1.5em;">
+            {% if t.icono %}
+              <span>{{ t.icono|safe }}</span>
+            {% else %}
+              <span style="color:#64748b;">-</span>
+            {% endif %}
+          </td>
+          <td style="padding:8px 6px;">{{ t.nombre }}</td>
+          <td style="padding:8px 6px;">{{ t.puntuacion }}</td>
+          <td style="padding:8px 6px;">{{ t.premio|floatformat:2 }}</td>
+          <td style="padding:8px 6px;">{{ t.tiempo_estimado }} min</td>
+          <td style="padding:8px 6px;max-width:220px;white-space:pre-line;">{{ t.descripcion }}</td>
+          <td style="padding:8px 6px;">
+            {% if t.tag %}
+              <span style="background:#e0e7ef;color:#0ea5e9;padding:2px 8px;border-radius:8px;font-size:0.98em;">{{ t.tag }}</span>
+            {% else %}
+              <span style="color:#64748b;">-</span>
+            {% endif %}
+          </td>
+          <td style="padding:8px 6px;">
+            {% if t.categoria %}
+              <span style="background:#f1f5f9;padding:2px 8px;border-radius:8px;">{{ t.categoria.nombre }}</span>
+            {% else %}
+              <span style="color:#64748b;">-</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="8" style="text-align:center;color:#64748b;padding:18px;">No hay tareas registradas.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <div style="margin:18px 0 0 0;display:flex;justify-content:center;gap:8px;align-items:center;flex-wrap:wrap;">
+      <span style="font-size:1.08em;font-weight:bold;">Total de tareas: {{ tareas_paginated.paginator.count }}</span>
+      <a href="?page=1" class="btn{% if not tareas_paginated.has_previous %} disabled{% endif %}" {% if not tareas_paginated.has_previous %}tabindex="-1" aria-disabled="true" style="pointer-events:none;opacity:0.5;"{% endif %}>&#171; Inicio</a>
+      {% if tareas_paginated.has_previous %}
+        <a href="?page={{ tareas_paginated.previous_page_number }}" class="btn">&laquo; Anterior</a>
+      {% else %}
+        <a href="#" class="btn disabled" tabindex="-1" aria-disabled="true" style="pointer-events:none;opacity:0.5;">&laquo; Anterior</a>
+      {% endif %}
+      <span style="font-size:1.08em;">Página {{ tareas_paginated.number }} de {{ tareas_paginated.paginator.num_pages }}</span>
+      {% if tareas_paginated.has_next %}
+        <a href="?page={{ tareas_paginated.next_page_number }}" class="btn">Siguiente &raquo;</a>
+      {% else %}
+        <a href="#" class="btn disabled" tabindex="-1" aria-disabled="true" style="pointer-events:none;opacity:0.5;">Siguiente &raquo;</a>
+      {% endif %}
+      <a href="?page={{ tareas_paginated.paginator.num_pages }}" class="btn{% if not tareas_paginated.has_next %} disabled{% endif %}" {% if not tareas_paginated.has_next %}tabindex="-1" aria-disabled="true" style="pointer-events:none;opacity:0.5;"{% endif %}>Final &#187;</a>
+    </div>
+  </div>
+  <form id="form-nueva-tarea" style="display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end;margin-bottom:24px;">
+    <label style="flex:2;min-width:160px;">Nombre
+      <input id="n-titulo" required />
+    </label>
+    <label style="min-width:90px;">Icono
+      <select id="n-icono" style="min-width:60px;max-width:120px;">
+        <option value="">Elige un icono...</option>
+        <option value="🧹">🧹</option>
+        <option value="🧺">🧺</option>
+        <option value="🧽">🧽</option>
+        <option value="🪣">🪣</option>
+        <option value="🧴">🧴</option>
+        <option value="🧊">🧊</option>
+        <option value="🪴">🪴</option>
+        <option value="🍽️">🍽️</option>
+        <option value="🛏️">🛏️</option>
+        <option value="🧸">🧸</option>
+        <option value="🧯">🧯</option>
+        <option value="🧰">🧰</option>
+        <option value="🔧">🔧</option>
+        <option value="🔨">🔨</option>
+        <option value="🪛">🪛</option>
+        <option value="🪚">🪚</option>
+        <option value="🪓">🪓</option>
+        <option value="🧲">🧲</option>
+        <option value="🧪">🧪</option>
+        <option value="🧫">🧫</option>
+        <option value="🧬">🧬</option>
+        <option value="🧳">🧳</option>
+        <option value="📦">📦</option>
+        <option value="📅">📅</option>
+        <option value="📋">📋</option>
+        <option value="📌">📌</option>
+        <option value="📎">📎</option>
+        <option value="🖊️">🖊️</option>
+        <option value="🖇️">🖇️</option>
+        <option value="🗒️">🗒️</option>
+        <option value="🗃️">🗃️</option>
+        <option value="🗄️">🗄️</option>
+        <option value="🗑️">🗑️</option>
+        <option value="🍰">🍰</option>
+        <option value="🍪">🍪</option>
+        <option value="🍫">🍫</option>
+        <option value="🧃">🧃</option>
+        <option value="🧂">🧂</option>
+        <option value="🧵">🧵</option>
+        <option value="🪡">🪡</option>
+        <option value="🗂️">🗂️</option>
+      </select>
+    </label>
+    <label style="min-width:90px;">Categoría
+      <select id="n-categoria">
+        <option value="">Sin categoría</option>
+        {% for c in categorias %}
+          <option value="{{ c.id }}">{{ c.nombre }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label style="flex:2;min-width:160px;">Descripción
+      <input id="n-desc" />
+    </label>
+    <label style="min-width:90px;">Tag
+      <input id="n-tag" />
+    </label>
+    <label style="min-width:90px;">Puntos
+      <input id="n-puntos" type="number" min="1" value="1" />
+    </label>
+    <label style="min-width:90px;">Premio (€)
+      <input id="n-premio" type="number" min="0" step="0.01" value="0.10" />
+    </label>
+    <label style="min-width:90px;">Tiempo estimado (min)
+      <input id="n-tiempo" type="number" min="1" value="30" />
+    </label>
+    <div class="actions">
+      <button class="btn" id="b-crear" type="button">Crear tarea</button>
+    </div>
+  </form>
+</div>
+{% block extra_head %}
+  <style>
+    :root { --gap: 10px; --border:#e5e7eb; --radius:10px; }
+    .wrap { max-width: 950px; margin: 0 auto; padding: 14px; }
+    .panel { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    .btn { border:none; border-radius:8px; padding:8px 10px; background:#0ea5e9; color:#fff; cursor:pointer; }
+    .btn.warn { background:#ef4444; }
+    .actions { display:flex; gap:8px; }
+    label { display:flex; flex-direction:column; font-size:12px; color:#334155; gap:4px; }
+    input, select { padding:6px 8px; border:1px solid var(--border); border-radius:8px; font-size:14px; }
+  </style>
+{% endblock %}
+  <div style="margin:32px 0 0 0;display:flex;justify-content:center;">
+
+
+
+
+
+
+    <script>
+    // --- Lógica de recurrencia y helpers ---
+    function renderRecurrenciaCampos(prefix, t={}) {
+      const tipo = document.getElementById(prefix+'-recurrencia_tipo').value;
+      const cont = document.getElementById(prefix+'-recurrencia-campos');
+      let html = '';
+      if(tipo === 'diaria' || tipo === 'semanal') {
+        const dias = ['L','M','X','J','V','S','D'];
+        const valores = (t.recurrencia_dias||'').split(',').map(x=>x.trim()).filter(x=>x!=='');
+        html += '<div style="display:flex;align-items:center;gap:6px;">Días:';
+        for(let i=0;i<7;i++) {
+          html += `<label style="margin:0 4px 0 0;font-weight:normal;font-size:0.98em;"><input type="checkbox" id="${prefix}-recurrencia_dias_${i}" value="${i}" ${(valores.includes(i.toString())?'checked':'')}/> ${dias[i]}</label>`;
+        }
+        html += `<input type="hidden" id="${prefix}-recurrencia_dias" value="${valores.join(',')}" /></div>`;
+      }
+      if(tipo === 'mensual' || tipo === 'anual') {
+        html += `<label style="margin-right:8px;">Día del mes <input id="${prefix}-recurrencia_dia_mes" type="number" min="1" max="31" value="${t.recurrencia_dia_mes||''}" style="width:60px;" /></label>`;
+      }
+      if(tipo === 'anual') {
+        html += `<label style="margin-right:8px;">Mes <input id="${prefix}-recurrencia_mes" type="number" min="1" max="12" value="${t.recurrencia_mes||''}" style="width:60px;" /></label>`;
+      }
+      // Rango de fechas
+      html += `<label style="margin-right:8px;">Inicio <input id="${prefix}-recurrencia_fecha_inicio" type="date" value="${t.recurrencia_fecha_inicio||''}" /></label>`;
+      html += `<label style="margin-right:8px;">Fin <input id="${prefix}-recurrencia_fecha_fin" type="date" value="${t.recurrencia_fecha_fin||''}" /></label>`;
+      cont.innerHTML = html;
+      // Actualizar el hidden de días al cambiar los checkboxes
+      if(tipo === 'diaria' || tipo === 'semanal') {
+        for(let i=0;i<7;i++) {
+          document.getElementById(`${prefix}-recurrencia_dias_${i}`).addEventListener('change', ()=>{
+            const vals = [];
+            for(let j=0;j<7;j++) if(document.getElementById(`${prefix}-recurrencia_dias_${j}`).checked) vals.push(j);
+            document.getElementById(`${prefix}-recurrencia_dias`).value = vals.join(',');
+          });
+        }
+      }
+    }
+    // Listeners para mostrar campos de recurrencia
+    document.getElementById('n-recurrencia_tipo').addEventListener('change', ()=>renderRecurrenciaCampos('n'));
+    renderRecurrenciaCampos('n');
+    // Si hay edición, también para editar
+    if(document.getElementById('e-recurrencia_tipo')) {
+      document.getElementById('e-recurrencia_tipo').addEventListener('change', ()=>renderRecurrenciaCampos('e'));
+    }
+
+    function resetForm(){
+      ['n-titulo','n-desc','n-tag','n-puntos','n-icono'].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.value='';
+      });
+      document.getElementById('n-categoria').value = '';
+    }
+    // ...aquí puedes añadir el resto de funciones JS...
+    </script>
+
+{% endblock %}
+
+
+

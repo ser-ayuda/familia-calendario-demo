@@ -1,0 +1,43 @@
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[08/Oct/2025 17:12:23] "GET / HTTP/1.1" 200 14399
+[08/Oct/2025 17:12:33] "GET /calendario/?vista=semanal HTTP/1.1" 200 58067
+C:\Users\j\familia_calendario_public\tareas\views.py:321: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tareas.models.Tarea'> QuerySet.
+  paginator = Paginator(tareas, 12)
+[08/Oct/2025 17:12:36] "GET /tareas/ HTTP/1.1" 200 14353
+C:\Users\j\familia_calendario_public\tareas\views.py:778: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tareas.models.Tarea'> QuerySet.
+  paginator = Paginator(tareas, 12)
+[08/Oct/2025 17:12:38] "GET /gestion/ HTTP/1.1" 200 24096
+[08/Oct/2025 17:12:42] "GET /miembros/ HTTP/1.1" 200 16879
+[08/Oct/2025 17:12:42] "GET /api/miembros/ HTTP/1.1" 200 777
+[08/Oct/2025 17:12:43] "GET /eventos/ HTTP/1.1" 200 53918
+[08/Oct/2025 17:12:50] "GET /gestion/ HTTP/1.1" 200 24096
+[08/Oct/2025 17:12:53] "GET /tareas/ HTTP/1.1" 200 14353
+[08/Oct/2025 17:12:55] "GET /calendario/?vista=semanal HTTP/1.1" 200 58067
+[08/Oct/2025 17:12:57] "GET /calendario/?vista=mensual HTTP/1.1" 200 67482
+[08/Oct/2025 17:13:13] "GET /calendario/?vista=mensual&miembros=&solo_mis_tareas=1 HTTP/1.1" 200 67489
+[08/Oct/2025 17:13:19] "GET /calendario/?vista=mensual HTTP/1.1" 200 67482
+[08/Oct/2025 17:13:20] "GET /calendario/?vista=mensual&miembros=&solo_mis_tareas=1 HTTP/1.1" 200 67489
+[08/Oct/2025 17:13:24] "POST /accounts/logout/ HTTP/1.1" 302 0
+[08/Oct/2025 17:13:24] "GET / HTTP/1.1" 302 0
+[08/Oct/2025 17:13:24] "GET /accounts/login/?next=/ HTTP/1.1" 200 4578
+[08/Oct/2025 17:13:29] "POST /accounts/login/?next=/ HTTP/1.1" 302 0
+[08/Oct/2025 17:13:29] "GET / HTTP/1.1" 200 14424
+[08/Oct/2025 17:13:33] "GET /calendario/?vista=semanal HTTP/1.1" 200 55981
+[08/Oct/2025 17:13:35] "GET /calendario/?vista=semanal&solo_mis_tareas=1 HTTP/1.1" 200 38167
+[08/Oct/2025 17:13:39] "GET /calendario/?vista=diaria HTTP/1.1" 200 47183
+[08/Oct/2025 17:13:40] "GET /calendario/?vista=mensual HTTP/1.1" 200 65396
+[08/Oct/2025 17:13:43] "GET /calendario/?vista=mensual&solo_mis_tareas=1 HTTP/1.1" 200 35321
+[08/Oct/2025 17:13:45] "GET /tareas/ HTTP/1.1" 200 14107
+[08/Oct/2025 17:13:51] "GET / HTTP/1.1" 200 14424
+[08/Oct/2025 17:13:53] "POST /accounts/logout/ HTTP/1.1" 302 0
+[08/Oct/2025 17:13:53] "GET / HTTP/1.1" 302 0
+[08/Oct/2025 17:13:53] "GET /accounts/login/?next=/ HTTP/1.1" 200 4578
+[08/Oct/2025 17:14:05] "GET /accounts/login/?next=/ HTTP/1.1" 200 4578
+[08/Oct/2025 17:14:17] "GET /accounts/login/ HTTP/1.1" 200 4578
+[08/Oct/2025 17:14:18] "POST /accounts/login/ HTTP/1.1" 302 0
+[08/Oct/2025 17:14:18] "GET / HTTP/1.1" 200 14399
+[08/Oct/2025 17:14:18] "GET / HTTP/1.1" 200 14399
+[08/Oct/2025 17:14:18] "GET /tareas/ HTTP/1.1" 200 14353
+[08/Oct/2025 17:14:18] "GET /miembros/ HTTP/1.1" 200 16879
+[08/Oct/2025 17:14:18] "GET / HTTP/1.1" 200 14399

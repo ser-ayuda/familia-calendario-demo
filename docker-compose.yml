@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    command: gunicorn hogar.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - static_volume:/vol/static
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=unsafe-demo-secret
+    depends_on: []
+
+volumes:
+  static_volume:

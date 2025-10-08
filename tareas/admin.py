@@ -1,0 +1,41 @@
+from django.contrib import admin
+from .models import Miembro, Tarea, Categoria, Evento
+
+
+@admin.register(Miembro)
+class MiembroAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "color_hex", "icono", "usuario")
+    search_fields = ("nombre",)
+
+
+
+@admin.register(Categoria)
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "descripcion")
+    search_fields = ("nombre",)
+
+
+@admin.register(Tarea)
+class TareaAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "categoria", "puntuacion", "icono", "recurrencia_tipo")
+    list_filter = ("categoria", "recurrencia_tipo")
+    search_fields = ("nombre", "descripcion", "tag")
+    autocomplete_fields = ("categoria",)
+    fieldsets = (
+        (None, {
+            'fields': ("nombre", "descripcion", "icono", "categoria", "tag", "puntuacion", "premio", "tiempo_estimado", "creado_por")
+        }),
+        ("Recurrencia", {
+            'fields': ("recurrencia_tipo", "recurrencia_dias", "recurrencia_dia_mes", "recurrencia_mes", "recurrencia_fecha_inicio", "recurrencia_fecha_fin"),
+            'description': "Configura la repetición de la tarea: tipo, días, día del mes, mes, rango de fechas."
+        }),
+    )
+
+
+@admin.register(Evento)
+class EventoAdmin(admin.ModelAdmin):
+    list_display = ("tarea", "miembro", "inicio", "fin", "estado")
+    list_filter = ("miembro", "estado", "tarea")
+    search_fields = ("tarea__nombre", "miembro__nombre")
+    autocomplete_fields = ("tarea", "miembro", "creado_por")
+

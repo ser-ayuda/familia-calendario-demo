@@ -1,0 +1,589 @@
+{% extends "base.html" %}
+{% block extra_head %}
+    <title>Calendario semanal</title>
+    <style>
+      :root { --gap: 6px; --radius: 10px; --border:#e5e7eb; }
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; }
+      nav { position: sticky; top: 0; background: #ffffffcc; backdrop-filter: blur(8px); padding: 10px 12px; border-bottom: 1px solid var(--border); }
+      a { color: #0ea5e9; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .grid { display: grid; gap: var(--gap); padding: var(--gap); }
+      .grid.diaria {
+        grid-template-columns: 90px 1.7fr repeat(var(--otros), 0.7fr);
+      }
+      .col-dia { background: #f8fafc; padding: 8px; text-align: center; position: sticky; top: 48px; z-index: 1; border: 1px solid var(--border); border-radius: var(--radius); }
+  .col-miembro { background: #f8fafc; padding: 8px; position: sticky; left: 0; z-index: 2; border: 1px solid var(--border); border-radius: var(--radius); transition: box-shadow 0.2s, border 0.2s; min-width:0; overflow:hidden; }
+  .col-miembro.actual { background: #e0f2fe; border: 2.5px solid #0ea5e9; box-shadow: 0 2px 8px #0ea5e93a; font-weight: bold; }
+  .col-miembro.estrecha { font-size: 12px; padding: 4px 2px; opacity: 0.85; }
+  .celda.actual { background: #f0f9ff; border: 2px solid #0ea5e9; }
+  .celda.estrecha { font-size: 12px; padding: 2px 1px; min-width:0; }
+  .col-miembro.actual { background: #e0f2fe; border: 2.5px solid #0ea5e9; box-shadow: 0 2px 8px #0ea5e93a; font-weight: bold; }
+  .celda.actual { background: #f0f9ff; border: 2px solid #0ea5e9; }
+  .celda, .mes-celda { min-height: 48px; border: 1px dashed var(--border); padding: 6px; border-radius: var(--radius); background: #fff; transition: min-height 0.2s, opacity 0.2s, padding 0.2s; }
+  .celda.vacia { min-height: 32px; opacity: 0.7; padding: 2px 2px; background: #f1f5f9; border-style: dotted; }
+  .tarea { opacity: 1 !important; filter: none !important; box-shadow: 0 2px 8px #0ea5e92a; }
+  .tarea { color: #fff; padding: 6px 8px; border-radius: 8px; margin: 6px 0; cursor: grab; display: flex; justify-content: space-between; align-items: center; gap: 6px; transition:all 0.2s; }
+  .tarea.minimizada {
+    opacity: 0.55 !important;
+    filter: grayscale(0.7) blur(0.5px);
+    font-size: 0.92em;
+    padding: 3px 6px;
+    margin: 3px 0;
+    box-shadow: none;
+    cursor: pointer;
+  }
+      .t-acciones { display: flex; gap: 6px; }
+      .btn { border: none; border-radius: 6px; padding: 4px 6px; cursor: pointer; font-size: 12px; }
+      .btn.sec { background: #0ea5e9; color: #fff; }
+      .btn.des { background: #111827; color: #fff; }
+      .acciones { margin: 8px var(--gap); display: flex; gap: 10px; align-items: center; }
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 80px repeat(7, 1fr); }
+        .col-miembro { font-size: 12px; }
+      }
+      @media (max-width: 640px) {
+        .grid { grid-template-columns: 1fr; }
+        .col-dia { position: static; }
+        .col-miembro { position: static; }
+      }
+    </style>
+  {% endblock %}
+
+{% block content %}
+<main>
+
+
+      {% if vista == 'mensual' %}
+        <h1 style="margin:22px 0 16px 0; font-size:2.5em; color:#0ea5e9; text-align:center; letter-spacing:1.5px; text-shadow:0 2px 8px #0ea5e92a;">
+          <span style="background:#e0f2fe;padding:8px 24px;border-radius:18px;box-shadow:0 2px 8px #0ea5e92a;display:inline-block;">
+            {{ mes_nombre }} del {{ year }}
+          </span>
+        </h1>
+      {% else %}
+        {% if vista == 'diaria' %}
+          <h1 style="margin:18px 0 10px 0; font-size:2.1em; color:#0ea5e9; text-align:center; letter-spacing:1px;">
+            Semana del {{ lunes|date:'d/m' }} al {{ domingo|date:'d/m' }} de {{ mes_nombre }} de {{ year }}
+          </h1>
+        {% else %}
+          <h1 style="margin:18px 0 10px 0; font-size:2.1em; color:#0ea5e9; text-align:center; letter-spacing:1px;">
+            Semana del {{ lunes|date:'d/m' }} al {{ domingo|date:'d/m' }} de {{ mes_nombre }} de {{ year }}
+          </h1>
+        {% endif %}
+      {% endif %}
+
+
+
+      <div class="acciones" style="margin-bottom:10px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center;">
+        <div style="display:flex;gap:0;align-items:center;background:#f1f5f9;border-radius:12px;box-shadow:0 2px 8px #0ea5e91a;overflow:hidden;">
+          <a href="?vista=diaria" class="vista-btn{% if vista == 'diaria' %} actual{% endif %}">Diaria</a>
+          <span style="color:#cbd5e1;font-size:1.2em;">|</span>
+          <a href="?vista=semanal" class="vista-btn{% if vista == 'semanal' %} actual{% endif %}">Semanal</a>
+          <span style="color:#cbd5e1;font-size:1.2em;">|</span>
+          <a href="?vista=mensual" class="vista-btn{% if vista == 'mensual' %} actual{% endif %}">Mensual</a>
+        </div>
+        <form method="get" id="filtro-miembros" style="margin-left:18px;display:inline-block;">
+          <input type="hidden" name="vista" value="{{ vista }}">
+          <div style="background:#f8fafc;padding:10px 16px;border-radius:10px;border:2px solid #0ea5e9;box-shadow:0 2px 8px #0ea5e92a;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            {% if is_admin %}
+              <label style="font-weight:bold;margin-right:10px;">Filtrar miembros:</label>
+              <label style="margin-right:10px;cursor:pointer;">
+                <input type="checkbox" name="miembros" value="" {% if not miembros_seleccionados %}checked{% endif %} onclick="desmarcarTodos(this)"> Todos
+              </label>
+              {% for m in miembros %}
+                <label style="margin-right:10px;cursor:pointer;">
+                  <input type="checkbox" name="miembros" value="{{ m.id }}" {% if m.id|stringformat:'s' in miembros_seleccionados %}checked{% endif %} onclick="desmarcarTodos(null, this)"> {{ m.nombre }}
+                </label>
+              {% endfor %}
+            {% endif %}
+            <label style="margin-right:10px;cursor:pointer;font-weight:500;">
+              <input type="checkbox" id="solo-mis-tareas" name="solo_mis_tareas" value="1" {% if solo_mis_tareas %}checked{% endif %}>
+              Solo ver mis tareas
+            </label>
+          </div>
+        </form>
+        <script>
+        // Lógica para checkboxes: si marcas "Todos", desmarca los demás; si marcas cualquier otro, solo desmarca 'Todos'
+        window.desmarcarTodos = function(todos, uno){
+          const form = document.getElementById('filtro-miembros');
+          const checks = form.querySelectorAll('input[type=checkbox][name=miembros]');
+          if(todos){
+            // Si marcas 'Todos', desmarca todos los demás
+            checks.forEach((c,i)=>{ if(i!==0) c.checked=false; });
+          } else if(uno){
+            // Si marcas cualquier otro, desmarca solo 'Todos'
+            checks[0].checked = false;
+          }
+        }
+  </script>
+      </div>
+    <style>
+      .vista-btn {
+        display:inline-block;
+        padding:8px 18px;
+        font-size:1.08em;
+        color:#0ea5e9;
+        text-decoration:none;
+        background:none;
+        border:none;
+        font-weight:500;
+        transition:background 0.15s,color 0.15s;
+      }
+      #filtro-dropdown { position:relative; }
+      #filtro-menu label input[type=checkbox] {
+        accent-color: #0ea5e9;
+        margin-right: 8px;
+      }
+      #filtro-menu label {
+        font-size:1.08em;
+      }
+      #filtro-menu .btn.sec {
+        background: #0ea5e9;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 0;
+        font-size: 1.08em;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      #abrir-filtro {
+        min-width: 220px;
+      }
+      .vista-btn.actual {
+        background:#0ea5e9;
+        color:#fff;
+        font-weight:bold;
+        border-radius:10px;
+        box-shadow:0 2px 8px #0ea5e92a;
+      }
+      .vista-btn:not(.actual):hover {
+        background:#bae6fd;
+        color:#0369a1;
+      }
+    </style>
+
+    {% if vista == 'diaria' %}
+      <div class="grid diaria" id="cal" style="--otros:{{ miembros|length|add:'-1' }};">
+        <div></div>
+        {% for m in miembros %}
+          <div class="col-miembro{% if miembro_actual and m.id == miembro_actual.id %} actual{% else %} estrecha{% endif %} miembro-col-{{ m.id }}">{{ m.nombre }}</div>
+        {% endfor %}
+        {% for h in horas %}
+          <div class="col-dia">{{ h }}</div>
+          {% for m in miembros %}
+            <div class="celda{% if miembro_actual and m.id == miembro_actual.id %} actual{% else %} estrecha{% endif %} miembro-celda-{{ m.id }}" data-miembro="{{ m.id }}" data-hour="{{ h }}" data-date="{{ hoy_iso }}"></div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% elif vista == 'semanal' %}
+      <div class="grid semanal" id="cal" style="grid-template-columns: 90px repeat(7, 1fr); --otros:{{ miembros|length|add:'-1' }};">
+        <div></div>
+        {% for col in week_cols %}
+          <div class="col-dia">{{ col.dia }}<div style="font-size:12px;color:#6b7280">{{ col.label }}</div></div>
+        {% endfor %}
+        {% for h in horas %}
+          <div class="col-dia" style="background:#f1f5f9;font-size:13px;">{{ h }}</div>
+          {% for col in week_cols %}
+            <div class="celda" data-hour="{{ h }}" data-dia="{{ forloop.counter0 }}" data-date="{{ col.iso|slice:':10' }}"></div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% elif vista == 'mensual' %}
+  <div style="max-width:1200px;margin:0 auto">
+        <table class="tabla-mes">
+          <thead>
+            <tr>
+              {% for d in dias %}
+                <th>{{ d }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for week in weeks_dates %}
+              <tr>
+                {% for d in week %}
+                  <td>
+                    <div class="mes-dia">{% if d %}{{ d|date:'j' }}{% endif %}</div>
+                    <div class="mes-celda"{% if d %} data-date="{{ d|date:'Y-m-d' }}"{% endif %}></div>
+                  </td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <style>
+        .tabla-mes {
+          width: 100%;
+          border-collapse: separate;
+          border-spacing: 2px;
+          background: #e0f2fe;
+          border-radius: 14px;
+          overflow: hidden;
+          table-layout: fixed;
+        }
+        .tabla-mes th, .tabla-mes td {
+          text-align: center;
+          padding: 0;
+          border: none;
+        }
+        .tabla-mes th {
+          background: #bae6fd;
+          color: #0369a1;
+          font-weight: 600;
+          font-size: 1.08em;
+          padding: 8px 0;
+        }
+        .tabla-mes td {
+          background: #fff;
+          min-width: 90px;
+          height: 54px;
+          border-radius: 10px;
+          vertical-align: top;
+          box-shadow: 0 1px 4px #0ea5e91a;
+          position: relative;
+          transition: box-shadow 0.2s;
+        }
+        .tabla-mes td:hover {
+          box-shadow: 0 2px 12px #0ea5e92a;
+          z-index: 2;
+        }
+        .mes-dia {
+          font-weight: bold;
+          font-size: 1.1em;
+          color: #0ea5e9;
+          margin: 6px 0 2px 0;
+          text-align: right;
+          padding-right: 8px;
+        }
+        .mes-celda {
+          min-height: 32px;
+          padding: 2px 2px 2px 2px;
+          border-radius: 8px;
+          background: #f8fafc;
+          margin: 0;
+          font-size: 0.98em;
+        }
+        @media (max-width: 700px) {
+          .tabla-mes td, .tabla-mes th { min-width: 48px; height: 38px; font-size: 0.95em; }
+          .mes-dia { font-size: 0.98em; padding-right: 2px; }
+        }
+      </style>
+    {% else %}
+      <div class="grid" id="cal">
+        <div></div>
+        {% for col in week_cols %}
+          <div class="col-dia">{{ col.dia }}<div style="font-size:12px;color:#6b7280">{{ col.label }}</div></div>
+        {% endfor %}
+
+        {% for m in miembros %}
+          <div class="col-miembro">{{ m.nombre }}</div>
+          {% for col in week_cols %}
+            <div class="celda" data-miembro="{{ m.id }}" data-dia="{{ forloop.counter0 }}" data-date="{{ col.iso|slice:':10' }}"></div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <template id="tpl-tarea">
+      <div class="tarea"></div>
+    </template>
+
+  {{ eventos_data|json_script:'tareas-data' }}
+    {{ colores|json_script:'colores-data' }}
+    <script>
+    // Filtro de solo ver mis tareas
+    document.addEventListener('DOMContentLoaded', function() {
+      const chk = document.getElementById('solo-mis-tareas');
+      const grid = document.querySelector('.grid.diaria');
+      if(chk) {
+        chk.addEventListener('change', function() {
+          const form = document.getElementById('filtro-miembros');
+          if(form) {
+            form.submit();
+          }
+        });
+      }
+
+      // Evitar errores en mensual/semanal si no existen los elementos
+      var abrirFiltro = document.getElementById('abrir-filtro');
+      var filtroMenu = document.getElementById('filtro-menu');
+      if(abrirFiltro && filtroMenu) {
+        abrirFiltro.onclick = function(e){
+          e.preventDefault();
+          filtroMenu.style.display = (filtroMenu.style.display==='block') ? 'none' : 'block';
+        };
+        document.addEventListener('click', function(e){
+          if(filtroMenu && abrirFiltro && !filtroMenu.contains(e.target) && e.target!==abrirFiltro){
+            filtroMenu.style.display = 'none';
+          }
+        });
+        filtroMenu.addEventListener('mousedown', function(e){
+          if(e.target.tagName==='INPUT' && e.target.type==='checkbox'){
+            e.stopPropagation();
+          }
+        });
+      }
+    });
+      const raw = JSON.parse(document.getElementById('tareas-data').textContent);
+      const grid = document.getElementById('cal');
+      const colores = JSON.parse(document.getElementById('colores-data').textContent);
+
+      function dayIndex(dateStr){
+        const d = new Date(dateStr);
+        let idx = d.getDay(); // 0 dom - 6 sab
+        idx = idx === 0 ? 6 : idx - 1; // Lunes=0
+        return idx;
+      }
+
+      function placeTask(t){
+  const node = document.getElementById('tpl-tarea').content.firstElementChild.cloneNode(true);
+  let iconoMiembro = t.miembro_icono ? `<span title='${t.miembro_nombre||""}' style='margin-right:2px;'>${t.miembro_icono}</span>` : '';
+  let iconoTarea = t.icono ? `<span style='margin-right:2px;'>${t.icono}</span>` : '';
+  let estadoHtml = '';
+  if (t.estado === 'aprobada') {
+  estadoHtml = `<span title='Aprobada' style='color:#0ea5e9;font-size:1.25em;margin-left:6px;vertical-align:middle;'>🏅</span>`;
+  } else if (t.estado === 'pendiente') {
+    estadoHtml = `<span title='Pendiente' style='color:#f59e42;font-size:1.25em;margin-left:6px;vertical-align:middle;'>⏳</span>`;
+  } else if (t.estado === 'realizada') {
+  estadoHtml = `<span title='Realizada' style='color:#22c55e;font-size:1.25em;margin-left:6px;vertical-align:middle;'>✓</span>`;
+  } else {
+    estadoHtml = `<span style='color:#64748b;font-size:1em;margin-left:6px;vertical-align:middle;'>${t.estado}</span>`;
+  }
+  node.innerHTML = `<span>${iconoMiembro}${iconoTarea}${t.tarea} (${new Date(t.inicio).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}-${new Date(t.fin).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}) · ${t.puntuacion} pts ${estadoHtml}</span>`;
+        node.style.background = colores[t.miembro_id] || '#666';
+        const isAdmin = {{ is_admin|yesno:'true,false' }};
+        let puedeArrastrar = isAdmin;
+        let esPropia = false;
+        {% if request.user.miembro %}
+          esPropia = (t.miembro_id === {{ request.user.miembro.id }});
+          puedeArrastrar = puedeArrastrar || esPropia;
+        {% endif %}
+        if (!isAdmin && !esPropia) {
+          node.classList.add('minimizada');
+        }
+        if (t.id) {
+          node.draggable = puedeArrastrar;
+          node.dataset.id = t.id;
+          node.dataset.miembro = t.miembro_id;
+          node.addEventListener('dragstart', function(ev) {
+            ev.dataTransfer.setData('text/plain', t.id);
+          });
+        } else {
+          node.draggable = false;
+        }
+        const acciones = document.createElement('span');
+        acciones.className = 't-acciones';
+        // Botón marcar como realizada si es propia y pendiente
+        if(esPropia && t.estado === 'pendiente'){
+          const btn = document.createElement('button');
+          btn.className = 'btn sec';
+          btn.textContent = 'Marcar como realizada';
+          btn.onclick = async function(ev){
+            ev.stopPropagation();
+            btn.disabled = true;
+            const resp = await fetch(`/api/eventos/${t.id}/marcar/`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRF() },
+            });
+            if(resp.ok){ location.reload(); }
+            else {
+              btn.disabled = false;
+              let msg = 'No se pudo marcar la tarea.';
+              try {
+                const data = await resp.clone().json();
+                if(data && (data.error || data.detail)) {
+                  msg += '\n' + (data.error || data.detail);
+                  if(data.trace) msg += '\n' + data.trace;
+                } else {
+                  msg += '\n' + JSON.stringify(data);
+                }
+              } catch(e) {
+                try {
+                  const text = await resp.text();
+                  if(text) msg += '\n' + text;
+                } catch(e2) {}
+              }
+              alert(msg);
+            }
+          };
+          acciones.appendChild(btn);
+        }
+        // Botón aprobar para admin si la tarea está realizada
+        if(isAdmin && t.estado === 'realizada'){
+          const btnAprobar = document.createElement('button');
+          btnAprobar.className = 'btn des';
+          btnAprobar.textContent = 'Aprobar';
+          btnAprobar.onclick = async function(ev){
+            ev.stopPropagation();
+            btnAprobar.disabled = true;
+            const resp = await fetch(`/api/eventos/${t.id}/aprobar/`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRF() },
+            });
+            if(resp.ok){ location.reload(); }
+            else { btnAprobar.disabled = false; alert('No se pudo aprobar la tarea.'); }
+          };
+          acciones.appendChild(btnAprobar);
+        }
+        node.appendChild(acciones);
+        // No hay marcar/aprobar para eventos, solo visualización
+        if('{{ vista }}' === 'mensual'){
+          const ymd = new Date(t.inicio).toISOString().slice(0,10);
+          const celdaMes = document.querySelector(`.mes-celda[data-date="${ymd}"]`);
+          if(celdaMes) celdaMes.appendChild(node);
+        } else if('{{ vista }}' === 'diaria'){
+          const start = new Date(t.inicio);
+          const h = `${start.getHours().toString().padStart(2,'0')}:00`;
+          const celda = document.querySelector(`.celda[data-miembro="${t.miembro_id}"][data-hour="${h}"]`);
+          if(celda) celda.appendChild(node);
+        } else if('{{ vista }}' === 'semanal'){
+          // Nueva lógica semanal: buscar celda por día y hora
+          const dia = dayIndex(t.inicio);
+          const h = new Date(t.inicio).getHours().toString().padStart(2,'0')+':00';
+          const celda = document.querySelector(`.celda[data-dia="${dia}"][data-hour="${h}"]`);
+          if(celda) celda.appendChild(node);
+        } else {
+          // fallback para otras vistas
+          const dia = dayIndex(t.inicio);
+          const col = week_cols[dia];
+          const dateStr = col ? col.iso : new Date(t.inicio).toISOString().slice(0,10);
+          const h = new Date(t.inicio).getHours().toString().padStart(2,'0')+':00';
+          const celda = document.querySelector(`.celda[data-miembro="${t.miembro_id}"][data-dia="${dia}"][data-hour="${h}"]`);
+          if(celda) celda.appendChild(node);
+        }
+      }
+
+      document.querySelectorAll('.celda, .mes-celda').forEach(c => {
+        c.addEventListener('dragover', ev => ev.preventDefault());
+        c.addEventListener('drop', async ev => {
+          ev.preventDefault();
+          const id = ev.dataTransfer.getData('text/plain');
+          if (!id) {
+            alert('No se puede mover: evento no válido.');
+            return;
+          }
+          const miembroId = c.dataset.miembro;
+          const dateStr = c.dataset.date;
+          const hourStr = c.dataset.hour;
+          const diaIdx = c.dataset.dia;
+          try {
+            const body = { };
+            const isAdmin = {{ is_admin|yesno:'true,false' }};
+            if(isAdmin && miembroId) body.miembro_id = parseInt(miembroId, 10);
+            let targetDate = dateStr;
+            if(!targetDate && diaIdx!==undefined && '{{ vista }}' === 'semanal'){
+              // Calcular fecha destino en semanal
+              const week = {{ week_dates|default:'[]'|safe }};
+              targetDate = week[diaIdx];
+            }
+            if(targetDate){
+              const prev = raw.find(x=>x.id==id);
+              if(!prev){
+                alert('No se encontró el evento para mover.');
+                return;
+              }
+              // AVISO si cambia de miembro en vista diaria
+              if ('{{ vista }}' === 'diaria' && miembroId && prev.miembro_id && miembroId != prev.miembro_id.toString()) {
+                const miembroAnt = (window.miembrosData||[]).find(m=>m.id==prev.miembro_id);
+                const miembroNuevo = (window.miembrosData||[]).find(m=>m.id==parseInt(miembroId));
+                let msg = 'Vas a mover la tarea de un miembro a otro';
+                if (miembroAnt && miembroNuevo) {
+                  msg = `Vas a mover la tarea de ${miembroAnt.nombre} a ${miembroNuevo.nombre}`;
+                }
+                if(!confirm(msg+". ¿Continuar?")) return;
+              }
+              const start = new Date(prev.inicio);
+              const [y,m,d] = targetDate.split('-').map(Number);
+              const hh = hourStr ? parseInt(hourStr.substring(0,2), 10) : start.getHours();
+              const nuevoInicio = new Date(y, m-1, d, hh, start.getMinutes());
+              const delta = new Date(prev.fin) - new Date(prev.inicio);
+              const nuevoFin = new Date(nuevoInicio.getTime() + delta);
+              body.inicio = nuevoInicio.toISOString();
+              body.fin = nuevoFin.toISOString();
+              // Enviar dia_vista para que el backend lo valide correctamente
+              body.dia_vista = targetDate;
+            }
+            const resp = await fetch(`/api/eventos/${id}/`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRF() },
+              body: JSON.stringify(body)
+            });
+            if(resp.ok){ location.reload(); }
+            else {
+              const txt = await resp.text();
+              console.error('Error DnD', resp.status, txt);
+              alert(`No se pudo mover la tarea (HTTP ${resp.status}). ${resp.status===403?'Necesitas permisos de administrador o la semana es incorrecta.':''}`);
+            }
+          } catch(e) { console.error(e); }
+        });
+      });
+
+      function getCSRF(){
+        const m = document.cookie.match(/csrftoken=([^;]+)/);
+        return m ? m[1] : '';
+      }
+
+
+      // Marcar celdas vacías en diaria y semanal
+      if('{{ vista }}' === 'diaria' || '{{ vista }}' === 'semanal') {
+        document.querySelectorAll('.celda').forEach(c => {
+          if(!c.querySelector('.tarea')) {
+            c.classList.add('vacia');
+          }
+        });
+      }
+
+  // Guardar miembros para avisos de cambio de miembro
+      // Usar un script seguro para datos de miembros solo si existe
+      document.addEventListener('DOMContentLoaded', function() {
+        var miembrosScript = document.getElementById('miembros-data');
+        if (miembrosScript) {
+          window.miembrosData = JSON.parse(miembrosScript.textContent);
+        } else {
+          window.miembrosData = [];
+        }
+        raw.forEach(placeTask);
+      });
+
+  </script>
+  <script>
+      const abrirFiltro = document.getElementById('abrir-filtro');
+      if (abrirFiltro) {
+        abrirFiltro.onclick = function(e){
+          e.preventDefault();
+          const menu = document.getElementById('filtro-menu');
+          if(menu) menu.style.display = (menu.style.display==='block') ? 'none' : 'block';
+        };
+      }
+      document.addEventListener('click', function(e){
+        const menu = document.getElementById('filtro-menu');
+        const btn = document.getElementById('abrir-filtro');
+        if(menu && btn && !menu.contains(e.target) && e.target!==btn){
+          menu.style.display = 'none';
+        }
+      });
+      const filtroMenu = document.getElementById('filtro-menu');
+      if(filtroMenu) {
+        filtroMenu.addEventListener('mousedown', function(e){
+          if(e.target.tagName==='INPUT' && e.target.type==='checkbox'){
+            e.stopPropagation();
+          }
+        });
+      }
+      window.desmarcarTodos = function(todos, uno){
+        const form = document.getElementById('filtro-miembros');
+        if(!form) return;
+        const checks = form.querySelectorAll('input[type=checkbox][name=miembros]');
+        if(todos){
+          checks.forEach((c,i)=>{ if(i!==0) c.checked=false; });
+        } else if(uno){
+          checks[0].checked = false;
+        }
+      }
+  </script>
+  <!-- Modal para crear evento -->
+</main>
+{% endblock %}
+
+

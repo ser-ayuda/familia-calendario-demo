@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: familia
+      POSTGRES_USER: familia
+      POSTGRES_PASSWORD: familia
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  web:
+    build: .
+    command: gunicorn hogar.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - static_volume:/vol/static
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=unsafe-demo-secret
+      - DATABASE_URL=postgres://familia:familia@db:5432/familia
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+  static_volume:

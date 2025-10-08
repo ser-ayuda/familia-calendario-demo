@@ -1,0 +1,627 @@
+<script>
+function abrirModalBorrarFuturos(tareaId, fechaDesde) {
+  const fecha = prompt('¿Desde qué fecha quieres borrar los eventos futuros de esta tarea? (formato YYYY-MM-DD)', fechaDesde);
+  if (!fecha) return;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) { alert('Formato de fecha inválido'); return; }
+  if (!confirm('¿Seguro que quieres borrar todos los eventos de esta tarea desde ' + fecha + ' en adelante?')) return;
+  fetch(`/api/tareas/${tareaId}/borrar_eventos_futuros/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRF() },
+    body: JSON.stringify({ fecha_desde: fecha })
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.ok) {
+      alert('Eventos futuros borrados correctamente');
+      location.reload();
+    } else {
+      alert('Error al borrar eventos: ' + (res.error || JSON.stringify(res)));
+    }
+  })
+  .catch(err => { alert('Error de red: ' + err); });
+}
+</script>
+{% extends "base.html" %}
+{% block title %}Administración de eventos{% endblock %}
+{% block content %}
+  {% if avisos %}
+    <div id="avisos-admin" style="background:#fef9c3;border:1px solid #fde047;padding:14px 18px;border-radius:10px;margin-bottom:18px;">
+      <b style="color:#b45309;">Avisos administrativos:</b>
+      <ul style="margin:8px 0 0 0;padding:0;list-style:none;">
+        {% for aviso in avisos %}
+          <li style="margin-bottom:6px;">
+            <span style="color:{% if aviso.nivel == 'CRITICAL' %}#dc2626{% elif aviso.nivel == 'ERROR' %}#ef4444{% elif aviso.nivel == 'WARNING' %}#eab308{% else %}#334155{% endif %};font-weight:600;">[{{ aviso.nivel }}]</span>
+            {{ aviso.mensaje|linebreaksbr }}
+            <button onclick="marcarAvisoVisto({{ aviso.id }})" style="margin-left:10px;padding:2px 8px;font-size:0.95em;border-radius:6px;border:none;background:#22c55e;color:#fff;cursor:pointer;">Marcar como visto</button>
+            <span style="font-size:0.9em;color:#64748b;">({{ aviso.creado_en|date:'d/m/Y H:i' }})</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <script>
+      function marcarAvisoVisto(id) {
+        fetch('/avisos/marcar_visto/' + id + '/', {method:'POST',headers:{'X-CSRFToken':getCSRF()}})
+          .then(r => { if(r.ok) location.reload(); });
+      }
+      function getCSRF(){
+        const m = document.cookie.match(/csrftoken=([^;]+)/); return m ? m[1] : '';
+      }
+    </script>
+  {% endif %}
+<div style="max-width:950px;margin:36px auto 0 auto;padding:32px 28px 28px 28px;background:#fff;border-radius:18px;box-shadow:0 6px 32px #0ea5e91a;">
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <h1 style="margin:0 0 2px 0;font-size:2em;font-weight:800;color:#0ea5e9;text-align:center;">Administración de eventos</h1>
+  <div id="evento-mensaje" style="display:none;margin:10px 0;padding:10px;border-radius:8px;font-weight:600;"></div>
+  <!-- Modal edición evento -->
+  <div id="modal-editar-evento" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0007;z-index:99999;align-items:center;justify-content:center;">
+    <div style="background:#fff;padding:28px 22px 18px 22px;border-radius:16px;min-width:340px;max-width:95vw;box-shadow:0 6px 32px #0ea5e91a;position:relative;display:flex;flex-direction:column;gap:10px;">
+      <button onclick="cerrarModalEditar()" style="position:absolute;top:10px;right:10px;background:#ef4444;color:#fff;border:none;border-radius:7px;padding:2px 10px;font-size:1.1em;cursor:pointer;">✖</button>
+      <h2 style="color:#0ea5e9;font-size:1.15em;font-weight:700;margin-bottom:12px;text-align:center;">Editar evento</h2>
+  <form id="form-editar-evento" onsubmit="guardarEdicionEvento(event)" style="display:grid !important;grid-template-columns:repeat(2,1fr);gap:12px;align-items:center;border:2px solid red;">
+  <input type="hidden" id="edit-id" />
+  <label style="grid-column:span 1;">Fecha inicio<br><input type="date" id="edit-fecha-inicio" required style="width:100%;" /></label>
+  <label style="grid-column:span 1;">Hora inicio<br><input type="time" id="edit-hora-inicio" required style="width:100%;" /></label>
+  <label style="grid-column:span 1;">Fecha fin<br><input type="date" id="edit-fecha-fin" style="width:100%;" /></label>
+  <label style="grid-column:span 1;">Hora fin<br><input type="time" id="edit-hora-fin" style="width:100%;" /></label>
+        <label style="grid-column:span 2;">Tarea<br><select id="edit-tarea" required style="width:100%;min-width:120px;"></select></label>
+        <label style="grid-column:span 2;">Miembro<br><select id="edit-miembro" required style="width:100%;min-width:120px;"></select></label>
+        <label style="grid-column:span 2;">Estado<br>
+          <select id="edit-estado" style="width:100%;min-width:120px;">
+            <option value="pendiente">Pendiente</option>
+            <option value="realizada">Realizada</option>
+            <option value="aprobada">Aprobada</option>
+          </select>
+        </label>
+        <div style="grid-column:span 2;margin-top:14px;text-align:center;">
+          <button type="submit" class="btn" style="background:#0ea5e9;color:#fff;padding:7px 18px;border-radius:8px;border:none;font-size:1.05em;">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{{ tareas|json_script:"tareas-data" }}
+{{ miembros|json_script:"miembros-data" }}
+<script>
+// Serializar tareas y miembros como JSON para JS
+var tareas_json = [];
+var miembros_json = [];
+try {
+  tareas_json = JSON.parse(document.getElementById('tareas-data').textContent);
+  miembros_json = JSON.parse(document.getElementById('miembros-data').textContent);
+  console.log('Tareas JSON:', tareas_json);
+  console.log('Miembros JSON:', miembros_json);
+} catch(e) {
+  console.error('Error al leer tareas/miembros JSON:', e);
+}
+
+function rellenarSelectsEditar() {
+  const tareaSel = document.getElementById('edit-tarea');
+  const miembroSel = document.getElementById('edit-miembro');
+  tareaSel.innerHTML = Array.isArray(tareas_json) ? tareas_json.map(t => `<option value="${t.id}">${t.nombre}</option>`).join('') : '';
+  miembroSel.innerHTML = Array.isArray(miembros_json) ? miembros_json.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('') : '';
+}
+
+function abrirModalEditar(eventoId) {
+  console.log('Intentando abrir modal de edición para evento:', eventoId);
+  rellenarSelectsEditar();
+  const modal = document.getElementById('modal-editar-evento');
+  if (!modal) {
+    alert('No se encontró el modal de edición.');
+    return;
+  }
+  console.log('Modal encontrado, mostrando...');
+  modal.querySelector('h2').textContent = 'Editar evento';
+  modal.querySelector('h2').style.color = '#0ea5e9';
+  modal.querySelector('form').style.display = 'grid';
+  modal.style.display = 'flex';
+  modal.style.visibility = 'visible';
+  modal.style.opacity = '1';
+  modal.style.alignItems = 'center';
+  modal.style.justifyContent = 'center';
+  fetch(`/api/eventos/${eventoId}/`, {headers:{'X-CSRFToken':getCSRF()}})
+    .then(r => r.json())
+    .then(e => {
+      console.log('Datos recibidos para edición:', e);
+      modal.querySelector('form').style.display = 'grid';
+      // Corregir formato de hora para los inputs
+      function horaStr(dt) {
+        if (!dt) return '';
+        // Si es formato ISO, extraer HH:MM
+        let iso = dt.match(/T(\d{2}):(\d{2})/);
+        if (iso) return iso[1] + ':' + iso[2];
+        // Si es formato completo, extraer HH:MM
+        let m = dt.match(/(\d{2}):(\d{2})/);
+        if (m) return m[0];
+        // Si es sólo HHMM
+        let h = dt.match(/(\d{2})(\d{2})/);
+        if (h) return h[1] + ':' + h[2];
+        return '';
+      }
+      console.log('Valores recibidos para edición:', e);
+      document.getElementById('edit-id').value = e.id || '';
+      document.getElementById('edit-fecha-inicio').value = e.inicio ? (e.inicio.slice(0,10) || '') : '';
+      document.getElementById('edit-hora-inicio').value = e.inicio ? horaStr(e.inicio) : '';
+      document.getElementById('edit-fecha-fin').value = e.fin ? (e.fin.slice(0,10) || '') : '';
+      document.getElementById('edit-hora-fin').value = e.fin ? horaStr(e.fin) : '';
+      document.getElementById('edit-tarea').value = e.tarea_id || (e.tarea && e.tarea.id) || '';
+      document.getElementById('edit-miembro').value = e.miembro_id || (e.miembro && e.miembro.id) || '';
+      document.getElementById('edit-estado').value = e.estado || '';
+      console.log('Campos rellenados:', {
+        id: document.getElementById('edit-id').value,
+        fecha_inicio: document.getElementById('edit-fecha-inicio').value,
+        hora_inicio: document.getElementById('edit-hora-inicio').value,
+        fecha_fin: document.getElementById('edit-fecha-fin').value,
+        hora_fin: document.getElementById('edit-hora-fin').value,
+        tarea: document.getElementById('edit-tarea').value,
+        miembro: document.getElementById('edit-miembro').value,
+        estado: document.getElementById('edit-estado').value
+      });
+    })
+    .catch(err => {
+      modal.querySelector('h2').textContent = 'Error al cargar datos';
+      modal.querySelector('h2').style.color = '#ef4444';
+      modal.querySelector('form').style.display = 'grid';
+      document.getElementById('edit-fecha-inicio').value = '';
+      document.getElementById('edit-hora-inicio').value = '';
+      document.getElementById('edit-fecha-fin').value = '';
+      document.getElementById('edit-hora-fin').value = '';
+      document.getElementById('edit-tarea').value = '';
+      document.getElementById('edit-miembro').value = '';
+      document.getElementById('edit-estado').value = '';
+      console.error('Error al cargar datos del evento:', err);
+    });
+}
+
+function cerrarModalEditar() {
+  document.getElementById('modal-editar-evento').style.display = 'none';
+}
+
+function guardarEdicionEvento(ev) {
+  ev.preventDefault();
+  const id = document.getElementById('edit-id').value;
+  const data = {
+    inicio: document.getElementById('edit-fecha-inicio').value + 'T' + document.getElementById('edit-hora-inicio').value,
+    fin: document.getElementById('edit-fecha-fin').value + 'T' + document.getElementById('edit-hora-fin').value,
+    tarea_id: document.getElementById('edit-tarea').value,
+    miembro_id: document.getElementById('edit-miembro').value,
+    estado: document.getElementById('edit-estado').value,
+  };
+  console.log('Enviando PATCH a /api/eventos/' + id, data);
+  const modal = document.getElementById('modal-editar-evento');
+  modal.querySelector('h2').textContent = 'Guardando...';
+  modal.querySelector('h2').style.color = '#0ea5e9';
+  fetch(`/api/eventos/${id}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCSRF(),
+    },
+    body: JSON.stringify(data)
+  })
+  .then(r => {
+    if (!r.ok) {
+      return r.json().then(j => ({ok:false, data:j}));
+    }
+    return r.json().then(j => ({ok:true, data:j}));
+  })
+  .then(res => {
+    console.log('Respuesta PATCH:', res);
+    if(res.ok) {
+      modal.querySelector('h2').textContent = 'Evento editado correctamente';
+      modal.querySelector('h2').style.color = '#22c55e';
+      setTimeout(() => {
+        cerrarModalEditar();
+        location.reload();
+      }, 900);
+    } else {
+      modal.querySelector('h2').textContent = 'Error al editar evento';
+      modal.querySelector('h2').style.color = '#ef4444';
+      let msg = 'Error al editar evento: ' + (res.data.error || JSON.stringify(res.data));
+      mostrarMensaje(msg, 'error');
+      modal.querySelector('form').style.display = 'grid';
+      console.error(msg);
+    }
+  })
+  .catch(err => {
+    modal.querySelector('h2').textContent = 'Error de red al guardar';
+    modal.querySelector('h2').style.color = '#ef4444';
+    mostrarMensaje('Error de red al guardar: ' + err, 'error');
+    modal.querySelector('form').style.display = 'grid';
+    console.error('Error de red al guardar evento:', err);
+  });
+}
+
+// Reemplazar el onclick de editarEvento para abrir el modal
+function editarEvento(id) {
+  abrirModalEditar(id);
+}
+</script>
+{{ tareas|json_script:"tareas-data" }}
+{{ miembros|json_script:"miembros-data" }}
+</script>
+  <!-- Formulario de crear evento primero -->
+  <div class="panel" style="margin-bottom:8px;padding:18px 0 10px 0;background:#f8fafc;border-radius:14px;box-shadow:0 2px 16px #0ea5e91a;">
+    <h2 style="color:#0ea5e9;font-size:1.08em;font-weight:600;margin-bottom:8px;text-align:center;letter-spacing:0.5px;">Crear nuevo evento</h2>
+  <form id="form-nuevo-evento" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px 2px;align-items:center;margin:0;" onsubmit="crearEvento(event)">
+      <div style="grid-column:span 4;display:flex;align-items:center;gap:6px;">
+        <label style="font-weight:400;font-size:0.98em;color:#334155;">Fecha inicio<br>
+          <input id="e-fecha-inicio" type="date" required style="width:100px;padding:5px 8px;font-size:0.98em;border-radius:7px;border:1px solid #e0e7ef;background:#fff;box-shadow:none;outline:none;" />
+        </label>
+        <label style="font-weight:400;font-size:0.98em;color:#334155;">Hora inicio<br>
+          <input id="e-hora-inicio" type="text" required style="width:70px;padding:5px 8px;font-size:0.98em;border-radius:7px;border:1px solid #e0e7ef;background:#fff;box-shadow:none;outline:none;" placeholder="hh:mm">
+        </label>
+        <label style="font-weight:400;font-size:0.98em;color:#334155;">Fecha fin<br>
+          <input id="e-fecha-fin" type="date" style="width:100px;padding:5px 8px;font-size:0.98em;border-radius:7px;border:1px solid #e0e7ef;background:#fff;box-shadow:none;outline:none;" />
+        </label>
+        <label style="font-weight:400;font-size:0.98em;color:#334155;">Hora fin<br>
+          <input id="e-hora-fin" type="text" style="width:70px;padding:5px 8px;font-size:0.98em;border-radius:7px;border:1px solid #e0e7ef;background:#fff;box-shadow:none;outline:none;" placeholder="hh:mm">
+        </label>
+      </div>
+
+  <label style="grid-column:span 2;font-weight:400;font-size:0.98em;color:#334155;">Repetir cada<br>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <input type="number" min="1" value="1" name="intervalo" style="width:55px;padding:5px 6px;border-radius:7px;border:1px solid #e0e7ef;" />
+          <select name="unidad" id="unidad-personalizada" onchange="renderUnidadPersonalizada()" style="min-width:90px;padding:5px 6px;border-radius:7px;border:1px solid #e0e7ef;">
+            <option value="dias">día(s)</option>
+            <option value="semanas">semana(s)</option>
+            <option value="meses">mes(es)</option>
+            <option value="anios">año(s)</option>
+          </select>
+        </div>
+      </label>
+  <div id="dias-personalizada" style="grid-column:span 2;display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:0 0 6px 0;"></div>
+
+  <label style="grid-column:span 2;font-weight:400;font-size:0.98em;color:#334155;">Resumen:<br>
+        <span id="se-repite-el" style="color:#334155;font-weight:400;">Selecciona mes y día</span>
+      </label>
+
+  <label style="grid-column:span 2;font-weight:400;font-size:0.98em;color:#334155;">Termina<br>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <label style="margin-bottom:0;"><input type="radio" name="fin_recurrencia" value="sinfin" checked onchange="mostrarFinRecurrenciaPersonalizada(this)"> Nunca</label>
+          <label style="margin-bottom:0;"><input type="radio" name="fin_recurrencia" value="fecha" onchange="mostrarFinRecurrenciaPersonalizada(this)"> El</label>
+          <label style="margin-bottom:0;"><input type="radio" name="fin_recurrencia" value="repeticiones" onchange="mostrarFinRecurrenciaPersonalizada(this)"> Después de</label>
+          <span id="fin-recurrencia-personalizada"></span>
+        </div>
+        <select id="e-fin-repeticion" onchange="renderFinRecurrenciaCamposEvento()" style="margin-top:4px;padding:5px 6px;border-radius:7px;border:1px solid #e0e7ef;">
+          <option value="sinfin">Sin fin</option>
+          <option value="fecha">Hasta fecha</option>
+          <option value="repeticiones">Tras repeticiones</option>
+        </select>
+      </label>
+
+  <label style="grid-column:span 1;font-weight:400;font-size:0.98em;color:#334155;">Tarea<br>
+        <select id="e-tarea" required>
+          <option value="">Selecciona tarea...</option>
+          {% for t in tareas %}
+            <option value="{{ t.id }}">{{ t.nombre }}</option>
+          {% empty %}
+            <option value="">No hay tareas disponibles</option>
+          {% endfor %}
+        </select>
+      </label>
+  <label style="grid-column:span 1;font-weight:400;font-size:0.98em;color:#334155;">Miembro<br>
+        <select id="e-miembro" required>
+          <option value="">Selecciona miembro...</option>
+          {% for m in miembros %}
+            <option value="{{ m.id }}">{{ m.nombre }}</option>
+          {% endfor %}
+        </select>
+      </label>
+  <label style="grid-column:span 2;font-weight:400;font-size:0.98em;color:#334155;">Descripción<br>
+        <textarea id="e-descripcion" rows="2" style="width:100%;resize:vertical;"></textarea>
+      </label>
+  <label style="grid-column:span 1;font-weight:400;font-size:0.98em;color:#334155;">Estado<br>
+        <select id="e-estado">
+          <option value="pendiente">Pendiente</option>
+          <option value="realizada">Realizada</option>
+          <option value="aprobada">Aprobada</option>
+          <option value="cancelada">Cancelada</option>
+        </select>
+      </label>
+      <div class="actions" style="grid-column:span 4;text-align:center;margin-top:10px;">
+  <button class="btn" id="b-crear-evento" type="submit" style="border:none;border-radius:8px;padding:8px 18px;background:#0ea5e9;color:#fff;cursor:pointer;font-size:1.05em;font-weight:500;box-shadow:none;transition:background 0.2s;">Crear evento</button>
+      </div>
+    </form>
+  </div>
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    flatpickr("#e-hora-inicio", {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      time_24hr: true,
+      minuteIncrement: 5
+    });
+    flatpickr("#e-hora-fin", {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      time_24hr: true,
+      minuteIncrement: 5
+    });
+  </script>
+  <div style="margin-bottom:18px;padding:18px 0 8px 0;border-bottom:2px solid #e0e7ef;">
+    <div style="margin-top:12px;overflow-x:auto;padding:0;border-top:2px solid #e0e7ef;background:#f8fafc;border-radius:14px;box-shadow:0 2px 12px #0ea5e91a;">
+      <div style="padding:16px 12px 0 12px;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:6px;">
+      <span style="display:flex;align-items:center;font-size:1.18em;font-weight:800;color:#0ea5e9;gap:7px;">
+        Lista de eventos
+      </span>
+      
+    </div>
+        <form method="get" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;justify-content:center;margin-bottom:8px;">
+          <span style="display:flex;align-items:center;font-size:1.08em;font-weight:700;color:#334155;gap:6px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;"><rect x="3" y="6" width="18" height="12" rx="3" stroke="#334155" stroke-width="2" fill="#f1f5f9"/><path d="M7 10h10M7 14h6" stroke="#334155" stroke-width="2" stroke-linecap="round"/></svg>
+        <div style="width:100%;margin-top:18px;margin-bottom:8px;font-weight:700;color:#0ea5e9;font-size:1.1em;">Filtro de búsqueda: </div>
+      </span>
+          <label style="margin-bottom:0;">Miembro
+            <select name="miembro" style="min-width:90px;">
+              <option value="">Todos</option>
+              {% for m in miembros %}
+                <option value="{{ m.id }}" {% if request.GET.miembro == m.id|stringformat:'s' %}selected{% endif %}>{{ m.nombre }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label style="margin-bottom:0;">Categoría
+            <select name="categoria" style="min-width:90px;">
+              <option value="">Todas</option>
+              {% for c in categorias %}
+                <option value="{{ c.id }}" {% if request.GET.categoria == c.id|stringformat:'s' %}selected{% endif %}>{{ c.nombre }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label style="margin-bottom:0;">Estado
+            <select name="estado" style="min-width:90px;">
+              <option value="">Todos</option>
+              <option value="pendiente" {% if request.GET.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+              <option value="hecho" {% if request.GET.estado == 'hecho' %}selected{% endif %}>Hecho</option>
+              <option value="aprobado" {% if request.GET.estado == 'aprobado' %}selected{% endif %}>Aprobado</option>
+            </select>
+          </label>
+          <button type="submit" style="padding:5px 12px;background:#0ea5e9;color:#fff;border:none;border-radius:8px;">Buscar</button>
+        </form>
+      </div>
+      <div style="padding:0 12px 12px 12px;">
+
+        <table style="width:100%;border-collapse:collapse;font-size:0.98em;background:#fff;border-radius:12px;box-shadow:0 4px 24px #0ea5e91a;">
+          <thead>
+            <tr style="background:#f1f5f9;color:#334155;">
+              <th style="padding:6px 3px;text-align:left;">Fecha inicio</th>
+              <th style="padding:6px 3px;text-align:left;">Fecha fin</th>
+              <th style="padding:6px 3px;text-align:left;">Duración</th>
+              <th style="padding:6px 3px;text-align:left;">Tarea</th>
+              <th style="padding:6px 3px;text-align:left;">Miembro</th>
+              <th style="padding:6px 3px;text-align:left;">Descripción</th>
+              <th style="padding:6px 3px;text-align:left;">Recurrencia</th>
+              <th style="padding:6px 3px;text-align:left;">Estado</th>
+              <th style="padding:6px 3px;text-align:left;">Creado por</th>
+              <th style="padding:6px 3px;text-align:left;">Creado en</th>
+              <th style="padding:6px 3px;text-align:left;">Actualizado en</th>
+              <th style="padding:6px 3px;text-align:left;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in eventos_paginated %}
+            <tr>
+              <td style="padding:5px 3px;">{{ e.inicio|date:"Y-m-d H:i" }}</td>
+              <td style="padding:5px 3px;">{{ e.fin|date:"Y-m-d H:i" }}</td>
+              <td style="padding:5px 3px;">{{ e.duracion_minutos }} min</td>
+              <td style="padding:5px 3px;">{{ e.tarea.nombre }}</td>
+              <td style="padding:5px 3px;">{{ e.miembro.nombre }}</td>
+              <td style="padding:5px 3px;">{{ e.tarea.descripcion|default:"-" }}</td>
+              <td style="padding:5px 3px;">
+                {% if e.tarea.recurrencia_tipo != 'none' %}
+                  {{ e.tarea.recurrencia_tipo|capfirst }}
+                  {% if e.tarea.recurrencia_dias %}, días: {{ e.tarea.recurrencia_dias }}{% endif %}
+                  {% if e.tarea.recurrencia_dia_mes %}, día mes: {{ e.tarea.recurrencia_dia_mes }}{% endif %}
+                  {% if e.tarea.recurrencia_mes %}, mes: {{ e.tarea.recurrencia_mes }}{% endif %}
+                  {% if e.tarea.recurrencia_fecha_inicio %}, desde: {{ e.tarea.recurrencia_fecha_inicio|date:"Y-m-d" }}{% endif %}
+                  {% if e.tarea.recurrencia_fecha_fin %}, hasta: {{ e.tarea.recurrencia_fecha_fin|date:"Y-m-d" }}{% endif %}
+                {% else %}-{% endif %}
+              </td>
+              <td style="padding:5px 3px;">{{ e.estado }}</td>
+              <td style="padding:5px 3px;">{{ e.creado_por.username|default:"-" }}</td>
+              <td style="padding:5px 3px;">{{ e.creado_en|date:"Y-m-d H:i" }}</td>
+              <td style="padding:5px 3px;">{{ e.actualizado_en|date:"Y-m-d H:i" }}</td>
+              <td style="padding:5px 3px;">
+                <button class="btn" style="background:#0ea5e9;color:#fff;padding:2px 7px;border-radius:7px;border:none;font-size:0.93em;cursor:pointer;margin-right:2px;" title="Editar" onclick="editarEvento({{ e.id }})">✏️</button>
+                <button class="btn warn" style="background:#ef4444;color:#fff;padding:2px 7px;border-radius:7px;border:none;font-size:0.93em;cursor:pointer;" title="Eliminar" onclick="eliminarEvento({{ e.id }})">🗑️</button>
+                <button class="btn" style="background:#f59e42;color:#fff;padding:2px 7px;border-radius:7px;border:none;font-size:0.93em;cursor:pointer;margin-left:2px;" title="Borrar futuros" onclick="abrirModalBorrarFuturos({{ e.tarea.id }}, '{{ e.inicio|date:'Y-m-d' }}')">🧹</button>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;color:#64748b;padding:10px;">No hay eventos registrados.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div style="margin:8px 0 0 0;display:flex;justify-content:center;gap:5px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:0.98em;font-weight:bold;">Total: {{ eventos_paginated.paginator.count }}</span>
+          <a href="?page=1" class="btn{% if not eventos_paginated.has_previous %} disabled{% endif %}" {% if not eventos_paginated.has_previous %}tabindex="-1" aria-disabled="true" style="pointer-events:none;opacity:0.5;"{% endif %}>&#171; Inicio</a>
+          {% if eventos_paginated.has_previous %}
+            <a href="?page={{ eventos_paginated.previous_page_number }}" class="btn">&laquo; Anterior</a>
+          {% else %}
+            <span class="btn disabled" style="pointer-events:none;opacity:0.5;">&laquo; Anterior</span>
+          {% endif %}
+          <span style="padding:3px 6px;">Página {{ eventos_paginated.number }} de {{ eventos_paginated.paginator.num_pages }}</span>
+          {% if eventos_paginated.has_next %}
+            <a href="?page={{ eventos_paginated.next_page_number }}" class="btn">Siguiente &raquo;</a>
+          {% else %}
+            <span class="btn disabled" style="pointer-events:none;opacity:0.5;">Siguiente &raquo;</span>
+          {% endif %}
+          <a href="?page={{ eventos_paginated.paginator.num_pages }}" class="btn{% if not eventos_paginated.has_next %} disabled{% endif %}" {% if not eventos_paginated.has_next %}tabindex="-1" aria-disabled="true" style="pointer-events:none;opacity:0.5;"{% endif %}>&#187; Fin</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+function editarEvento(id) {
+  abrirModalEditar(id);
+}
+</script>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function renderUnidadPersonalizada() {
+  var unidad = document.getElementById('unidad-personalizada').value;
+  var cont = document.getElementById('dias-personalizada');
+  var repiteEl = document.getElementById('se-repite-el');
+  if(unidad === 'dias') {
+    cont.innerHTML = '';
+    repiteEl.textContent = 'Todos los días';
+  } else if(unidad === 'semanas') {
+    cont.innerHTML = '<b>Días de la semana:</b> ' + ['L','M','X','J','V','S','D'].map(function(dia,i){
+      return `<label style='margin-right:6px;'><input type='checkbox' name='dias_semana' value='${i}' onchange='actualizarSeRepiteEl()'>${dia}</label>`;
+    }).join('');
+    actualizarSeRepiteEl();
+  } else if(unidad === 'meses') {
+    cont.innerHTML = '<label>Día del mes: <input type="number" min="1" max="31" name="dia_mes" style="width:60px;" onchange="actualizarSeRepiteEl()"></label>' +
+      '<div style="margin-top:8px;"><b>Meses:</b> ' + ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"].map(function(mes,i){
+        return `<label style='margin-right:6px;'><input type='checkbox' name='meses_ano' value='${i+1}' onchange='actualizarSeRepiteEl()'>${mes}</label>`;
+      }).join('') + '</div>';
+    actualizarSeRepiteEl();
+  } else if(unidad === 'anios') {
+    cont.innerHTML = '<label>Mes: <select name="mes_anio" onchange="actualizarSeRepiteEl()">' +
+      ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"].map(function(mes,i){
+        return `<option value='${i+1}'>${mes}</option>`;
+      }).join('') + '</select></label>' +
+      '<label style="margin-left:12px;">Día: <input type="number" min="1" max="31" name="dia_anio" style="width:60px;" onchange="actualizarSeRepiteEl()"></label>';
+    actualizarSeRepiteEl();
+  }
+}
+
+function actualizarSeRepiteEl() {
+  var unidad = document.getElementById('unidad-personalizada').value;
+  var repiteEl = document.getElementById('se-repite-el');
+  if(unidad === 'semanas') {
+    var dias = [];
+    document.querySelectorAll('input[name="dias_semana"]:checked').forEach(function(cb){
+      dias.push(['L','M','X','J','V','S','D'][cb.value]);
+    });
+    repiteEl.textContent = dias.length ? 'Cada semana el ' + dias.join(', ') : 'Selecciona los días';
+  } else if(unidad === 'meses') {
+    var dia = document.querySelector('input[name="dia_mes"]');
+    var meses = [];
+    document.querySelectorAll('input[name="meses_ano"]:checked').forEach(function(cb){
+      meses.push(["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"][cb.value-1]);
+    });
+    if(dia && dia.value && meses.length) {
+      repiteEl.textContent = 'Día ' + dia.value + ' de ' + meses.join(', ');
+    } else if(dia && dia.value) {
+      repiteEl.textContent = 'Día ' + dia.value + ' de cada mes';
+    } else {
+      repiteEl.textContent = 'Selecciona día y meses';
+    }
+  } else if(unidad === 'anios') {
+    var mes = document.querySelector('select[name="mes_anio"]');
+    var dia = document.querySelector('input[name="dia_anio"]');
+    if(mes && dia && dia.value) {
+      repiteEl.textContent = 'Cada año el ' + dia.value + ' de ' + mes.options[mes.selectedIndex].text;
+    } else {
+      repiteEl.textContent = 'Selecciona mes y día';
+    }
+  }
+}
+
+function mostrarFinRecurrenciaPersonalizada(sel) {
+  var cont = document.getElementById('fin-recurrencia-personalizada');
+  if(!cont) return;
+  if(sel.value === 'fecha') {
+    cont.innerHTML = "<input type='date' name='fecha_fin_recurrencia' style='margin-left:8px;'>";
+  } else if(sel.value === 'repeticiones') {
+    cont.innerHTML = "<input type='number' min='1' value='1' name='num_repeticiones' style='margin-left:8px;width:60px;'> repeticiones";
+  } else {
+    cont.innerHTML = '';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderUnidadPersonalizada();
+  document.getElementById('unidad-personalizada').addEventListener('change', renderUnidadPersonalizada);
+});
+  </script>
+<script>
+function getCSRF() {
+  const m = document.cookie.match(/csrftoken=([^;]+)/); return m ? m[1] : '';
+}
+
+function mostrarMensaje(msg, tipo='info') {
+  const div = document.getElementById('evento-mensaje');
+  div.textContent = msg;
+  div.style.display = 'block';
+  div.style.background = tipo==='error' ? '#fee2e2' : '#d1fae5';
+  div.style.color = tipo==='error' ? '#b91c1c' : '#065f46';
+  setTimeout(()=>{div.style.display='none';}, 3000);
+}
+
+function crearEvento(ev) {
+  ev.preventDefault();
+  const data = {
+    inicio: document.getElementById('e-fecha-inicio').value + 'T' + document.getElementById('e-hora-inicio').value,
+    fin: document.getElementById('e-fecha-fin').value + 'T' + document.getElementById('e-hora-fin').value,
+    tarea: document.getElementById('e-tarea') ? document.getElementById('e-tarea').value : '',
+    miembro: document.getElementById('e-miembro') ? document.getElementById('e-miembro').value : '',
+    estado: 'pendiente',
+  };
+  fetch('/api/eventos/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCSRF(),
+    },
+    body: JSON.stringify(data)
+  })
+  .then(r => r.json().then(j => ({ok:r.ok, data:j})))
+  .then(res => {
+    if(res.ok) {
+      mostrarMensaje('Evento creado correctamente');
+      setTimeout(()=>{location.reload();}, 1200);
+    } else {
+      mostrarMensaje('Error al crear evento: ' + (res.data.error || JSON.stringify(res.data)), 'error');
+    }
+  });
+}
+
+function editarEvento(id) {
+  // Ejemplo: solo cambiar estado a "pendiente" (puedes expandir para abrir modal/formulario)
+  fetch('/api/eventos/' + id + '/', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCSRF(),
+    },
+    body: JSON.stringify({estado: 'pendiente'})
+  })
+  .then r => r.json().then(j => ({ok:r.ok, data:j})))
+  .then(res => {
+    if(res.ok) {
+      mostrarMensaje('Evento editado correctamente');
+      setTimeout(()=>{location.reload();}, 1200);
+    } else {
+      mostrarMensaje('Error al editar evento: ' + (res.data.error || JSON.stringify(res.data)), 'error');
+    }
+  });
+}
+
+function eliminarEvento(id) {
+  if(!confirm('¿Seguro que quieres eliminar este evento?')) return;
+  fetch('/api/eventos/' + id + '/', {
+    method: 'DELETE',
+    headers: {
+      'X-CSRFToken': getCSRF(),
+    }
+  })
+  .then(r => {
+    if(r.ok) {
+      mostrarMensaje('Evento eliminado');
+      setTimeout(()=>{location.reload();}, 1200);
+    } else {
+      r.json().then(j => mostrarMensaje('Error al eliminar: ' + (j.error || JSON.stringify(j)), 'error'));
+    }
+  });
+}
+</script>
+{% endblock %}
