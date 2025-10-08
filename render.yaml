@@ -9,14 +9,14 @@ services:
       python manage.py migrate --noinput && \
       python manage.py collectstatic --noinput
     startCommand: >
-      bash -lc "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn hogar.wsgi:application --bind 0.0.0.0:$PORT --workers 3"
+      bash -lc "python manage.py migrate --noinput && python manage.py collectstatic --noinput && python scripts/create_demo.py && gunicorn hogar.wsgi:application --bind 0.0.0.0:$PORT --workers 3"
     envVars:
-      - key: SECRET_KEY
+      - key: DJANGO_SECRET_KEY
         value: "REPLACE_ME"
         sync: false
-      - key: DEBUG
+      - key: DJANGO_DEBUG
         value: "False"
-      - key: ALLOWED_HOSTS
+      - key: DJANGO_ALLOWED_HOSTS
         value: "*"
     autoDeploy: true
 
