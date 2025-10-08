@@ -317,7 +317,8 @@ import calendar
 def lista_tareas(request):
     # Lista de todas las tareas generales with paginación
     from django.core.paginator import Paginator
-    tareas = Tarea.objects.all()
+    # Ensure a consistent ordering for pagination
+    tareas = Tarea.objects.all().order_by('nombre')
     paginator = Paginator(tareas, 12)
     page_number = request.GET.get('page')
     try:

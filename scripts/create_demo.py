@@ -73,4 +73,24 @@ if __name__ == '__main__':
     create_demo_user_and_data()
     # Populate the fuller original demo dataset using built-in management commands
     run_management_seed_commands()
+    # ---- Ensure Miembro objects are linked to User accounts for demo display ----
+    try:
+        from django.contrib.auth import get_user_model
+        from tareas.models import Miembro
+        User = get_user_model()
+        for miembro in Miembro.objects.filter(usuario__isnull=True):
+            username = miembro.nombre.lower().replace(' ', '_')
+            user, created = User.objects.get_or_create(
+                username=username,
+                defaults={'is_staff': False, 'is_superuser': False, 'email': f'{username}@example.com'},
+            )
+            if created or not user.has_usable_password():
+                # default password for demo member accounts
+                user.set_password('Bien11')
+                user.save()
+            miembro.usuario = user
+            miembro.save(update_fields=['usuario'])
+            print(f'Linked miembro "{miembro.nombre}" -> user "{user.username}"')
+    except Exception as e:
+        print('Linking miembros to users failed:', e)
     print('Done.')
