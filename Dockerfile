@@ -21,10 +21,15 @@ ENV MEDIA_ROOT=/vol/media
 
 ENV DJANGO_SETTINGS_MODULE=hogar.settings
 
-# Run migrations, create demo data and collect static (best-effort)
-RUN python manage.py migrate --noinput || true
-RUN python scripts/create_demo.py || true
-RUN python manage.py collectstatic --noinput || true
+# Copy entrypoint and make executable
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Note: we run migrations and seed at container start (entrypoint) so we
+# operate against the runtime DATABASE_URL (useful for Render and other
+# hosted DB providers). The build step keeps a best-effort attempt but the
+# real work happens in the entrypoint.
 
 EXPOSE 8000
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["gunicorn", "hogar.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
