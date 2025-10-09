@@ -10,8 +10,7 @@ services:
       - static_volume:/vol/static
     environment:
       - DEBUG=True
-      - SECRET_KEY=unsafe-demo-secret
-    depends_on: []
+      - SECRET_KEY=REPLACE_ME_SECRET_KEY
 
 volumes:
   static_volume:

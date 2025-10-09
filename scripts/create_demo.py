@@ -23,15 +23,13 @@ def run_migrations():
         print('migrate error:', e)
 
 def create_demo_user_and_data():
+    # NOTE: For public demo repositories we avoid creating a hard-coded
+    # superuser with a known password. Admin accounts must be created
+    # manually by the maintainer or via an out-of-band secure process.
+    # The demo user (non-admin) is created later by the seed commands.
     from django.contrib.auth import get_user_model
     User = get_user_model()
-    username = 'demo_admin'
-    password = 'demo1234'
-    if not User.objects.filter(username=username).exists():
-        User.objects.create_superuser(username, 'demo@example.com', password)
-        print(f'Created superuser: {username} / {password}')
-    else:
-        print('Superuser already exists:', username)
+    print('Skipping creation of hard-coded superuser in public demo.')
 
     from tareas.models import Categoria, Miembro, Tarea, Evento
     from django.utils import timezone

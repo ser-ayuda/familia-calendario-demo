@@ -138,7 +138,7 @@ execute_from_command_line(['manage.py', 'runserver', '127.0.0.1:{1}'])
         Write-Host ("Could not open browser automatically: {0}" -f $_)
     }
 
-    Write-Host "Done. If the demo admin was created, credentials are demo_admin / demo1234."
+    Write-Host "Done. Credenciales demo: demo / demo (si se creó el usuario demo)."
 } Catch {
     Write-Error ("Error during start_demo: {0}" -f $_)
     Exit 1

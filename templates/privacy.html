@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Privacidad — Familia Calendario</title>
+  <link rel="stylesheet" href="{% static 'portfolio_summary.css' %}">
+</head>
+<body>
+  <main style="max-width:900px;margin:24px auto;padding:18px">
+    <h1>Política de Privacidad (Resumen)</h1>
+    <p>Familia Calendario es una demo educativa y de portfolio. Esta página explica de forma breve qué datos se recogen, por qué y cómo puedes ejercer tus derechos.</p>
+
+    <h2>Responsable del tratamiento</h2>
+    <p>Responsable: Proyecto Familia Calendario (demo).<br>Contacto para privacidad (placeholder): <a href="mailto:privacy@example.org">privacy@example.org</a>. Sustituir por contacto oficial en producción.</p>
+
+    <h2>Alcance y categorías de datos</h2>
+    <p>Esta aplicación gestiona únicamente datos mínimos necesarios para la demo: nombre de usuario, contraseñas gestionadas por Django (no accesibles en texto), tareas, descripciones y horarios relacionados con las actividades del hogar. No se recogen DNI, apellidos, números de identidad civil ni datos sensibles por defecto.</p>
+
+    <h2>Finalidad y base legal</h2>
+    <p>Finalidad: Autenticación de usuarios, gestión de tareas y horarios y mejora/soporte del servicio demo. Base legal: ejecución del servicio y consentimiento implícito del uso de la demo.</p>
+
+    <h2>Conservación</h2>
+    <p>Los datos asociados a una cuenta se conservan mientras la cuenta exista. Las solicitudes relacionadas con privacidad y los registros de auditoría se conservan durante un periodo documentado (por defecto, 5 años) para dar respuesta a obligaciones legales y de seguridad.</p>
+
+    <h2>Ejercicio de derechos</h2>
+    <p>Puedes solicitar acceso, rectificación, supresión, limitación u oposición, y portabilidad de tus datos enviando un correo a <a href="mailto:privacy@example.org">privacy@example.org</a>. Responderemos en un plazo máximo de 1 mes (posible ampliación justificada hasta 2 meses).</p>
+
+    <h2>Procedimiento operativo</h2>
+    <p>En esta demo las solicitudes se registran automáticamente (registro de auditoría). Actualmente el procesamiento de dichas solicitudes se realiza de forma manual por el administrador del servicio y queda documentado en los registros de auditoría. En producción se puede habilitar verificación adicional (por ejemplo, confirmación por correo) antes de ejecutar acciones de supresión.</p>
+
+    <h2>Medidas de seguridad</h2>
+    <ul>
+      <li>Se recomienda desplegar la aplicación bajo HTTPS/TLS en producción.</li>
+      <li>Cookies de sesión y CSRF se marcan como seguras cuando DEBUG está desactivado.</li>
+      <li>Se evita el almacenamiento de contraseñas en texto claro y los backups con datos reales deben limpiarse antes de compartir.</li>
+    </ul>
+
+    <p>Versión: 1.1 — 2025-10-09</p>
+  </main>
+</body>
+</html>

@@ -98,3 +98,30 @@ class Evento(models.Model):
     def duracion_minutos(self) -> int:
         return int((self.fin - self.inicio).total_seconds() // 60)
 
+
+class AuditLog(models.Model):
+    """Registro de auditoría simple para acciones relacionadas con identidades y datos personales.
+
+    Esto ayuda a cumplir con requisitos de trazabilidad (quién ha solicitado/ejecutado
+    la eliminación de datos, exportaciones, cambios de permisos, etc.).
+    """
+    ACTION_CHOICES = [
+        ('export', 'Export Data'),
+        ('deletion_requested', 'Deletion Requested'),
+        ('deletion_executed', 'Deletion Executed'),
+        ('user_created', 'User Created'),
+        ('permission_change', 'Permission Change'),
+    ]
+    action = models.CharField(max_length=32, choices=ACTION_CHOICES)
+    user = models.ForeignKey('auth.User', null=True, blank=True, on_delete=models.SET_NULL, related_name='audit_logs')
+    target_type = models.CharField(max_length=64, blank=True)
+    target_id = models.CharField(max_length=64, blank=True)
+    details = models.JSONField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.get_action_display()} - {self.user} - {self.created_at:%Y-%m-%d %H:%M}"
+

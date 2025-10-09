@@ -18,7 +18,7 @@ services:
       - static_volume:/vol/static
     environment:
       - DEBUG=False
-      - SECRET_KEY=unsafe-demo-secret
+      - SECRET_KEY=REPLACE_ME_SECRET_KEY
       - DATABASE_URL=postgres://familia:familia@db:5432/familia
     depends_on:
       - db

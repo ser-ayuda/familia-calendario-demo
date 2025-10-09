@@ -9,7 +9,7 @@ Este documento resume el estado del proyecto, los cambios realizados para la ver
   - Plantillas relacionadas con retos movidas a `templates/reto-backup/`.
   - Cambios de código no destructivos y backups `.reto.bak` creados para archivos editados.
   - Migraciones reconciliadas con la base de datos (uso de `--fake` cuando procedía).
-- Demo data creada (usuario `demo_admin` / `demo1234` si `scripts/create_demo.py` está activo).
+- Demo data creada (usuario `demo` / `demo` si `scripts/create_demo.py` está activo).
 
 ## Limpieza realizada (acción reciente)
 
@@ -49,7 +49,7 @@ Se han añadido además los siguientes cambios para facilitar el empaquetado fin
 
 ## Cómo presentar (guion de demostración)
 - Mostrar la página principal y la UI (abre `http://127.0.0.1:8000`).
-- Iniciar sesión con `demo_admin/demo1234` y navegar a `/miembros/`, `/tareas/`, `/calendario/`.
+- Iniciar sesión con `demo/demo` y navegar a `/miembros/`, `/tareas/`, `/calendario/`.
 - Explicar la decisión de neutralizar `retos` para la demo y mostrar `templates/reto-backup/` como evidencia de preservación no destructiva.
 - Hablar brevemente sobre la estrategia de migraciones (uso de `--fake` para reconciliar con la DB existente) y por qué fue necesaria.
 

@@ -34,7 +34,7 @@ Archivos relevantes
 - `templates/registration/login.html` — shim que reutiliza `templates/login.html` para la vista de login.
 
 Credenciales demo
-- admin: `demo_admin` / `demo1234` (si `scripts/create_demo.py` crea el superusuario, que es el comportamiento por defecto)
+- Usuario: `demo` / `demo` (usuario de pruebas para la demo)
 
 Notas y troubleshooting
 - Si el script detecta que el puerto ya está en uso, por defecto no mata procesos para evitar pérdida de datos; usa `-Force` para forzar cierre.
@@ -59,7 +59,7 @@ Es una copia ligera del proyecto original (basado en `C:\Users\j\familia_calenda
 - Plantillas mínimas añadidas para que la demo funcione sin errores (por ejemplo `base.html`, `tareas_lista.html`, `calendario.html`, `admin_miembros.html`).
 - `scripts/start_demo.ps1` — prepara venv, aplica migraciones, crea datos demo y abre el servidor en una nueva ventana; guarda PID en `.server_pid`.
 - `scripts/stop_demo.ps1` — detiene el proceso registrado en `.server_pid`.
-- `scripts/create_demo.py` — crea superusuario demo y datos de ejemplo.
+-- `scripts/create_demo.py` — crea datos demo y un usuario de pruebas `demo`.
 
 ## Requisitos (local)
 
@@ -78,8 +78,8 @@ Es una copia ligera del proyecto original (basado en `C:\Users\j\familia_calenda
 
 ## Credenciales demo
 
-- Usuario: `demo_admin`
-- Contraseña: `demo1234`
+- Usuario: `demo`
+- Contraseña: `demo`
 
 > Nota: no uses estas credenciales en producción; son sólo para la demo local.
 
@@ -127,7 +127,7 @@ Si la ventana donde se lanzó el servidor muestra un error, revisa esa ventana: 
 
 - `DEBUG` está activado para facilitar debug en local (no usar en producción).
 - La API (`/api/`) está protegida por defecto (DRF `IsAuthenticated`). Si quieres mostrar la API pública en el demo, edita `hogar/settings.py` y ajusta `REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES']` a `['rest_framework.permissions.AllowAny']` (solo para demo).
-- El script `scripts/create_demo.py` crea el superusuario `demo_admin` con contraseña `demo1234`.
+ - El script `scripts/create_demo.py` crea datos demo y el usuario de pruebas `demo`.
 
 ## Plantillas y cambios realizados
 

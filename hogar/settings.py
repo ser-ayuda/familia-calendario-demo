@@ -7,6 +7,22 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'demo-secret-key')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# --- Security defaults helpful for production and compliance ---
+# These can be overridden via environment variables when deploying.
+SECURE_SSL_REDIRECT = os.environ.get('DJANGO_SECURE_SSL_REDIRECT', 'False') == 'True'
+SESSION_COOKIE_SECURE = os.environ.get('DJANGO_SESSION_COOKIE_SECURE', 'True') == 'True'
+CSRF_COOKIE_SECURE = os.environ.get('DJANGO_CSRF_COOKIE_SECURE', 'True') == 'True'
+SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_SECURE_HSTS_SECONDS', '3600'))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = os.environ.get('DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS', 'True') == 'True'
+SECURE_HSTS_PRELOAD = os.environ.get('DJANGO_SECURE_HSTS_PRELOAD', 'False') == 'True'
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = os.environ.get('DJANGO_X_FRAME_OPTIONS', 'DENY')
+
+# In production we must not use the demo fallback SECRET_KEY. Fail fast if not configured.
+if not DEBUG and SECRET_KEY in (None, '', 'demo-secret-key'):
+    raise RuntimeError('DJANGO_SECRET_KEY must be set in production (no demo fallback allowed)')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,6 +79,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': int(os.environ.get('DJANGO_MIN_PASSWORD_LENGTH', 10))},
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -89,11 +106,21 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ],
 }
+
+# Only allow BasicAuthentication for debugging/testing. In production use token/ JWT / OAuth2.
+REST_AUTH_CLASSES = [
+    'rest_framework.authentication.SessionAuthentication',
+]
+if DEBUG:
+    REST_AUTH_CLASSES.append('rest_framework.authentication.BasicAuthentication')
+
+REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = REST_AUTH_CLASSES
+
+# Session security
+SESSION_COOKIE_AGE = int(os.environ.get('DJANGO_SESSION_COOKIE_AGE', 60 * 60 * 8))  # 8 hours by default
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
 
 LOGGING = {
     'version': 1,

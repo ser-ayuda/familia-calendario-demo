@@ -39,8 +39,9 @@ class Command(BaseCommand):
         admin_user, _ = User.objects.get_or_create(
             username='admin', defaults={'is_staff': True, 'is_superuser': True}
         )
-        if not admin_user.password:
-            admin_user.set_password('admin')
+        # Do not set a known password for admin in a public repo; mark unusable
+        if not admin_user.has_usable_password():
+            admin_user.set_unusable_password()
             admin_user.save()
 
         colores = ["#e6194b", "#3cb44b", "#0082c8", "#f58231", "#911eb4"]
@@ -167,6 +168,8 @@ class Command(BaseCommand):
 
         # Usuario de pruebas (no admin)
         demo, created = User.objects.get_or_create(username='demo', defaults={'is_staff': False, 'is_superuser': False})
+        # For the demo user set a usable but non-secret password locally; if
+        # deploying publicly, consider rotating or creating users via secure flow.
         if created or not demo.has_usable_password():
             demo.set_password('demo')
             demo.save()

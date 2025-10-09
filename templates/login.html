@@ -1,9 +1,11 @@
 <!doctype html>
+{% load static %}
 <html lang="es">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Acceso | Calendario Familiar</title>
+  <title>Acceso | Calendario Familiar</title>
+  <link rel="stylesheet" href="{% static 'portfolio_summary.css' %}">
     <style>
       :root {
         --primary-color: #4f46e5;
@@ -117,7 +119,54 @@
       }
     </style>
   </head>
-  <body>
+    <body>
+    <!-- Resumen de portafolio: información visual junto al login -->
+    <div class="portfolio-summary-wrapper">
+      <!-- Inicio: resumen-portfolio -->
+      <div class="portfolio-summary">
+        <div class="ps-left">
+          <img src="{% static 'calendario_familiar.svg' %}" alt="Familia Calendario" class="ps-logo" />
+        </div>
+        <div class="ps-right">
+          <h2>Familia Calendario — Demo</h2>
+          <p class="ps-lead">Aplicación demo para gestionar tareas y eventos familiares. Ideal para mostrar en portafolio: desplegada en la nube, responsive y preparada para móvil.</p>
+          <ul class="ps-tech">
+            <li>Python 3.11+ · Django 5</li>
+            <li>Docker (container) · Gunicorn</li>
+            <li>Base de datos: PostgreSQL</li>
+            <li>Deploy: Render (free tier) — imagen container</li>
+            <li>Django REST Framework · WhiteNoise · PWA-ready</li>
+          </ul>
+          <p class="ps-cloud">Código en GitHub. Deploy público en Render (plan gratuito). El administrador completo está disponible en el repositorio o puede solicitarse si se necesita acceso.</p>
+
+          <div class="ps-details">
+            <strong>Demo:</strong> <code>demo</code> / <code>demo</code>
+            <hr style="border:none;border-top:1px solid #eef2ff;margin:8px 0 10px 0" />
+            <strong>Detalles técnicos</strong>
+            <div style="margin-top:6px">
+              <strong style="display:block;margin-top:8px;color:#0f172a">Backend</strong>
+              <ul style="margin:6px 0 8px 18px;color:#334155">
+                <li>APIs REST con Django REST Framework</li>
+                <li>Migraciones gestionadas vía <code>manage.py migrate</code> y scripts de seed (datos demo)</li>
+                <li>Autenticación con usuarios Django y relaciones Miembro ↔ Usuario</li>
+                <li>Despliegue en container con Gunicorn y WhiteNoise para servir estáticos</li>
+              </ul>
+
+              <strong style="display:block;margin-top:6px;color:#0f172a">Frontend</strong>
+              <ul style="margin:6px 0 0 18px;color:#334155">
+                <li>Plantillas Django (HTML/CSS) con SVGs y diseño responsive móvil</li>
+                <li>PWA: <code>manifest.json</code> y <code>service-worker.js</code> incluidos</li>
+                <li>Optimizado para compatibilidad y rendimiento en dispositivos móviles</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="ps-cta"><a href="https://github.com/ser-ayuda/familia-calendario-demo" target="_blank" rel="noopener">Ver código en GitHub</a></p>
+        </div>
+      </div>
+      <!-- Fin: resumen-portfolio -->
+    </div>
+    {% include 'cookie_banner.html' %}
     {% if messages %}
       <div style="
         position:fixed;

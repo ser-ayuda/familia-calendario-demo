@@ -104,7 +104,7 @@ def demo_public(request):
     for t in tareas_qs:
         html += f"<li><strong>{t.nombre}</strong>: {str(t.descripcion)[:120]}</li>"
     html += "</ul>"
-    html += "<p>Usuario demo admin: <code>demo_admin</code> / <code>demo1234</code></p>"
+    html += "<p>Usuario demo: <code>demo</code> / <code>demo</code></p>"
     html += "</body></html>"
     return HttpResponse(html)
 # Vista de administración de eventos generados
@@ -799,5 +799,57 @@ from django.shortcuts import render
 
 def politica_privacidad(request):
     return render(request, "privacidad.html")
+
+
+@login_required
+def request_data_export(request):
+    """Permite a un usuario autenticado solicitar la exportación de sus datos personales.
+
+    Para la demo, devolvemos JSON con los datos principales y registramos la acción en AuditLog.
+    En producción, esto debería generar un paquete preparado para entrega (ZIP con datos) y
+    control de acceso adicional.
+    """
+    from .models import AuditLog, Miembro
+    user = request.user
+    miembro = None
+    try:
+        miembro = user.miembro
+    except Exception:
+        miembro = None
+
+    data = {
+        'username': user.username,
+        'email': getattr(user, 'email', ''),
+        'miembro': {'id': miembro.id, 'nombre': miembro.nombre} if miembro else None,
+    }
+    # Registrar auditoría
+    try:
+        AuditLog.objects.create(action='export', user=user, details=data)
+    except Exception:
+        pass
+    from django.http import JsonResponse
+    return JsonResponse({'ok': True, 'data': data})
+
+
+@login_required
+def request_account_deletion(request):
+    """Solicita la eliminación de la cuenta del usuario (proceso manual/automatizable).
+
+    Mecanismo: marca una entrada de AuditLog con action='deletion_requested'.
+    El borrado efectivo puede requerir verificación por el responsable (para cumplir
+    adecuadamente RGPD/LOPDGDD y preservar evidencias legales durante el periodo
+    requerido).
+    """
+    from .models import AuditLog
+    user = request.user
+    reason = request.POST.get('reason', '') if request.method == 'POST' else ''
+    try:
+        AuditLog.objects.create(action='deletion_requested', user=user, details={'reason': reason})
+    except Exception:
+        pass
+    from django.shortcuts import redirect
+    from django.contrib import messages
+    messages.info(request, 'Solicitud de eliminación registrada. Un administrador la procesará.')
+    return redirect('home')
 
 

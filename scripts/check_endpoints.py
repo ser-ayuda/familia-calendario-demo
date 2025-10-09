@@ -7,8 +7,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 BASE = 'http://127.0.0.1:8000'
-ADMIN_USER = 'demo_admin'
-ADMIN_PASS = 'demo1234'
+ADMIN_USER = 'demo'
+ADMIN_PASS = 'demo'
 
 endpoints = [
     '/',

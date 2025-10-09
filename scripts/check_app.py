@@ -39,8 +39,8 @@ def main():
         sys.exit(2)
 
     payload = {
-        'username': 'demo_admin',
-        'password': 'demo1234',
+        'username': 'demo',
+        'password': 'demo',
         'csrfmiddlewaretoken': csrf,
         'next': '/',
     }

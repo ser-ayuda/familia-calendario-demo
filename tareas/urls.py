@@ -36,5 +36,7 @@ urlpatterns = [
     path('avisos/marcar_visto/<int:aviso_id>/', marcar_aviso_visto, name='marcar_aviso_visto'),
     path('api/tareas/<int:tarea_id>/borrar_eventos_futuros/', views.borrar_eventos_futuros, name='borrar_eventos_futuros'),
     path('privacidad/', politica_privacidad, name='politica_privacidad'),
+    path('privacy/request-export/', views.request_data_export, name='request_data_export'),
+    path('privacy/request-deletion/', views.request_account_deletion, name='request_account_deletion'),
 ]
 

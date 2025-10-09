@@ -18,8 +18,8 @@ if not csrf:
 print('csrf token found?', bool(csrf))
 
 payload = {
-    'username': 'demo_admin',
-    'password': 'demo1234',
+    'username': 'demo',
+    'password': 'demo',
 }
 if csrf:
     payload['csrfmiddlewaretoken'] = csrf
