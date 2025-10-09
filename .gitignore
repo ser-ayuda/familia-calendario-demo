@@ -18,3 +18,9 @@ backup_for_portfolio.zip
 *.swp
 Thumbs.db
 .DS_Store
+
+# Temp reports and logs
+report_*.json
+*.log
+.env
+.venv/
