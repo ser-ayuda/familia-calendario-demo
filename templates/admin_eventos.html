@@ -585,26 +585,9 @@ function crearEvento(ev) {
   });
 }
 
-function editarEvento(id) {
-  // Ejemplo: solo cambiar estado a "pendiente" (puedes expandir para abrir modal/formulario)
-  fetch('/api/eventos/' + id + '/', {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': getCSRF(),
-    },
-    body: JSON.stringify({estado: 'pendiente'})
-  })
-  .then r => r.json().then(j => ({ok:r.ok, data:j})))
-  .then(res => {
-    if(res.ok) {
-      mostrarMensaje('Evento editado correctamente');
-      setTimeout(()=>{location.reload();}, 1200);
-    } else {
-      mostrarMensaje('Error al editar evento: ' + (res.data.error || JSON.stringify(res.data)), 'error');
-    }
-  });
-}
+// Note: the editable-modal version of editarEvento is defined earlier (abrirModalEditar).
+// The duplicate PATCH-based editarEvento implementation was removed because it
+// contained a syntax error that broke subsequent JS (including eliminarEvento).
 
 function eliminarEvento(id) {
   if(!confirm('¿Seguro que quieres eliminar este evento?')) return;
