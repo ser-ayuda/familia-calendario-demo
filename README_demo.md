@@ -2,6 +2,108 @@
 
 Este repositorio incluye scripts auxiliares para arrancar y parar rápidamente una copia demo del proyecto.
 
+## Documentación ampliada — guía paso a paso
+
+Esta sección recoge instrucciones detalladas para reproducir la demo localmente, alternativas con fixtures, verificación rápida y una checklist para preparar el repositorio antes de publicarlo en un perfil (LinkedIn/GitHub). Es intencionalmente exhaustiva para que puedas compartir el enlace con confianza.
+
+### Requisitos mínimos
+- Windows PowerShell (pwsh)
+- Python 3.11+ (probado con 3.13)
+- Git (para clonar el repo o actualizar)
+
+### Opción A — arranque rápido (scripts PowerShell)
+
+1. Desde la raíz del repositorio ejecuta:
+
+```powershell
+.\scripts\start_demo.ps1 -Port 8000 -Force
+```
+
+2. El script hace lo siguiente (resumen): crea `.venv` si hace falta, instala dependencias, aplica migraciones y ejecuta `scripts/create_demo.py` (idempotente). Abre una nueva ventana con el servidor y guarda el PID en `.server_pid`.
+
+3. Para detener:
+
+```powershell
+.\scripts\stop_demo.ps1 -Port 8000 -Force
+```
+
+### Opción B — reproducir demo a partir de fixtures (sin `db.sqlite3`)
+
+1. Crear y activar virtualenv (PowerShell):
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+2. Instalar dependencias y aplicar migraciones:
+
+```powershell
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe manage.py migrate
+```
+
+3. Cargar fixtures en el orden correcto:
+
+```powershell
+.venv\Scripts\python.exe manage.py loaddata fixtures/contenttypes.json fixtures/auth.json fixtures/tareas.json
+```
+
+4. Ejecutar servidor:
+
+```powershell
+.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8000
+```
+
+5. Accede con las credenciales demo:
+
+- Usuario: `demo`
+- Contraseña: `demo`
+
+Nota: `fixtures/auth.json` ha sido sanitizado — la mayoría de cuentas tienen contraseña reemplazada por `"!"` para evitar exponer hashes; la cuenta `demo` mantiene una contraseña válida (`demo`) para facilitar pruebas.
+
+### Verificaciones y pruebas locales
+- Ver PID guardado: `Get-Content .server_pid`
+- Comprobar que el servidor responde: `Invoke-WebRequest http://127.0.0.1:8000 -UseBasicParsing`
+- Probar rutas clave: `/tareas/`, `/calendario/`, `/demo/`, `/gestion/`.
+- Iniciar sesión con `demo/demo` y abrir `/gestion/` para comprobar las vistas de administración.
+
+### Troubleshooting rápido
+- Si `loaddata` falla por codificación en Windows, asegúrate de ejecutar con `.venv\Scripts\python.exe` y que los ficheros JSON estén en UTF-8. Los fixtures incluidos ya lo están.
+- Si `start_demo.ps1` no abre el servidor por conflicto de puerto, usa `-Force` para terminar el proceso que esté ocupando el puerto.
+- Si ves errores 500, revisa `server_err.log` y el output en la ventana donde `start_demo.ps1` lanzó el servidor.
+
+### Checklist antes de publicar a LinkedIn / portafolio
+Marca cada punto si ya está completado:
+
+- [x] `LICENSE` (MIT) incluido.
+- [x] `COMPLIANCE.md` con la checklist de saneamiento.
+- [x] Backups y logs removidos a `removed_for_portfolio/`.
+- [x] `fixtures/` sanitizados (`auth.json` neutraliza contraseñas salvo `demo`).
+- [x] `README_demo.md` y `README.md` explicativos y con instrucciones reproducibles.
+- [x] `assets/social.png` y `assets/linkedin_post.md` para la publicación.
+- [ ] (opcional) Reemplazar nombres de ejemplo en `fixtures/tareas.json` por identificadores anónimos (`member_1`, `member_2`) si prefieres no mostrar términos como `mamá`/`papá` en el repo.
+
+Si quieres que haga la anonimización automática de `fixtures/tareas.json` (re-mapeo de usuarios y FK references preservadas), dímelo y lo hago; lo dejo desactivado por defecto porque los nombres actuales son claramente marcados como ejemplos en los READMEs.
+
+### Publicación en LinkedIn — guía breve
+- Usa `assets/social.png` (1200x627) y el texto en `assets/linkedin_post.md`.
+- Antes de publicar: revisa que el repo público en GitHub apunte a la rama `main` que contiene los fixtures y la `README_demo.md` mejorada.
+- En la publicación enlaza a la demo en Render (si estás publicando la demo en un host público) o al repo en GitHub si solo compartes el código.
+
+Sugerencia: publica la entrada con una breve explicación técnica (stack, retos resueltos) y añade 2 capturas (home, calendario). Si quieres, puedo generar las capturas automáticamente y añadirlas a `demo_screenshots/`.
+
+---
+
+Si quieres que continúe y haga cualquiera de las tareas siguientes ahora, marca una opción:
+
+1. Anonimizar nombres en `fixtures/tareas.json` (re-mapeo automático y actualización del fixture).
+2. Generar capturas `demo_screenshots/` (login, calendario, tareas) y añadirlas al repo.
+3. Preparar `portfolio_minimal.zip` sin `db.sqlite3` (solo migraciones + scripts/create_demo.py).
+
+Dime cuál prefieres y lo hago.
+
+
 Requisitos
 - Windows PowerShell (pwsh)
 - Python + venv (el script crea `.venv` si falta)
