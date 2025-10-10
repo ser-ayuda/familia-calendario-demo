@@ -1,0 +1,1754 @@
+[
+{
+  "model": "tareas.aviso",
+  "pk": 1,
+  "fields": {
+    "mensaje": "Este es un aviso de ejemplo para el panel de administración.",
+    "nivel": "INFO",
+    "creado_en": "2025-10-09T16:43:06.539Z",
+    "visto": true,
+    "usuario": null
+  }
+},
+{
+  "model": "tareas.aviso",
+  "pk": 2,
+  "fields": {
+    "mensaje": "Este es un aviso de ejemplo para el panel de administración.",
+    "nivel": "INFO",
+    "creado_en": "2025-10-10T14:27:42.760Z",
+    "visto": false,
+    "usuario": null
+  }
+},
+{
+  "model": "tareas.categoria",
+  "pk": 1,
+  "fields": {
+    "nombre": "Prueba",
+    "descripcion": ""
+  }
+},
+{
+  "model": "tareas.categoria",
+  "pk": 2,
+  "fields": {
+    "nombre": "Cocina",
+    "descripcion": "Tareas de cocina"
+  }
+},
+{
+  "model": "tareas.categoria",
+  "pk": 3,
+  "fields": {
+    "nombre": "Limpieza",
+    "descripcion": "Tareas de limpieza"
+  }
+},
+{
+  "model": "tareas.categoria",
+  "pk": 4,
+  "fields": {
+    "nombre": "Mascotas",
+    "descripcion": "Cuidado de mascotas"
+  }
+},
+{
+  "model": "tareas.categoria",
+  "pk": 5,
+  "fields": {
+    "nombre": "Habitación",
+    "descripcion": "Tareas de habitación"
+  }
+},
+{
+  "model": "tareas.miembro",
+  "pk": 3,
+  "fields": {
+    "nombre": "Miembro prueba",
+    "color_hex": "#888888",
+    "icono": "",
+    "usuario": 3
+  }
+},
+{
+  "model": "tareas.miembro",
+  "pk": 4,
+  "fields": {
+    "nombre": "Mamá",
+    "color_hex": "#e6194b",
+    "icono": "👩",
+    "usuario": 5
+  }
+},
+{
+  "model": "tareas.miembro",
+  "pk": 5,
+  "fields": {
+    "nombre": "Papá",
+    "color_hex": "#3cb44b",
+    "icono": "👨",
+    "usuario": 6
+  }
+},
+{
+  "model": "tareas.miembro",
+  "pk": 6,
+  "fields": {
+    "nombre": "Hijo 1",
+    "color_hex": "#0082c8",
+    "icono": "🧒",
+    "usuario": 7
+  }
+},
+{
+  "model": "tareas.miembro",
+  "pk": 7,
+  "fields": {
+    "nombre": "Hijo 2",
+    "color_hex": "#f58231",
+    "icono": "👦",
+    "usuario": 8
+  }
+},
+{
+  "model": "tareas.miembro",
+  "pk": 8,
+  "fields": {
+    "nombre": "Abuela",
+    "color_hex": "#911eb4",
+    "icono": "👵",
+    "usuario": 9
+  }
+},
+{
+  "model": "tareas.miembro",
+  "pk": 9,
+  "fields": {
+    "nombre": "Admin",
+    "color_hex": "#888888",
+    "icono": "",
+    "usuario": 4
+  }
+},
+{
+  "model": "tareas.miembro",
+  "pk": 10,
+  "fields": {
+    "nombre": "Demo",
+    "color_hex": "#111827",
+    "icono": "👤",
+    "usuario": 10
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 5,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 30,
+    "nombre": "Tarea prueba 1760027637",
+    "descripcion": "",
+    "icono": "🛠️",
+    "categoria": 1,
+    "tag": "",
+    "puntuacion": 1,
+    "creado_por": 3
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 6,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 15,
+    "nombre": "Lavar platos",
+    "descripcion": "Tarea de Cocina",
+    "icono": "🍽️",
+    "categoria": 2,
+    "tag": "lavar",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 7,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 10,
+    "nombre": "Sacar basura",
+    "descripcion": "Tarea de Limpieza",
+    "icono": "🧹",
+    "categoria": 3,
+    "tag": "basura",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 8,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 30,
+    "nombre": "Pasear perro",
+    "descripcion": "Tarea de Mascotas",
+    "icono": "🐶",
+    "categoria": 4,
+    "tag": "perro",
+    "puntuacion": 2,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 9,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 10,
+    "nombre": "Hacer cama",
+    "descripcion": "Tarea de Habitación",
+    "icono": "🛏️",
+    "categoria": 5,
+    "tag": "cama",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 10,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 20,
+    "nombre": "Barrer salón",
+    "descripcion": "Tarea de Limpieza",
+    "icono": "🧹",
+    "categoria": 3,
+    "tag": "barrer",
+    "puntuacion": 2,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 11,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 18,
+    "nombre": "Preparar desayuno",
+    "descripcion": "Tarea de Cocina",
+    "icono": "🍽️",
+    "categoria": 2,
+    "tag": "desayuno",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 12,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 12,
+    "nombre": "Regar plantas",
+    "descripcion": "Tarea de Limpieza",
+    "icono": "🧹",
+    "categoria": 3,
+    "tag": "plantas",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 13,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 25,
+    "nombre": "Limpiar baño",
+    "descripcion": "Tarea de Limpieza",
+    "icono": "🧹",
+    "categoria": 3,
+    "tag": "baño",
+    "puntuacion": 2,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 14,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 8,
+    "nombre": "Alimentar gato",
+    "descripcion": "Tarea de Mascotas",
+    "icono": "🐶",
+    "categoria": 4,
+    "tag": "gato",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 15,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 14,
+    "nombre": "Doblar ropa",
+    "descripcion": "Tarea de Habitación",
+    "icono": "🛏️",
+    "categoria": 5,
+    "tag": "ropa",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 16,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 16,
+    "nombre": "Poner lavadora",
+    "descripcion": "Tarea de Cocina",
+    "icono": "🍽️",
+    "categoria": 2,
+    "tag": "lavadora",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 17,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 22,
+    "nombre": "Limpiar ventanas",
+    "descripcion": "Tarea de Limpieza",
+    "icono": "🧹",
+    "categoria": 3,
+    "tag": "ventanas",
+    "puntuacion": 2,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 18,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 15,
+    "nombre": "Sacar al gato",
+    "descripcion": "Tarea de Mascotas",
+    "icono": "🐶",
+    "categoria": 4,
+    "tag": "gato",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 19,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 10,
+    "nombre": "Ordenar juguetes",
+    "descripcion": "Tarea de Habitación",
+    "icono": "🛏️",
+    "categoria": 5,
+    "tag": "juguetes",
+    "puntuacion": 1,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.tarea",
+  "pk": 20,
+  "fields": {
+    "recurrencia_tipo": "none",
+    "recurrencia_dias": "",
+    "recurrencia_dia_mes": null,
+    "recurrencia_mes": null,
+    "recurrencia_fecha_inicio": null,
+    "recurrencia_fecha_fin": null,
+    "premio": "0.10",
+    "tiempo_estimado": 20,
+    "nombre": "Preparar cena",
+    "descripcion": "Tarea de Cocina",
+    "icono": "🍽️",
+    "categoria": 2,
+    "tag": "cena",
+    "puntuacion": 2,
+    "creado_por": null
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 4,
+  "fields": {
+    "tarea": 5,
+    "miembro": 3,
+    "inicio": "2025-10-09T16:33:57.510Z",
+    "fin": "2025-10-09T17:03:57.510Z",
+    "estado": "pendiente",
+    "creado_por": 3,
+    "actualizado_en": "2025-10-09T16:33:57.511Z",
+    "creado_en": "2025-10-09T16:33:57.511Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 5,
+  "fields": {
+    "tarea": 6,
+    "miembro": 4,
+    "inicio": "2025-10-06T13:00:00Z",
+    "fin": "2025-10-06T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.166Z",
+    "creado_en": "2025-10-09T16:43:05.166Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 6,
+  "fields": {
+    "tarea": 7,
+    "miembro": 4,
+    "inicio": "2025-10-07T13:00:00Z",
+    "fin": "2025-10-07T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.171Z",
+    "creado_en": "2025-10-09T16:43:05.171Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 7,
+  "fields": {
+    "tarea": 8,
+    "miembro": 4,
+    "inicio": "2025-10-08T13:00:00Z",
+    "fin": "2025-10-08T13:30:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.178Z",
+    "creado_en": "2025-10-09T16:43:05.178Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 8,
+  "fields": {
+    "tarea": 9,
+    "miembro": 4,
+    "inicio": "2025-10-09T13:00:00Z",
+    "fin": "2025-10-09T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.183Z",
+    "creado_en": "2025-10-09T16:43:05.183Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 9,
+  "fields": {
+    "tarea": 10,
+    "miembro": 4,
+    "inicio": "2025-10-10T13:00:00Z",
+    "fin": "2025-10-10T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.187Z",
+    "creado_en": "2025-10-09T16:43:05.187Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 10,
+  "fields": {
+    "tarea": 11,
+    "miembro": 4,
+    "inicio": "2025-10-11T13:00:00Z",
+    "fin": "2025-10-11T13:18:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.192Z",
+    "creado_en": "2025-10-09T16:43:05.192Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 11,
+  "fields": {
+    "tarea": 12,
+    "miembro": 4,
+    "inicio": "2025-10-12T13:00:00Z",
+    "fin": "2025-10-12T13:12:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.196Z",
+    "creado_en": "2025-10-09T16:43:05.196Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 12,
+  "fields": {
+    "tarea": 13,
+    "miembro": 4,
+    "inicio": "2025-10-13T13:00:00Z",
+    "fin": "2025-10-13T13:25:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.201Z",
+    "creado_en": "2025-10-09T16:43:05.201Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 13,
+  "fields": {
+    "tarea": 14,
+    "miembro": 4,
+    "inicio": "2025-10-14T13:00:00Z",
+    "fin": "2025-10-14T13:08:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.206Z",
+    "creado_en": "2025-10-09T16:43:05.206Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 14,
+  "fields": {
+    "tarea": 15,
+    "miembro": 4,
+    "inicio": "2025-10-15T13:00:00Z",
+    "fin": "2025-10-15T13:14:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.210Z",
+    "creado_en": "2025-10-09T16:43:05.210Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 15,
+  "fields": {
+    "tarea": 16,
+    "miembro": 4,
+    "inicio": "2025-10-16T13:00:00Z",
+    "fin": "2025-10-16T13:16:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.215Z",
+    "creado_en": "2025-10-09T16:43:05.215Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 16,
+  "fields": {
+    "tarea": 17,
+    "miembro": 4,
+    "inicio": "2025-10-17T13:00:00Z",
+    "fin": "2025-10-17T13:22:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.219Z",
+    "creado_en": "2025-10-09T16:43:05.219Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 17,
+  "fields": {
+    "tarea": 18,
+    "miembro": 4,
+    "inicio": "2025-10-18T13:00:00Z",
+    "fin": "2025-10-18T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.223Z",
+    "creado_en": "2025-10-09T16:43:05.223Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 18,
+  "fields": {
+    "tarea": 19,
+    "miembro": 4,
+    "inicio": "2025-10-19T13:00:00Z",
+    "fin": "2025-10-19T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.228Z",
+    "creado_en": "2025-10-09T16:43:05.228Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 20,
+  "fields": {
+    "tarea": 6,
+    "miembro": 5,
+    "inicio": "2025-10-06T13:00:00Z",
+    "fin": "2025-10-06T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.238Z",
+    "creado_en": "2025-10-09T16:43:05.238Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 21,
+  "fields": {
+    "tarea": 7,
+    "miembro": 5,
+    "inicio": "2025-10-07T13:00:00Z",
+    "fin": "2025-10-07T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.243Z",
+    "creado_en": "2025-10-09T16:43:05.243Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 22,
+  "fields": {
+    "tarea": 8,
+    "miembro": 5,
+    "inicio": "2025-10-08T13:00:00Z",
+    "fin": "2025-10-08T13:30:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.248Z",
+    "creado_en": "2025-10-09T16:43:05.248Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 23,
+  "fields": {
+    "tarea": 9,
+    "miembro": 5,
+    "inicio": "2025-10-09T13:00:00Z",
+    "fin": "2025-10-09T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.252Z",
+    "creado_en": "2025-10-09T16:43:05.252Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 24,
+  "fields": {
+    "tarea": 10,
+    "miembro": 5,
+    "inicio": "2025-10-10T13:00:00Z",
+    "fin": "2025-10-10T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.257Z",
+    "creado_en": "2025-10-09T16:43:05.257Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 25,
+  "fields": {
+    "tarea": 11,
+    "miembro": 5,
+    "inicio": "2025-10-11T13:00:00Z",
+    "fin": "2025-10-11T13:18:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.263Z",
+    "creado_en": "2025-10-09T16:43:05.263Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 26,
+  "fields": {
+    "tarea": 12,
+    "miembro": 5,
+    "inicio": "2025-10-12T13:00:00Z",
+    "fin": "2025-10-12T13:12:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.267Z",
+    "creado_en": "2025-10-09T16:43:05.267Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 27,
+  "fields": {
+    "tarea": 13,
+    "miembro": 5,
+    "inicio": "2025-10-13T13:00:00Z",
+    "fin": "2025-10-13T13:25:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.271Z",
+    "creado_en": "2025-10-09T16:43:05.271Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 28,
+  "fields": {
+    "tarea": 14,
+    "miembro": 5,
+    "inicio": "2025-10-14T13:00:00Z",
+    "fin": "2025-10-14T13:08:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.276Z",
+    "creado_en": "2025-10-09T16:43:05.276Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 29,
+  "fields": {
+    "tarea": 15,
+    "miembro": 5,
+    "inicio": "2025-10-15T13:00:00Z",
+    "fin": "2025-10-15T13:14:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.284Z",
+    "creado_en": "2025-10-09T16:43:05.284Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 30,
+  "fields": {
+    "tarea": 16,
+    "miembro": 5,
+    "inicio": "2025-10-16T13:00:00Z",
+    "fin": "2025-10-16T13:16:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.288Z",
+    "creado_en": "2025-10-09T16:43:05.288Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 31,
+  "fields": {
+    "tarea": 17,
+    "miembro": 5,
+    "inicio": "2025-10-17T13:00:00Z",
+    "fin": "2025-10-17T13:22:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.292Z",
+    "creado_en": "2025-10-09T16:43:05.292Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 32,
+  "fields": {
+    "tarea": 18,
+    "miembro": 5,
+    "inicio": "2025-10-18T13:00:00Z",
+    "fin": "2025-10-18T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.296Z",
+    "creado_en": "2025-10-09T16:43:05.296Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 33,
+  "fields": {
+    "tarea": 19,
+    "miembro": 5,
+    "inicio": "2025-10-19T13:00:00Z",
+    "fin": "2025-10-19T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.300Z",
+    "creado_en": "2025-10-09T16:43:05.300Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 34,
+  "fields": {
+    "tarea": 20,
+    "miembro": 5,
+    "inicio": "2025-10-20T13:00:00Z",
+    "fin": "2025-10-20T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.305Z",
+    "creado_en": "2025-10-09T16:43:05.306Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 35,
+  "fields": {
+    "tarea": 6,
+    "miembro": 6,
+    "inicio": "2025-10-06T13:00:00Z",
+    "fin": "2025-10-06T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.310Z",
+    "creado_en": "2025-10-09T16:43:05.310Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 36,
+  "fields": {
+    "tarea": 7,
+    "miembro": 6,
+    "inicio": "2025-10-07T13:00:00Z",
+    "fin": "2025-10-07T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.314Z",
+    "creado_en": "2025-10-09T16:43:05.314Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 37,
+  "fields": {
+    "tarea": 8,
+    "miembro": 6,
+    "inicio": "2025-10-08T13:00:00Z",
+    "fin": "2025-10-08T13:30:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.319Z",
+    "creado_en": "2025-10-09T16:43:05.319Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 38,
+  "fields": {
+    "tarea": 9,
+    "miembro": 6,
+    "inicio": "2025-10-09T13:00:00Z",
+    "fin": "2025-10-09T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.323Z",
+    "creado_en": "2025-10-09T16:43:05.323Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 39,
+  "fields": {
+    "tarea": 10,
+    "miembro": 6,
+    "inicio": "2025-10-10T13:00:00Z",
+    "fin": "2025-10-10T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.327Z",
+    "creado_en": "2025-10-09T16:43:05.327Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 40,
+  "fields": {
+    "tarea": 11,
+    "miembro": 6,
+    "inicio": "2025-10-11T13:00:00Z",
+    "fin": "2025-10-11T13:18:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.332Z",
+    "creado_en": "2025-10-09T16:43:05.332Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 41,
+  "fields": {
+    "tarea": 12,
+    "miembro": 6,
+    "inicio": "2025-10-12T13:00:00Z",
+    "fin": "2025-10-12T13:12:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.341Z",
+    "creado_en": "2025-10-09T16:43:05.341Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 42,
+  "fields": {
+    "tarea": 13,
+    "miembro": 6,
+    "inicio": "2025-10-13T13:00:00Z",
+    "fin": "2025-10-13T13:25:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.346Z",
+    "creado_en": "2025-10-09T16:43:05.346Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 43,
+  "fields": {
+    "tarea": 14,
+    "miembro": 6,
+    "inicio": "2025-10-14T13:00:00Z",
+    "fin": "2025-10-14T13:08:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.350Z",
+    "creado_en": "2025-10-09T16:43:05.350Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 44,
+  "fields": {
+    "tarea": 15,
+    "miembro": 6,
+    "inicio": "2025-10-15T13:00:00Z",
+    "fin": "2025-10-15T13:14:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.354Z",
+    "creado_en": "2025-10-09T16:43:05.354Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 45,
+  "fields": {
+    "tarea": 16,
+    "miembro": 6,
+    "inicio": "2025-10-16T13:00:00Z",
+    "fin": "2025-10-16T13:16:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.358Z",
+    "creado_en": "2025-10-09T16:43:05.358Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 46,
+  "fields": {
+    "tarea": 17,
+    "miembro": 6,
+    "inicio": "2025-10-17T13:00:00Z",
+    "fin": "2025-10-17T13:22:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.363Z",
+    "creado_en": "2025-10-09T16:43:05.363Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 47,
+  "fields": {
+    "tarea": 18,
+    "miembro": 6,
+    "inicio": "2025-10-18T13:00:00Z",
+    "fin": "2025-10-18T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.367Z",
+    "creado_en": "2025-10-09T16:43:05.367Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 48,
+  "fields": {
+    "tarea": 19,
+    "miembro": 6,
+    "inicio": "2025-10-19T13:00:00Z",
+    "fin": "2025-10-19T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.371Z",
+    "creado_en": "2025-10-09T16:43:05.371Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 49,
+  "fields": {
+    "tarea": 20,
+    "miembro": 6,
+    "inicio": "2025-10-20T13:00:00Z",
+    "fin": "2025-10-20T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.376Z",
+    "creado_en": "2025-10-09T16:43:05.376Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 50,
+  "fields": {
+    "tarea": 6,
+    "miembro": 7,
+    "inicio": "2025-10-06T13:00:00Z",
+    "fin": "2025-10-06T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.380Z",
+    "creado_en": "2025-10-09T16:43:05.380Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 51,
+  "fields": {
+    "tarea": 7,
+    "miembro": 7,
+    "inicio": "2025-10-07T13:00:00Z",
+    "fin": "2025-10-07T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.385Z",
+    "creado_en": "2025-10-09T16:43:05.385Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 52,
+  "fields": {
+    "tarea": 8,
+    "miembro": 7,
+    "inicio": "2025-10-08T13:00:00Z",
+    "fin": "2025-10-08T13:30:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.389Z",
+    "creado_en": "2025-10-09T16:43:05.389Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 53,
+  "fields": {
+    "tarea": 9,
+    "miembro": 7,
+    "inicio": "2025-10-09T13:00:00Z",
+    "fin": "2025-10-09T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.394Z",
+    "creado_en": "2025-10-09T16:43:05.394Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 54,
+  "fields": {
+    "tarea": 10,
+    "miembro": 7,
+    "inicio": "2025-10-10T13:00:00Z",
+    "fin": "2025-10-10T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.399Z",
+    "creado_en": "2025-10-09T16:43:05.399Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 55,
+  "fields": {
+    "tarea": 11,
+    "miembro": 7,
+    "inicio": "2025-10-11T13:00:00Z",
+    "fin": "2025-10-11T13:18:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.403Z",
+    "creado_en": "2025-10-09T16:43:05.403Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 56,
+  "fields": {
+    "tarea": 12,
+    "miembro": 7,
+    "inicio": "2025-10-12T13:00:00Z",
+    "fin": "2025-10-12T13:12:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.409Z",
+    "creado_en": "2025-10-09T16:43:05.409Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 57,
+  "fields": {
+    "tarea": 13,
+    "miembro": 7,
+    "inicio": "2025-10-13T13:00:00Z",
+    "fin": "2025-10-13T13:25:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.413Z",
+    "creado_en": "2025-10-09T16:43:05.413Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 58,
+  "fields": {
+    "tarea": 14,
+    "miembro": 7,
+    "inicio": "2025-10-14T13:00:00Z",
+    "fin": "2025-10-14T13:08:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.417Z",
+    "creado_en": "2025-10-09T16:43:05.417Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 59,
+  "fields": {
+    "tarea": 15,
+    "miembro": 7,
+    "inicio": "2025-10-15T13:00:00Z",
+    "fin": "2025-10-15T13:14:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.422Z",
+    "creado_en": "2025-10-09T16:43:05.422Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 60,
+  "fields": {
+    "tarea": 16,
+    "miembro": 7,
+    "inicio": "2025-10-16T13:00:00Z",
+    "fin": "2025-10-16T13:16:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.426Z",
+    "creado_en": "2025-10-09T16:43:05.426Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 61,
+  "fields": {
+    "tarea": 17,
+    "miembro": 7,
+    "inicio": "2025-10-17T13:00:00Z",
+    "fin": "2025-10-17T13:22:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.430Z",
+    "creado_en": "2025-10-09T16:43:05.430Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 62,
+  "fields": {
+    "tarea": 18,
+    "miembro": 7,
+    "inicio": "2025-10-18T13:00:00Z",
+    "fin": "2025-10-18T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.435Z",
+    "creado_en": "2025-10-09T16:43:05.435Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 63,
+  "fields": {
+    "tarea": 19,
+    "miembro": 7,
+    "inicio": "2025-10-19T13:00:00Z",
+    "fin": "2025-10-19T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.439Z",
+    "creado_en": "2025-10-09T16:43:05.439Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 64,
+  "fields": {
+    "tarea": 20,
+    "miembro": 7,
+    "inicio": "2025-10-20T13:00:00Z",
+    "fin": "2025-10-20T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.444Z",
+    "creado_en": "2025-10-09T16:43:05.444Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 65,
+  "fields": {
+    "tarea": 6,
+    "miembro": 8,
+    "inicio": "2025-10-06T13:00:00Z",
+    "fin": "2025-10-06T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.448Z",
+    "creado_en": "2025-10-09T16:43:05.448Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 66,
+  "fields": {
+    "tarea": 7,
+    "miembro": 8,
+    "inicio": "2025-10-07T13:00:00Z",
+    "fin": "2025-10-07T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.456Z",
+    "creado_en": "2025-10-09T16:43:05.456Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 67,
+  "fields": {
+    "tarea": 8,
+    "miembro": 8,
+    "inicio": "2025-10-08T13:00:00Z",
+    "fin": "2025-10-08T13:30:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.460Z",
+    "creado_en": "2025-10-09T16:43:05.460Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 68,
+  "fields": {
+    "tarea": 9,
+    "miembro": 8,
+    "inicio": "2025-10-09T13:00:00Z",
+    "fin": "2025-10-09T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.465Z",
+    "creado_en": "2025-10-09T16:43:05.465Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 69,
+  "fields": {
+    "tarea": 10,
+    "miembro": 8,
+    "inicio": "2025-10-10T13:00:00Z",
+    "fin": "2025-10-10T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.469Z",
+    "creado_en": "2025-10-09T16:43:05.469Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 70,
+  "fields": {
+    "tarea": 11,
+    "miembro": 8,
+    "inicio": "2025-10-11T13:00:00Z",
+    "fin": "2025-10-11T13:18:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.473Z",
+    "creado_en": "2025-10-09T16:43:05.473Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 71,
+  "fields": {
+    "tarea": 12,
+    "miembro": 8,
+    "inicio": "2025-10-12T13:00:00Z",
+    "fin": "2025-10-12T13:12:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.478Z",
+    "creado_en": "2025-10-09T16:43:05.478Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 72,
+  "fields": {
+    "tarea": 13,
+    "miembro": 8,
+    "inicio": "2025-10-13T13:00:00Z",
+    "fin": "2025-10-13T13:25:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.483Z",
+    "creado_en": "2025-10-09T16:43:05.483Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 73,
+  "fields": {
+    "tarea": 14,
+    "miembro": 8,
+    "inicio": "2025-10-14T13:00:00Z",
+    "fin": "2025-10-14T13:08:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.487Z",
+    "creado_en": "2025-10-09T16:43:05.487Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 74,
+  "fields": {
+    "tarea": 15,
+    "miembro": 8,
+    "inicio": "2025-10-15T13:00:00Z",
+    "fin": "2025-10-15T13:14:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.491Z",
+    "creado_en": "2025-10-09T16:43:05.491Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 75,
+  "fields": {
+    "tarea": 16,
+    "miembro": 8,
+    "inicio": "2025-10-16T13:00:00Z",
+    "fin": "2025-10-16T13:16:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.495Z",
+    "creado_en": "2025-10-09T16:43:05.495Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 76,
+  "fields": {
+    "tarea": 17,
+    "miembro": 8,
+    "inicio": "2025-10-17T13:00:00Z",
+    "fin": "2025-10-17T13:22:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.500Z",
+    "creado_en": "2025-10-09T16:43:05.500Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 77,
+  "fields": {
+    "tarea": 18,
+    "miembro": 8,
+    "inicio": "2025-10-18T13:00:00Z",
+    "fin": "2025-10-18T13:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.504Z",
+    "creado_en": "2025-10-09T16:43:05.504Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 78,
+  "fields": {
+    "tarea": 19,
+    "miembro": 8,
+    "inicio": "2025-10-19T13:00:00Z",
+    "fin": "2025-10-19T13:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.521Z",
+    "creado_en": "2025-10-09T16:43:05.521Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 79,
+  "fields": {
+    "tarea": 20,
+    "miembro": 8,
+    "inicio": "2025-10-20T13:00:00Z",
+    "fin": "2025-10-20T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:05.526Z",
+    "creado_en": "2025-10-09T16:43:05.526Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 80,
+  "fields": {
+    "tarea": 6,
+    "miembro": 10,
+    "inicio": "2025-10-06T14:00:00Z",
+    "fin": "2025-10-06T14:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.468Z",
+    "creado_en": "2025-10-09T16:43:06.468Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 81,
+  "fields": {
+    "tarea": 7,
+    "miembro": 10,
+    "inicio": "2025-10-07T14:00:00Z",
+    "fin": "2025-10-07T14:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.472Z",
+    "creado_en": "2025-10-09T16:43:06.472Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 82,
+  "fields": {
+    "tarea": 8,
+    "miembro": 10,
+    "inicio": "2025-10-08T14:00:00Z",
+    "fin": "2025-10-08T14:30:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.477Z",
+    "creado_en": "2025-10-09T16:43:06.477Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 83,
+  "fields": {
+    "tarea": 9,
+    "miembro": 10,
+    "inicio": "2025-10-09T14:00:00Z",
+    "fin": "2025-10-09T14:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.481Z",
+    "creado_en": "2025-10-09T16:43:06.481Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 84,
+  "fields": {
+    "tarea": 10,
+    "miembro": 10,
+    "inicio": "2025-10-10T14:00:00Z",
+    "fin": "2025-10-10T14:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.486Z",
+    "creado_en": "2025-10-09T16:43:06.486Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 85,
+  "fields": {
+    "tarea": 11,
+    "miembro": 10,
+    "inicio": "2025-10-11T14:00:00Z",
+    "fin": "2025-10-11T14:18:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.491Z",
+    "creado_en": "2025-10-09T16:43:06.491Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 86,
+  "fields": {
+    "tarea": 12,
+    "miembro": 10,
+    "inicio": "2025-10-12T14:00:00Z",
+    "fin": "2025-10-12T14:12:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.498Z",
+    "creado_en": "2025-10-09T16:43:06.498Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 87,
+  "fields": {
+    "tarea": 13,
+    "miembro": 10,
+    "inicio": "2025-10-13T14:00:00Z",
+    "fin": "2025-10-13T14:25:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.503Z",
+    "creado_en": "2025-10-09T16:43:06.503Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 88,
+  "fields": {
+    "tarea": 14,
+    "miembro": 10,
+    "inicio": "2025-10-14T14:00:00Z",
+    "fin": "2025-10-14T14:08:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.507Z",
+    "creado_en": "2025-10-09T16:43:06.507Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 89,
+  "fields": {
+    "tarea": 15,
+    "miembro": 10,
+    "inicio": "2025-10-15T14:00:00Z",
+    "fin": "2025-10-15T14:14:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.512Z",
+    "creado_en": "2025-10-09T16:43:06.512Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 90,
+  "fields": {
+    "tarea": 16,
+    "miembro": 10,
+    "inicio": "2025-10-16T14:00:00Z",
+    "fin": "2025-10-16T14:16:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.516Z",
+    "creado_en": "2025-10-09T16:43:06.516Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 91,
+  "fields": {
+    "tarea": 17,
+    "miembro": 10,
+    "inicio": "2025-10-17T14:00:00Z",
+    "fin": "2025-10-17T14:22:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.520Z",
+    "creado_en": "2025-10-09T16:43:06.520Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 92,
+  "fields": {
+    "tarea": 18,
+    "miembro": 10,
+    "inicio": "2025-10-18T14:00:00Z",
+    "fin": "2025-10-18T14:15:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.524Z",
+    "creado_en": "2025-10-09T16:43:06.524Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 93,
+  "fields": {
+    "tarea": 19,
+    "miembro": 10,
+    "inicio": "2025-10-19T14:00:00Z",
+    "fin": "2025-10-19T14:10:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-09T16:43:06.529Z",
+    "creado_en": "2025-10-09T16:43:06.529Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 95,
+  "fields": {
+    "tarea": 20,
+    "miembro": 4,
+    "inicio": "2025-10-20T13:00:00Z",
+    "fin": "2025-10-20T13:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-10T14:27:42.680Z",
+    "creado_en": "2025-10-10T14:27:42.680Z"
+  }
+},
+{
+  "model": "tareas.evento",
+  "pk": 96,
+  "fields": {
+    "tarea": 20,
+    "miembro": 10,
+    "inicio": "2025-10-20T14:00:00Z",
+    "fin": "2025-10-20T14:20:00Z",
+    "estado": "pendiente",
+    "creado_por": 4,
+    "actualizado_en": "2025-10-10T14:27:42.746Z",
+    "creado_en": "2025-10-10T14:27:42.746Z"
+  }
+}
+]
