@@ -184,6 +184,10 @@ Notas:
 - Asegúrate de desactivar `DEBUG` y configurar variables de entorno sensibles para un despliegue público (SECRET_KEY, ALLOWED_HOSTS, base de datos si la migras a Postgres). Para demo de portafolio puedes mantener DEBUG=True si el acceso es privado.
 - Si quieres, preparo el `render.yaml` (o `Dockerfile`) para que el despliegue en Render sea un clic.
 
+Nota sobre los datos de ejemplo
+-------------------------------
+Los nombres de miembros incluidos en los fixtures (por ejemplo `mamá`, `papá`, `hijo_1`, `abuela`) son ejemplos ficticios usados únicamente para la demo y no representan a personas reales. Las credenciales reales y datos sensibles no están incluidos en esta copia para portfolio.
+
 ## Despliegue con Docker (local o en Render usando container)
 
 He añadido un `Dockerfile` y dos `docker-compose` (uno con SQLite y otro con Postgres) para que puedas probar la demo en contenedores.

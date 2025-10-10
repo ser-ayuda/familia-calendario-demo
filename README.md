@@ -41,6 +41,10 @@ Más documentación
 
 Consulta `README_demo.md` para instrucciones detalladas de arranque (scripts PowerShell incluidos), `README_PORTFOLIO.md` para la narrativa del portafolio y `COMPLIANCE.md` para la checklist de privacidad.
 
+Nota sobre los datos de ejemplo
+-------------------------------
+Los nombres de miembros incluidos en los fixtures (por ejemplo `mamá`, `papá`, `hijo_1`, `abuela`) son ejemplos ficticios usados únicamente para la demo y no representan a personas reales. Las credenciales reales y datos sensibles no están incluidos en esta copia para portfolio.
+
 Using fixtures
 ------------
 
