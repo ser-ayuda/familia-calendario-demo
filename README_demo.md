@@ -103,6 +103,18 @@ Si quieres que continúe y haga cualquiera de las tareas siguientes ahora, marca
 
 Dime cuál prefieres y lo hago.
 
+### Artifact: portfolio_minimal.zip
+
+He generado un artefacto local `portfolio_minimal.zip` (excluye `.venv`, `db.sqlite3`, y `removed_for_portfolio/`) que ahora incluye las capturas generadas en `demo_screenshots/` y los fixtures anonimizados. El archivo está en la raíz del repo pero está listado en `.gitignore` para evitar subir binarios accidentalmente al historial.
+
+Cómo publicar el ZIP en GitHub (pasos manuales):
+
+1. Ve a la página del repositorio en GitHub → "Releases" → "Draft a new release".
+2. Subir `portfolio_minimal.zip` como asset del release.
+3. Completa el título y descripción (usa `assets/linkedin_post.md` para la descripción sugerida) y publica el release.
+
+Si quieres que cree el draft release y suba el ZIP por ti, puedo hacerlo pero necesitaré autorización (o lo subo usando la API con credenciales si me las facilitas). Si prefieres, lo dejo listo localmente y lo subes manualmente.
+
 
 Requisitos
 - Windows PowerShell (pwsh)
