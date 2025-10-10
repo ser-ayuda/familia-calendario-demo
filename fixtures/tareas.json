@@ -75,7 +75,7 @@
   "model": "tareas.miembro",
   "pk": 4,
   "fields": {
-    "nombre": "Mamá",
+    "nombre": "Miembro 1",
     "color_hex": "#e6194b",
     "icono": "👩",
     "usuario": 5
@@ -85,7 +85,7 @@
   "model": "tareas.miembro",
   "pk": 5,
   "fields": {
-    "nombre": "Papá",
+    "nombre": "Miembro 2",
     "color_hex": "#3cb44b",
     "icono": "👨",
     "usuario": 6
@@ -95,7 +95,7 @@
   "model": "tareas.miembro",
   "pk": 6,
   "fields": {
-    "nombre": "Hijo 1",
+    "nombre": "Miembro 3",
     "color_hex": "#0082c8",
     "icono": "🧒",
     "usuario": 7
@@ -105,7 +105,7 @@
   "model": "tareas.miembro",
   "pk": 7,
   "fields": {
-    "nombre": "Hijo 2",
+    "nombre": "Miembro 4",
     "color_hex": "#f58231",
     "icono": "👦",
     "usuario": 8
@@ -115,7 +115,7 @@
   "model": "tareas.miembro",
   "pk": 8,
   "fields": {
-    "nombre": "Abuela",
+    "nombre": "Miembro 5",
     "color_hex": "#911eb4",
     "icono": "👵",
     "usuario": 9
