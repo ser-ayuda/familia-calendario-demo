@@ -24,3 +24,6 @@ report_*.json
 *.log
 .env
 .venv/
+
+# Artifact: portfolio ZIP (generated locally)
+portfolio_minimal.zip
