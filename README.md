@@ -40,3 +40,42 @@ Si quieres reutilizar o mejorar el proyecto, revisa la `LICENSE` (MIT) incluida 
 Más documentación
 
 Consulta `README_demo.md` para instrucciones detalladas de arranque (scripts PowerShell incluidos), `README_PORTFOLIO.md` para la narrativa del portafolio y `COMPLIANCE.md` para la checklist de privacidad.
+
+Using fixtures
+------------
+
+This repository includes JSON fixtures so you can load demo data without shipping the `db.sqlite3` file.
+
+Steps to reproduce the demo from scratch:
+
+1. Create and activate the virtualenv, install deps and migrate:
+
+```powershell
+.venv\Scripts\Activate.ps1
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe manage.py migrate
+```
+
+2. Load the fixtures (order matters):
+
+```powershell
+.venv\Scripts\python.exe manage.py loaddata fixtures/contenttypes.json fixtures/auth.json fixtures/tareas.json
+```
+
+3. Start the development server:
+
+```powershell
+.venv\Scripts\python.exe manage.py runserver
+```
+
+4. Login with the demo user:
+
+```
+Username: demo
+Password: demo
+```
+
+Notes:
+- The fixtures include a demo user (password `demo`) and a minimal set of tasks/members used for the portfolio.
+- If you prefer to populate data using `seed_data` instead of fixtures, run `python manage.py seed_data` after `migrate`.
+- The fixtures are encoded in UTF-8 and safe for use on Windows and Linux.
