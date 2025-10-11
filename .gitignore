@@ -1,3 +1,32 @@
+# Python / virtual env
+.venv/
+__pycache__/
+*.pyc
+
+# Database and backups
+db.sqlite3
+db.sqlite3*
+*.bak
+*.sqlite3
+*.sqlite
+
+# Archives / downloads
+*.zip
+downloaded_*.zip
+portfolio_minimal.zip
+portfolio_minimal.zip.bak_*
+
+# OS / editor
+.vscode/
+*.suo
+.DS_Store
+Thumbs.db
+
+# Server / pid
+.server_pid
+
+# Optional: ignore generated images by default (uncomment if you prefer)
+# assets/*.png
 # Bytecode
 __pycache__/
 *.py[cod]

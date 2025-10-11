@@ -283,6 +283,18 @@ He creado además `portfolio_minimal.zip` en la raíz que contiene los archivos 
 
 Si prefieres que en lugar de `db.sqlite3` el paquete incluya sólo las migraciones y un `scripts/create_demo.py` idempotente, dímelo y lo recreo sin la base de datos.
 
+Quick start local (Windows PowerShell)
+1. Abre PowerShell en la raíz del repo.
+2. Ejecuta el script de inicio rápido:
+
+```powershell
+.\scripts\quick_start.ps1
+```
+
+Esto creará (si es necesario) la virtualenv en `.venv`, instalará dependencias, aplicará migraciones, cargará los fixtures anonimizados y arrancará el servidor de desarrollo.
+
+LinkedIn: he añadido `assets/linkedin_post_ready.md` con texto listo para pegar y `assets/social.png` para usar en la publicación.
+
 ## Despliegue rápido en Render
 
 Instrucciones mínimas para desplegar en Render (servicio PaaS):
