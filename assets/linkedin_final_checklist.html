@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Checklist final — publicar proyecto en LinkedIn</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin: 24px; color:#222 }
+    h1 { font-size:20px; margin-bottom:6px }
+    h2 { font-size:16px; margin-top:20px }
+    ul { line-height:1.6 }
+    .checkbox { display:inline-block; width:18px; height:18px; border:2px solid #777; margin-right:8px; vertical-align:middle }
+    .note { color:#555; font-size:13px }
+    .container { max-width:900px; margin:0 auto }
+    @media print { body { margin:12mm } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Checklist final — publicar proyecto en LinkedIn</h1>
+
+    <h2>Antes de publicar</h2>
+    <ul>
+      <li><span class="checkbox"></span>Revocar tokens temporales utilizados para subir artefactos (si corresponde).</li>
+      <li><span class="checkbox"></span>Confirmar que <code>README_demo.md</code> apunta a la URL de demo correcta.</li>
+      <li><span class="checkbox"></span>Verificar que <code>portfolio_minimal.zip</code> contiene fixtures anonimizados y no incluye <code>db.sqlite3</code> con datos reales.</li>
+      <li><span class="checkbox"></span>Ejecutar <code>python manage.py check --deploy</code> localmente para confirmar que no hay warnings críticos (DEBUG=false recomendado).</li>
+      <li><span class="checkbox"></span>Revisar que las imágenes <code>assets/social_linkedin_landscape.png</code> y capturas se muestran correctamente en la vista previa.</li>
+      <li><span class="checkbox"></span>Comprobar certificados SSL y que la demo en Render responde por HTTPS (si aplica).</li>
+    </ul>
+
+    <h2>Durante la publicación</h2>
+    <ul>
+      <li><span class="checkbox"></span>Subir <code>assets/social_linkedin_landscape.png</code> como imagen principal.</li>
+      <li><span class="checkbox"></span>Añadir capturas adicionales en el orden recomendado (UI → Admin).</li>
+      <li><span class="checkbox"></span>Pegar la descripción (ES o EN) y revisar enlaces.</li>
+      <li><span class="checkbox"></span>Añadir aptitudes sugeridas y seleccionar la opción de notificar a la red si deseas visibilidad.</li>
+    </ul>
+
+    <h2>Tras publicar</h2>
+    <ul>
+      <li><span class="checkbox"></span>Comprobar que el post se renderiza bien en móvil y desktop.</li>
+      <li><span class="checkbox"></span>Responder al primer comentario con la ficha técnica (usar <code>assets/linkedin_post_detailed.md</code> como guía).</li>
+      <li><span class="checkbox"></span>Monitorizar interacciones y responder mensajes de networking.</li>
+    </ul>
+
+    <h2>Notas técnicas</h2>
+    <ul>
+      <li class="note">Si quieres publicar <code>/portfolio_minimal.zip</code> en Releases, asegúrate de que el asset descargado tiene el SHA256 publicado.</li>
+      <li class="note">Para autores de código: añade un GitHub Actions que valide <code>manage.py test</code> y <code>manage.py check --deploy</code> en <code>main</code>.</li>
+    </ul>
+
+    <p class="note">Generado automáticamente desde el repositorio. © 2025</p>
+  </div>
+</body>
+</html>

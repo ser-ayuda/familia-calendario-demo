@@ -39,9 +39,8 @@ class Command(BaseCommand):
         admin_user, _ = User.objects.get_or_create(
             username='admin', defaults={'is_staff': True, 'is_superuser': True}
         )
-        # Do not set a known password for admin in a public repo; mark unusable
-        if not admin_user.has_usable_password():
-            admin_user.set_unusable_password()
+        if not admin_user.password:
+            admin_user.set_password('admin')
             admin_user.save()
 
         colores = ["#e6194b", "#3cb44b", "#0082c8", "#f58231", "#911eb4"]
@@ -61,41 +60,37 @@ class Command(BaseCommand):
 
         # Crear categorías
         categorias = [
-            ("Cocina", "Tareas de cocina", "🍽️"),
-            ("Limpieza", "Tareas de limpieza", "🧹"),
-            ("Mascotas", "Cuidado de mascotas", "🐶"),
-            ("Habitación", "Tareas de habitación", "🛏️"),
+            ("Cocina", "Tareas de cocina"),
+            ("Limpieza", "Tareas de limpieza"),
+            ("Mascotas", "Cuidado de mascotas"),
+            ("Habitación", "Tareas de habitación"),
         ]
         cat_objs = {}
-        # Detectar dinámicamente si el modelo Categoria tiene el campo 'icono'
-        categoria_field_names = [f.name for f in Categoria._meta.fields]
-        for nombre, desc, icono in categorias:
-            defaults = {"descripcion": desc}
-            if 'icono' in categoria_field_names:
-                defaults['icono'] = icono
-            cat, _ = Categoria.objects.get_or_create(nombre=nombre, defaults=defaults)
+        for nombre, desc in categorias:
+            # current Categoria model only has nombre and descripcion
+            cat, _ = Categoria.objects.get_or_create(nombre=nombre, defaults={"descripcion": desc})
             cat_objs[nombre] = cat
 
         tareas_tipos = [
-            ("Lavar platos", "Cocina", 15, 1, "lavar", "🍽️"),
-            ("Sacar basura", "Limpieza", 10, 1, "basura", "🗑️"),
-            ("Pasear perro", "Mascotas", 30, 2, "perro", "🐶"),
-            ("Hacer cama", "Habitación", 10, 1, "cama", "🛏️"),
-            ("Barrer salón", "Limpieza", 20, 2, "barrer", "🧹"),
-            ("Preparar desayuno", "Cocina", 18, 1, "desayuno", "🥣"),
-            ("Regar plantas", "Limpieza", 12, 1, "plantas", "🪴"),
-            ("Limpiar baño", "Limpieza", 25, 2, "baño", "🚽"),
-            ("Alimentar gato", "Mascotas", 8, 1, "gato", "🐱"),
-            ("Doblar ropa", "Habitación", 14, 1, "ropa", "👕"),
-            ("Poner lavadora", "Cocina", 16, 1, "lavadora", "🧺"),
-            ("Limpiar ventanas", "Limpieza", 22, 2, "ventanas", "🪟"),
-            ("Sacar al gato", "Mascotas", 15, 1, "gato", "🐱"),
-            ("Ordenar juguetes", "Habitación", 10, 1, "juguetes", "🧸"),
-            ("Preparar cena", "Cocina", 20, 2, "cena", "🍲"),
+            ("Lavar platos", "Cocina", 15, 1, "lavar"),
+            ("Sacar basura", "Limpieza", 10, 1, "basura"),
+            ("Pasear perro", "Mascotas", 30, 2, "perro"),
+            ("Hacer cama", "Habitación", 10, 1, "cama"),
+            ("Barrer salón", "Limpieza", 20, 2, "barrer"),
+            ("Preparar desayuno", "Cocina", 18, 1, "desayuno"),
+            ("Regar plantas", "Limpieza", 12, 1, "plantas"),
+            ("Limpiar baño", "Limpieza", 25, 2, "baño"),
+            ("Alimentar gato", "Mascotas", 8, 1, "gato"),
+            ("Doblar ropa", "Habitación", 14, 1, "ropa"),
+            ("Poner lavadora", "Cocina", 16, 1, "lavadora"),
+            ("Limpiar ventanas", "Limpieza", 22, 2, "ventanas"),
+            ("Sacar al gato", "Mascotas", 15, 1, "gato"),
+            ("Ordenar juguetes", "Habitación", 10, 1, "juguetes"),
+            ("Preparar cena", "Cocina", 20, 2, "cena"),
         ]
 
         # Limpiar duplicados de tareas generales (solo si no tienen eventos asociados)
-        for nombre, _, _, _, _, _ in tareas_tipos:
+        for nombre, _, _, _, _ in tareas_tipos:
             tareas = Tarea.objects.filter(nombre=nombre)
             if tareas.count() > 1:
                 # Mantener solo una, eliminar las demás si no tienen eventos
@@ -106,26 +101,25 @@ class Command(BaseCommand):
 
         # Crear tareas generales (sin asignar a miembro ni horario) y rellenar campos vacíos
         tarea_objs = {}
-        for nombre, cat, _, puntos, tag, icono in tareas_tipos:
+        for nombre, cat, dur_min, puntos, tag in tareas_tipos:
             tarea = Tarea.objects.filter(nombre=nombre).first()
             if not tarea:
                 tarea = Tarea.objects.create(
                     nombre=nombre,
                     descripcion=f"Tarea de {cat}",
-                    icono=icono,
                     categoria=cat_objs[cat],
                     tag=tag,
                     puntuacion=puntos,
                     premio=0.10,
+                    tiempo_estimado=dur_min,
                 )
             else:
                 updated = False
                 if not tarea.descripcion:
                     tarea.descripcion = f"Tarea de {cat}"
                     updated = True
-                if not tarea.icono:
-                    tarea.icono = icono
-                    updated = True
+                # icono may or may not be present in the DB; only set if variable exists
+                # if icono was provided in the tuple we'd set it; currently it's not
                 if not tarea.categoria:
                     tarea.categoria = cat_objs[cat]
                     updated = True
@@ -138,6 +132,10 @@ class Command(BaseCommand):
                 if tarea.premio is None:
                     tarea.premio = 0.10
                     updated = True
+                # ensure tiempo_estimado is populated
+                if getattr(tarea, 'tiempo_estimado', None) in (None, 0):
+                    tarea.tiempo_estimado = dur_min
+                    updated = True
                 if updated:
                     tarea.save()
             tarea_objs[nombre] = tarea
@@ -145,7 +143,7 @@ class Command(BaseCommand):
         created_count = 0
         # Crear eventos para cada miembro y tarea a lo largo de la semana
         for miembro in miembros:
-            for i, (nombre, _, dur_min, _, _, _) in enumerate(tareas_tipos):
+            for i, (nombre, _, dur_min, _, _) in enumerate(tareas_tipos):
                 dia = lunes + timedelta(days=i)
                 inicio = dia.replace(hour=15, minute=0)
                 fin = inicio + timedelta(minutes=dur_min)
@@ -168,8 +166,6 @@ class Command(BaseCommand):
 
         # Usuario de pruebas (no admin)
         demo, created = User.objects.get_or_create(username='demo', defaults={'is_staff': False, 'is_superuser': False})
-        # For the demo user set a usable but non-secret password locally; if
-        # deploying publicly, consider rotating or creating users via secure flow.
         if created or not demo.has_usable_password():
             demo.set_password('demo')
             demo.save()
@@ -180,7 +176,7 @@ class Command(BaseCommand):
             demo_member.save()
         # Crear eventos para Demo (esta semana) si no existen
         created_demo = 0
-        for i, (nombre, _, dur_min, _, _, _) in enumerate(tareas_tipos):
+        for i, (nombre, _, dur_min, _, _) in enumerate(tareas_tipos):
             dia = lunes + timedelta(days=i)
             inicio = dia.replace(hour=16, minute=0)  # 16:00 para distinguir
             fin = inicio + timedelta(minutes=dur_min)

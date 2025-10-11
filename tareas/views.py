@@ -1,8 +1,12 @@
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_date
 import json
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 # Endpoint para borrar eventos futuros de una tarea desde una fecha
-@csrf_exempt
+@require_POST
+@login_required
+@user_passes_test(lambda u: u.is_staff)
 def borrar_eventos_futuros(request, tarea_id):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Método no permitido'}, status=405)

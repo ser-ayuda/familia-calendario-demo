@@ -33,20 +33,17 @@ function abrirModalBorrarFuturos(tareaId, fechaDesde) {
             <span style="color:{% if aviso.nivel == 'CRITICAL' %}#dc2626{% elif aviso.nivel == 'ERROR' %}#ef4444{% elif aviso.nivel == 'WARNING' %}#eab308{% else %}#334155{% endif %};font-weight:600;">[{{ aviso.nivel }}]</span>
             {{ aviso.mensaje|linebreaksbr }}
             <button onclick="marcarAvisoVisto({{ aviso.id }})" style="margin-left:10px;padding:2px 8px;font-size:0.95em;border-radius:6px;border:none;background:#22c55e;color:#fff;cursor:pointer;">Marcar como visto</button>
-            <span style="font-size:0.9em;color:#64748b;">({{ aviso.creado_en|date:'d/m/Y H:i' }})</span>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-    <script>
-      function marcarAvisoVisto(id) {
-        fetch('/avisos/marcar_visto/' + id + '/', {method:'POST',headers:{'X-CSRFToken':getCSRF()}})
-          .then(r => { if(r.ok) location.reload(); });
-      }
-      function getCSRF(){
-        const m = document.cookie.match(/csrftoken=([^;]+)/); return m ? m[1] : '';
-      }
-    </script>
+                  <span style="font-size:0.9em;color:#64748b;">({{ aviso.creado_en|date:'d/m/Y H:i' }})</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <script>
+            function marcarAvisoVisto(id) {
+              fetch('/avisos/marcar_visto/' + id + '/', {method:'POST',headers:{'X-CSRFToken':getCSRF()}})
+                .then(r => { if(r.ok) location.reload(); });
+            }
+          </script>
   {% endif %}
 <div style="max-width:950px;margin:36px auto 0 auto;padding:32px 28px 28px 28px;background:#fff;border-radius:18px;box-shadow:0 6px 32px #0ea5e91a;">
   <!-- Flatpickr CSS -->
